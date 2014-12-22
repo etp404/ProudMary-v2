@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ProudMary-v2</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">ProudMary</string>
     <string name="action_settings">Settings</string>
+
+    <string name="frequency_text_view">Frequency (minutes)</string>
+    <string name="destination_label">Destination</string>
+    <string name="updates_being_sent">Updates being sent</string>
+    <string name="updates_not_being_sent">Updates not being sent</string>
 
 </resources>

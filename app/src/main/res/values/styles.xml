@@ -1,8 +1,14 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="background">@color/dark_brown</item>
     </style>
 
+    <style name="ActionBar">
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="logo">@drawable/pm_logo</item>
+    </style>
+
+    <color name="dark_brown">#370A0B</color>
 </resources>
