@@ -13,4 +13,8 @@ public class AlarmManagerWrapper {
     public void setRepeating(int type, long triggerAtMillis, long intervalMillis, PendingIntent operation) {
         alarmManager.setRepeating(type, triggerAtMillis, intervalMillis, operation);
     }
+
+    public void cancel(PendingIntent pendingIntent) {
+        alarmManager.cancel(pendingIntent);
+    }
 }

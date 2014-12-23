@@ -3,7 +3,6 @@ package com.matthewsimonmould.proudmary_v2;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.test.AndroidTestCase;
-import android.test.mock.MockContext;
 
 public class StartSwitchTest extends AndroidTestCase {
 
@@ -19,12 +18,22 @@ public class StartSwitchTest extends AndroidTestCase {
         assertNotNull(fakeAlarmManagerWrapper.setRepeatingInvokedWithPendingIntent);
     }
 
+    public void testThatWhenRadioButtonIsUnchecked_AlarmManagerIsCancelled () {
+        FakeAlarmManagerWrapper fakeAlarmManagerWrapper = new FakeAlarmManagerWrapper();
+        StartSwitchListener listener = new StartSwitchListener(getContext(), fakeAlarmManagerWrapper);
+
+        listener.onCheckedChanged(null, false);
+
+        assertNotNull(fakeAlarmManagerWrapper.cancelInvokedWithPendingIntent);
+    }
+
     private class FakeAlarmManagerWrapper extends AlarmManagerWrapper {
 
         int setRepeatingInvokedWithType;
         long setRepeatingInvokedWithTriggerAtMillis;
         long setRepeatingInvokedWithIntervalMillis;
         PendingIntent setRepeatingInvokedWithPendingIntent;
+        PendingIntent cancelInvokedWithPendingIntent;
 
         public FakeAlarmManagerWrapper() {
             super(null);
@@ -37,5 +46,11 @@ public class StartSwitchTest extends AndroidTestCase {
             setRepeatingInvokedWithIntervalMillis = intervalMillis;
             setRepeatingInvokedWithPendingIntent = pendingIntent;
         }
+
+        @Override
+        public void cancel(PendingIntent pendingIntent) {
+            cancelInvokedWithPendingIntent = pendingIntent;
+        }
+
     }
 }
