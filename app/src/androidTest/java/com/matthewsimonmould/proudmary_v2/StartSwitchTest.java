@@ -26,6 +26,10 @@ public class StartSwitchTest extends AndroidTestCase {
         long setRepeatingInvokedWithIntervalMillis;
         PendingIntent setRepeatingInvokedWithPendingIntent;
 
+        public FakeAlarmManagerWrapper() {
+            super(null);
+        }
+
         @Override
         public void setRepeating(int type, long triggerAtMillis, long intervalMillis, PendingIntent pendingIntent) {
             setRepeatingInvokedWithType = type;
