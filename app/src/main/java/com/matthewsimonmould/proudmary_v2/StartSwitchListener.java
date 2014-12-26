@@ -20,7 +20,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Intent intent = new Intent();
         if (isChecked) {
-            alarmManagerWrapper.setRepeating(AlarmManager.RTC_WAKEUP, 0, 30000, PendingIntent.getBroadcast(context, 0, intent, 0));
+            alarmManagerWrapper.setRepeating(AlarmManager.RTC_WAKEUP, 0, 10000, PendingIntent.getBroadcast(context, 0, intent, 0));
         }
         else {
             alarmManagerWrapper.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));

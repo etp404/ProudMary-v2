@@ -14,7 +14,7 @@ public class StartSwitchTest extends AndroidTestCase {
 
         assertEquals(fakeAlarmManagerWrapper.setRepeatingInvokedWithType, AlarmManager.RTC_WAKEUP);
         assertEquals(fakeAlarmManagerWrapper.setRepeatingInvokedWithTriggerAtMillis, 0);
-        assertEquals(fakeAlarmManagerWrapper.setRepeatingInvokedWithIntervalMillis, 30000);
+        assertEquals(fakeAlarmManagerWrapper.setRepeatingInvokedWithIntervalMillis, 10000);
         assertNotNull(fakeAlarmManagerWrapper.setRepeatingInvokedWithPendingIntent);
     }
 
