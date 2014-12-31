@@ -6,7 +6,7 @@ public class SendUpdateBroadcastReceiverTest extends AndroidTestCase {
 
     public void testThatNotificationIsProvided_WhenReceiveIntentIsInvoked () {
         FakeNotificationManagerWrapper notificationManagerWrapper = new FakeNotificationManagerWrapper();
-        SendUpdateBroadcastReceiver broadcastReceiver = new SendUpdateBroadcastReceiver(notificationManagerWrapper);
+        SendUpdateBroadcastReceiver broadcastReceiver = new SendUpdateBroadcastReceiver();
         broadcastReceiver.onReceive(null, null);
         assertNotNull(notificationManagerWrapper.provideNotificationInvokedWith);
     }
