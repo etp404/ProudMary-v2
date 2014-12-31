@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/ProudMary-v2.iml" filepath="$PROJECT_DIR$/ProudMary-v2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/purejava/purejava.iml" filepath="$PROJECT_DIR$/purejava/purejava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robolectric-tests/robolectric-tests.iml" filepath="$PROJECT_DIR$/robolectric-tests/robolectric-tests.iml" />
     </modules>
   </component>
 </project>

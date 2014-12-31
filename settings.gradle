@@ -1,1 +1,1 @@
-include ':app', ':purejava'
+include ':app', ':purejava', ':robolectric-tests'
