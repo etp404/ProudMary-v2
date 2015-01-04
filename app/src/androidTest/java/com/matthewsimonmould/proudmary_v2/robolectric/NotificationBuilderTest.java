@@ -3,6 +3,7 @@ package com.matthewsimonmould.proudmary_v2.robolectric;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Intent;
 
 import com.matthewsimonmould.proudmary_v2.NotificationBuilder;
 import com.matthewsimonmould.proudmary_v2.R;
@@ -24,9 +25,9 @@ public class NotificationBuilderTest {
 
         String contentTitle = "Proud Mary";
         String contentText = "Hello, I am a message";
-        PendingIntent shadowPendingIntent = PendingIntent.getActivities(null, 0, null, 0);
+        PendingIntent shadowPendingIntent = PendingIntent.getActivities(Robolectric.getShadowApplication().getApplicationContext(), 0, new Intent[0], 0);
 
-        Notification actualNotification = NotificationBuilder.build(Robolectric.getShadowApplication().getApplicationContext(), shadowPendingIntent, contentTitle, contentText);
+        Notification actualNotification = new NotificationBuilder().build(Robolectric.getShadowApplication().getApplicationContext(), shadowPendingIntent, contentTitle, contentText);
         assertEquals(contentTitle, actualNotification.extras.getString(Notification.EXTRA_TITLE));
         assertEquals(contentText, actualNotification.extras.getString(Notification.EXTRA_TEXT));
         assertEquals(R.drawable.pm_logo, actualNotification.extras.getInt(Notification.EXTRA_SMALL_ICON));

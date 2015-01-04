@@ -5,7 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 
 public class NotificationBuilder {
-    public static Notification build(Context context, PendingIntent launchNotification, String contentTitle, String contentText) {
+    public Notification build(Context context, PendingIntent launchNotification, String contentTitle, String contentText) {
         return new Notification.Builder(context)
                 .setContentTitle(contentTitle)
                 .setContentText(contentText)
