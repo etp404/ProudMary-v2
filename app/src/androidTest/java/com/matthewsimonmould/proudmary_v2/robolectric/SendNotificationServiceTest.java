@@ -10,6 +10,7 @@ import com.matthewsimonmould.proudmary_v2.SendNotificationService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertSame;
@@ -26,6 +27,7 @@ public class SendNotificationServiceTest {
 
         sendNotificationService.onStartCommand(null, 0, 0);
 
+        assertSame(Robolectric.getShadowApplication().getApplicationContext(), fakeNotificationBuilder.buildInvokedWithContext);
         assertSame(fakeNotificationBuilder.notificationToBeReturned,
                 fakeNotificationManagerWrapper.provideNotificationInvokedWithNotification);
     }
@@ -39,10 +41,12 @@ public class SendNotificationServiceTest {
     }
 
     private class FakeNotificationBuilder extends NotificationBuilder {
+        Context buildInvokedWithContext;
         Notification notificationToBeReturned;
 
         @Override
         public Notification build(Context context, PendingIntent launchNotification, String contentTitle, String contentText) {
+            buildInvokedWithContext = context;
             return notificationToBeReturned;
         }
     }

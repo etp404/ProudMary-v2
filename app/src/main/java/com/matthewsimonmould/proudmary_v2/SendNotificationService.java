@@ -22,7 +22,7 @@ public class SendNotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Notification notification = notificationBuilder.build(null, null, null, null);
+        Notification notification = notificationBuilder.build(getApplicationContext(), null, null, null);
         notificationManagerWrapper.provideNotification(notification);
         return super.onStartCommand(intent, flags, startId);
     }
