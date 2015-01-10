@@ -6,24 +6,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.CompoundButton;
 
+import java.util.concurrent.TimeUnit;
+
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
-    private AlarmManagerWrapper alarmManagerWrapper;
     private Context context;
 
-    public StartSwitchListener(Context context, AlarmManagerWrapper alarmManagerWrapper) {
+    public StartSwitchListener(Context context) {
         this.context = context;
-        this.alarmManagerWrapper = alarmManagerWrapper;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(context, SendUpdateBroadcastReceiver.class);
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         if (isChecked) {
-            alarmManagerWrapper.setRepeating(AlarmManager.RTC_WAKEUP, 0, 10000, PendingIntent.getBroadcast(context, 0, intent, 0));
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, TimeUnit.SECONDS.toMillis(1), PendingIntent.getBroadcast(context, 0, intent, 0));
         }
         else {
-            alarmManagerWrapper.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
+            alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
         }
     }
 }

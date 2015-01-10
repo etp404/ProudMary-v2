@@ -6,12 +6,9 @@ import android.content.Intent;
 
 public class SendUpdateBroadcastReceiver extends BroadcastReceiver {
 
-    public SendUpdateBroadcastReceiver() {
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent serviceIntent = new Intent(context, SendNotificationService.class);
+        Intent serviceIntent = new Intent(context, UpdaterService.class);
         context.startService(serviceIntent);
     }
 }

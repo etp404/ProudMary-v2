@@ -16,9 +16,6 @@ public class MainActivity extends ActionBarActivity {
 
         Switch switchButton = (Switch)findViewById(R.id.start_switch);
 
-        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-
-        AlarmManagerWrapper alarmManagerWrapper = new AlarmManagerWrapper(alarmManager);
-        switchButton.setOnCheckedChangeListener(new StartSwitchListener(getApplicationContext(), alarmManagerWrapper));
+        switchButton.setOnCheckedChangeListener(new StartSwitchListener(getApplicationContext()));
     }
 }

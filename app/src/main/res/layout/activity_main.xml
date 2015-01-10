@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:weightSum="1">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,9 +36,13 @@
         android:id="@+id/frequency"/>
     <Switch
         android:id="@+id/start_switch"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOff="@string/updates_being_sent"
-        android:textOn="Updates not being sent"/>
+        android:textOn="@string/updates_being_sent"
+        android:textOff="@string/updates_not_being_sent"
+        android:enabled="true"
+        android:checked="false"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>
 

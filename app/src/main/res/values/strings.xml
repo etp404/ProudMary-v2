@@ -6,7 +6,7 @@
 
     <string name="frequency_text_view">Frequency (minutes)</string>
     <string name="destination_label">Destination</string>
-    <string name="updates_being_sent">Updates being sent</string>
-    <string name="updates_not_being_sent">Updates not being sent</string>
+    <string name="updates_being_sent">On</string>
+    <string name="updates_not_being_sent">Off</string>
 
 </resources>
