@@ -11,7 +11,7 @@ public class GoogleMapsLinkGeneratorTest {
         double latitude =  16.4;
         double longitude =  -2.2;
 
-        assertEquals("https://www.google.co.uk/maps/@16.4,-2.2", GoogleMapsLinkGenerator.generateLinkForLongLat(latitude, longitude));
+        assertEquals("https://www.google.co.uk/maps/@16.4,-2.2,10z", GoogleMapsLinkGenerator.generateLinkForLongLat(latitude, longitude));
     }
 
 }
