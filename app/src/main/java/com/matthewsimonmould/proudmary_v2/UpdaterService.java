@@ -58,6 +58,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
         }
 
         new Notifier(getApplicationContext()).notify(message);
+        SMSSender.sendSMS(message);
     }
 
     @Override
