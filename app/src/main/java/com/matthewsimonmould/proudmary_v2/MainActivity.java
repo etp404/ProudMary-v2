@@ -1,7 +1,5 @@
 package com.matthewsimonmould.proudmary_v2;
 
-import android.app.AlarmManager;
-import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.widget.Switch;

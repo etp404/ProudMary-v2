@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 
-import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Notifier {
     private Context context;
 
