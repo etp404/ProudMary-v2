@@ -2,9 +2,9 @@ package com.matthewsimonmould.proudmary_v2;
 
 public class GoogleMapsLinkGenerator {
 
-    private static String googleMapAPITemplate = "https://www.google.co.uk/maps/@%s,%s";
+    private static final String GOOGLE_MAP_API_TEMPLATE = "https://www.google.co.uk/maps/@%s,%s";
 
-    public static String generateLinkForLongLat(String longitude, String latitude) {
-        return String.format(googleMapAPITemplate, longitude, latitude);
+    public static String generateLinkForLongLat(double latitude, double longitude) {
+        return String.format(GOOGLE_MAP_API_TEMPLATE, latitude, longitude);
     }
 }

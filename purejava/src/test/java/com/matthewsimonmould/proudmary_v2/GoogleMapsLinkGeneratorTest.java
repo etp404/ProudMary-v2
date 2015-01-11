@@ -8,10 +8,10 @@ public class GoogleMapsLinkGeneratorTest {
     @Test
     public void testThatLinkIsGeneratorAsExpected() {
 
-        String longitude =  "53.4290463";
-        String latitude =  "-2.2407765";
+        double latitude =  16.4;
+        double longitude =  -2.2;
 
-        assertEquals("https://www.google.co.uk/maps/@53.4290463,-2.2407765", GoogleMapsLinkGenerator.generateLinkForLongLat(longitude, latitude));
+        assertEquals("https://www.google.co.uk/maps/@16.4,-2.2", GoogleMapsLinkGenerator.generateLinkForLongLat(latitude, longitude));
     }
 
 }

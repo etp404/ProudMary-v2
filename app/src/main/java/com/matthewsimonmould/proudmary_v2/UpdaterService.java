@@ -50,11 +50,11 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
     }
 
     private void sendUpdate(Location lastLocation) {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String message = dateFormat.format(new Date()); //TODO: Create right text
         if (lastLocation != null) {
-            message += ". Latitude:" + String.valueOf(lastLocation.getLatitude());
-            message += ". Longitude:" + String.valueOf(lastLocation.getLongitude());
+
+            message += ". " + GoogleMapsLinkGenerator.generateLinkForLongLat(lastLocation.getLatitude(), lastLocation.getLongitude());
         }
 
         new Notifier(getApplicationContext()).notify(message);
