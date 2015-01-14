@@ -32,7 +32,12 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient.isConnected()) {
+            sendUpdate();
+        }
+        else {
+            mGoogleApiClient.connect();
+        }
         return 0;
     }
 
@@ -44,12 +49,12 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 
     @Override
     public void onConnected(Bundle bundle) {
-        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        sendUpdate(lastLocation);
+        sendUpdate();
     }
 
-    private void sendUpdate(Location lastLocation) {
+    private void sendUpdate() {
+        Location lastLocation =
+                LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String message = dateFormat.format(new Date()); //TODO: Create right text
         if (lastLocation != null) {
@@ -63,7 +68,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d("PROUD_MARY", "UpdaterService.onConnectionSuspended"); //TODO: handle this.
     }
 
     @Override

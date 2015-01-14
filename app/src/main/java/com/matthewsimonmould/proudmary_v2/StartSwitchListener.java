@@ -10,21 +10,27 @@ import java.util.concurrent.TimeUnit;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
-    private Context context;
+	private final StoredUpdateSetting storedUpdateSetting;
+	private Context context;
 
-    public StartSwitchListener(Context context) {
+    public StartSwitchListener(Context context, StoredUpdateSetting storedUpdateSetting) {
         this.context = context;
+		this.storedUpdateSetting = storedUpdateSetting;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Intent intent = new Intent(context, SendUpdateBroadcastReceiver.class);
+		Intent intent = new Intent(context, SendUpdateBroadcastReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         if (isChecked) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, TimeUnit.SECONDS.toMillis(10), PendingIntent.getBroadcast(context, 0, intent, 0));
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, TimeUnit.SECONDS.toMillis(30), pendingIntent);
+			storedUpdateSetting.setUpdatesActive(true);
         }
         else {
-            alarmManager.cancel(PendingIntent.getBroadcast(context, 0, intent, 0));
-        }
+            alarmManager.cancel(pendingIntent);
+			storedUpdateSetting.setUpdatesActive(false);
+		}
     }
 }
