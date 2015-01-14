@@ -19,10 +19,12 @@ import java.util.Date;
 
 public class UpdaterService extends Service implements ConnectionCallbacks, OnConnectionFailedListener {
 
+	private String debugTag;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
     public void onCreate() {
+		debugTag = getClass().getSimpleName();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -49,7 +51,8 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 
     @Override
     public void onConnected(Bundle bundle) {
-        sendUpdate();
+		Log.d(debugTag, "onConnected");
+		sendUpdate();
     }
 
     private void sendUpdate() {
@@ -68,11 +71,11 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d("PROUD_MARY", "UpdaterService.onConnectionSuspended"); //TODO: handle this.
+        Log.d(debugTag, "UpdaterService.onConnectionSuspended"); //TODO: handle this.
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d("PROUD_MARY", "UpdaterService.onConnectionFailed"); //TODO: handle this.
+        Log.d(debugTag, "UpdaterService.onConnectionFailed"); //TODO: handle this.
     }
 }
