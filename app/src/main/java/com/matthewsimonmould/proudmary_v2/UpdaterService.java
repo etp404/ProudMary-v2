@@ -13,10 +13,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class UpdaterService extends Service implements ConnectionCallbacks, OnConnectionFailedListener {
 
 	private String debugTag;
@@ -58,15 +54,11 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
     private void sendUpdate() {
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        String message = dateFormat.format(new Date()); //TODO: Create right text
         if (lastLocation != null) {
-
-            message += ". " + GoogleMapsLinkGenerator.generateLinkForLongLat(lastLocation.getLatitude(), lastLocation.getLongitude());
-        }
-
-        new Notifier(getApplicationContext()).notify(message);
-        SMSSender.sendSMS(message);
+			String message = MessageGenerator.generateMessage(lastLocation);
+			SMSSender.sendSMS(message);
+		}
+		new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
     }
 
     @Override
