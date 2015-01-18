@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.CompoundButton;
 
+import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
+
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
 	private final Context context;

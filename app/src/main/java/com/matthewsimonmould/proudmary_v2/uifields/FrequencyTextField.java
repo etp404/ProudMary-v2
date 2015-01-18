@@ -1,6 +1,8 @@
-package com.matthewsimonmould.proudmary_v2;
+package com.matthewsimonmould.proudmary_v2.uifields;
 
 import android.widget.EditText;
+
+import com.matthewsimonmould.proudmary_v2.StoredUpdateSetting;
 
 import java.util.concurrent.TimeUnit;
 

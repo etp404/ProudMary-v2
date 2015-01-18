@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
+
 
 public class MainActivity extends ActionBarActivity {
 
