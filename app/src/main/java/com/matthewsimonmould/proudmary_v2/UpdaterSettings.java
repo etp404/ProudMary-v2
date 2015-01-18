@@ -2,13 +2,15 @@ package com.matthewsimonmould.proudmary_v2;
 
 import android.content.SharedPreferences;
 
-public class UpdatePeriodInMinutesSetting {
+public class UpdaterSettings {
 
 	public static final String UPDATES_PERIOD_PREFERENCES = "updates_period_preferences";
-	private static final String UPDATE_PERIOD_IN_MINUTES = "updatePeriodInMinutes";
+	private static final String UPDATE_PERIOD_IN_MINUTES = "update_period_in_minutes";
+	private static final String UPDATE_RECIPIENT = "update_recipient";
+
 	private final SharedPreferences sharedPreferences;
 
-	public UpdatePeriodInMinutesSetting(SharedPreferences sharedPreferences) {
+	public UpdaterSettings(SharedPreferences sharedPreferences) {
 		this.sharedPreferences = sharedPreferences;
 	}
 
@@ -25,5 +27,15 @@ public class UpdatePeriodInMinutesSetting {
 	public void deleteRecord() {
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.remove(UPDATE_PERIOD_IN_MINUTES);
+	}
+
+	public void setRecipient(String recipient) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString(UPDATE_RECIPIENT, recipient);
+		editor.apply();
+	}
+
+	public String getRecipient() {
+		return sharedPreferences.getString(UPDATE_RECIPIENT, "");
 	}
 }

@@ -7,19 +7,26 @@ import android.content.Intent;
 import android.widget.CompoundButton;
 
 import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
+import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
 	private final Context context;
 	private final StoredUpdateSetting storedUpdateSetting;
-	private final UpdatePeriodInMinutesSetting updatePeriodInMinutesSetting;
+	private final UpdaterSettings updaterSettings;
 	private final FrequencyTextField frequency;
+	private final RecipientTextField recipientTextField;
 
-    public StartSwitchListener(Context context, StoredUpdateSetting storedUpdateSetting, UpdatePeriodInMinutesSetting updatePeriodInMinutesSetting, FrequencyTextField frequency) {
+	public StartSwitchListener(Context context,
+							   StoredUpdateSetting storedUpdateSetting,
+							   UpdaterSettings updaterSettings,
+							   FrequencyTextField frequency,
+							   RecipientTextField recipientTextField) {
         this.context = context;
 		this.storedUpdateSetting = storedUpdateSetting;
-		this.updatePeriodInMinutesSetting = updatePeriodInMinutesSetting;
+		this.updaterSettings = updaterSettings;
 		this.frequency = frequency;
+		this.recipientTextField = recipientTextField;
     }
 
     @Override
@@ -32,14 +39,16 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         if (isChecked) {
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, frequency.getUpdateInMillis(), pendingIntent);
-			updatePeriodInMinutesSetting.setUpdatePeriodInMinutes(frequency.getUpdateInMinutes());
+			updaterSettings.setUpdatePeriodInMinutes(frequency.getUpdateInMinutes());
+			updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
 			storedUpdateSetting.setUpdatesActive(true);
         }
         else {
             alarmManager.cancel(pendingIntent);
-			updatePeriodInMinutesSetting.deleteRecord();
+			updaterSettings.deleteRecord();
 			storedUpdateSetting.setUpdatesActive(false);
 		}
 		frequency.setEnabledOrDisabledAccordingToUpdateStatus();
+		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
     }
 }
