@@ -19,8 +19,7 @@ public class MainActivity extends ActionBarActivity {
 
 		SharedPreferences updatesActiveSharedPreferences = getApplicationContext().getSharedPreferences(StoredUpdateSetting.UPDATES_ACTIVE_PREFERENCES, 0);
 		StoredUpdateSetting storedUpdateSetting = new StoredUpdateSetting(updatesActiveSharedPreferences);
-		SharedPreferences updatePeriodSharedPreferences = getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATES_PERIOD_PREFERENCES, 0);
-		UpdaterSettings updaterSettings = new UpdaterSettings(updatePeriodSharedPreferences);
+		UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
 
         Switch switchButton = (Switch)findViewById(R.id.start_switch);
 		switchButton.setChecked(storedUpdateSetting.isUpdatesActive());

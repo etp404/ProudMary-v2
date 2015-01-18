@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 public class UpdaterSettings {
 
-	public static final String UPDATES_PERIOD_PREFERENCES = "updates_period_preferences";
+	public static final String UPDATER_SETTINGS = "updates_period_preferences";
 	private static final String UPDATE_PERIOD_IN_MINUTES = "update_period_in_minutes";
 	private static final String UPDATE_RECIPIENT = "update_recipient";
 

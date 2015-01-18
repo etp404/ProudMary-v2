@@ -52,11 +52,13 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
     }
 
     private void sendUpdate() {
+		UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
+
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastLocation != null) {
 			String message = MessageGenerator.generateMessage(lastLocation);
-			SMSSender.sendSMS(message);
+			SMSSender.sendSMS(updaterSettings.getRecipient(), message);
 		}
 		new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
     }
