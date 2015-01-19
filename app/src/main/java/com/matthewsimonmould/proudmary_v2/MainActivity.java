@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.matthewsimonmould.proudmary_v2.uifields.DestinationTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
 
@@ -32,7 +33,11 @@ public class MainActivity extends ActionBarActivity {
 		recipientTextField.setTextField(updaterSettings.getRecipient());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
-		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), storedUpdateSetting, updaterSettings, frequencyTextField, recipientTextField);
+		DestinationTextField destinationTextField = new DestinationTextField((EditText)findViewById(R.id.destination), storedUpdateSetting);
+		destinationTextField.setTextField(updaterSettings.getDestination());
+		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+
+		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), storedUpdateSetting, updaterSettings, destinationTextField, frequencyTextField, recipientTextField);
 		switchButton.setOnCheckedChangeListener(startSwitchListener);
     }
 }

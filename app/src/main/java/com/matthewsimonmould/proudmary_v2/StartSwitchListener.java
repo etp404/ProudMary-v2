@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.CompoundButton;
 
+import com.matthewsimonmould.proudmary_v2.uifields.DestinationTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
 
@@ -14,18 +15,21 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private final Context context;
 	private final StoredUpdateSetting storedUpdateSetting;
 	private final UpdaterSettings updaterSettings;
-	private final FrequencyTextField frequency;
+	private final FrequencyTextField frequencyTextField;
 	private final RecipientTextField recipientTextField;
+	private final DestinationTextField destinationTextField;
 
 	public StartSwitchListener(Context context,
 							   StoredUpdateSetting storedUpdateSetting,
 							   UpdaterSettings updaterSettings,
-							   FrequencyTextField frequency,
+							   DestinationTextField destinationTextField,
+							   FrequencyTextField frequencyTextField,
 							   RecipientTextField recipientTextField) {
         this.context = context;
 		this.storedUpdateSetting = storedUpdateSetting;
 		this.updaterSettings = updaterSettings;
-		this.frequency = frequency;
+		this.frequencyTextField = frequencyTextField;
+		this.destinationTextField = destinationTextField;
 		this.recipientTextField = recipientTextField;
     }
 
@@ -38,17 +42,18 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         if (isChecked) {
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, frequency.getUpdateInMillis(), pendingIntent);
-			updaterSettings.setUpdatePeriodInMinutes(frequency.getUpdateInMinutes());
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, frequencyTextField.getUpdateInMillis(), pendingIntent);
+			updaterSettings.setUpdatePeriodInMinutes(frequencyTextField.getUpdateInMinutes());
 			updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
+			updaterSettings.setDestination(destinationTextField.getDestination());
 			storedUpdateSetting.setUpdatesActive(true);
         }
         else {
             alarmManager.cancel(pendingIntent);
-			updaterSettings.deleteRecord();
 			storedUpdateSetting.setUpdatesActive(false);
 		}
-		frequency.setEnabledOrDisabledAccordingToUpdateStatus();
+		frequencyTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
     }
 }
