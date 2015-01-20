@@ -57,7 +57,14 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastLocation != null) {
-			String message = MessageGenerator.generateMessage(lastLocation);
+			GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
+			String estimatedDuration = "HOLDER";
+//					googleMapsDurationGetter.getEstimatedJourneyTime(
+//					String.valueOf(lastLocation.getLatitude()),
+//					String.valueOf(lastLocation.getLongitude()),
+//					updaterSettings.getDestination());
+
+			String message = MessageGenerator.generateMessage(lastLocation, estimatedDuration);
 			SMSSender.sendSMS(updaterSettings.getRecipient(), message);
 		}
 		new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));

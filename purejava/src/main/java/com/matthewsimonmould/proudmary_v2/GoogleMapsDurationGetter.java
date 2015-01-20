@@ -15,7 +15,7 @@ public class GoogleMapsDurationGetter {
 
 	public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination) {
 
-		URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLong, currentLat, destination);
+		URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLat, currentLong, destination);
 		try {
 			JSONObject json = new JSONObject(urlAccessor.getResponse(url)); //TODO: should handle null pointers here.
 			return json.getJSONArray("routes")

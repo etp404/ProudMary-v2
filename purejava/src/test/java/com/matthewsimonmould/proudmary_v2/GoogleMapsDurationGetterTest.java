@@ -22,7 +22,7 @@ public class GoogleMapsDurationGetterTest {
 
 		FakeUrlAccessor fakeUrlAccessor = new FakeUrlAccessor(url.toURL(), duration);
 		GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(fakeUrlAccessor);
-		String returnedJourneyEta = googleMapsDurationGetter.getEstimatedJourneyTime(originLat, originLong, "Birmingham");
+		String returnedJourneyEta = googleMapsDurationGetter.getEstimatedJourneyTime(originLat, originLong, destination);
 		assertEquals(duration, returnedJourneyEta);
 
 	}
