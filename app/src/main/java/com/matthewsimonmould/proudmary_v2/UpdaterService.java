@@ -3,6 +3,7 @@ package com.matthewsimonmould.proudmary_v2;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -52,23 +53,32 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
     }
 
     private void sendUpdate() {
-		UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
+		AsyncTask<Void, Void, Void> ayncUpdateTask = new AsyncTask<Void, Void, Void>() {
 
-        Location lastLocation =
-                LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (lastLocation != null) {
-			GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
-			String estimatedDuration = "HOLDER";
-//					googleMapsDurationGetter.getEstimatedJourneyTime(
-//					String.valueOf(lastLocation.getLatitude()),
-//					String.valueOf(lastLocation.getLongitude()),
-//					updaterSettings.getDestination());
+			@Override
+			protected Void doInBackground(Void... params) {
+				UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
+				Location lastLocation =
+						LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+				if (lastLocation != null) {
+					GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
+					String estimatedDuration =
+							googleMapsDurationGetter.getEstimatedJourneyTime(
+									String.valueOf(lastLocation.getLatitude()),
+									String.valueOf(lastLocation.getLongitude()),
+									updaterSettings.getDestination());
 
-			String message = MessageGenerator.generateMessage(lastLocation, estimatedDuration);
-			SMSSender.sendSMS(updaterSettings.getRecipient(), message);
-		}
-		new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
-    }
+					String message = MessageGenerator.generateMessage(lastLocation, estimatedDuration);
+					SMSSender.sendSMS(updaterSettings.getRecipient(), message);
+				}
+				new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
+				return null;
+			}
+		};
+		ayncUpdateTask.execute();
+	}
+
+
 
     @Override
     public void onConnectionSuspended(int i) {

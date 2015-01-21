@@ -24,10 +24,6 @@
         <service android:name=".UpdaterService"/>
 
         <receiver android:name="SendUpdateBroadcastReceiver">
-            <intent-filter>
-                <action android:name="com.matthewsimonmould.proudmary_v2.robolectric.START_PRESSED">
-                </action>
-            </intent-filter>
         </receiver>
 
     </application>
