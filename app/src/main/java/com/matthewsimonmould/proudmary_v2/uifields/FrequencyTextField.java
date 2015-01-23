@@ -25,10 +25,5 @@ public class FrequencyTextField {
 
 	public void setTextField(String updatePeriodInMinutes) {
 		editableField.setText(updatePeriodInMinutes);
-
-	}
-
-	public long getUpdateInMillis() {
-		return TimeUnit.MINUTES.toMillis(getUpdateInMinutes());
 	}
 }

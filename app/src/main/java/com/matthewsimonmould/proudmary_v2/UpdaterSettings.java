@@ -2,6 +2,8 @@ package com.matthewsimonmould.proudmary_v2;
 
 import android.content.SharedPreferences;
 
+import java.util.concurrent.TimeUnit;
+
 public class UpdaterSettings {
 
 	public static final String UPDATER_SETTINGS = "updates_period_preferences";
@@ -43,5 +45,9 @@ public class UpdaterSettings {
 
 	public String getRecipient() {
 		return sharedPreferences.getString(UPDATE_RECIPIENT, "");
+	}
+
+	public long getUpdatePeriodInMillis() {
+		return TimeUnit.MINUTES.toMillis(getUpdatePeriodInMinutes());
 	}
 }

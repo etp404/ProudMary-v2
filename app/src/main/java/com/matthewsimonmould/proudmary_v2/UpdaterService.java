@@ -1,6 +1,9 @@
 package com.matthewsimonmould.proudmary_v2;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -13,6 +16,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+
+import java.util.Date;
 
 public class UpdaterService extends Service implements ConnectionCallbacks, OnConnectionFailedListener {
 
@@ -69,9 +74,18 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 									updaterSettings.getDestination());
 
 					String message = MessageGenerator.generateMessage(lastLocation, estimatedDuration);
-					SMSSender.sendSMS(updaterSettings.getRecipient(), message);
+					//SMSSender.sendSMS(updaterSettings.getRecipient(), message);
 				}
 				new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
+
+				Intent intent = new Intent(getApplicationContext(), SendUpdateBroadcastReceiver.class);
+				PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+				AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+				alarmManager.cancel(pendingIntent);
+
+				alarmManager.set(AlarmManager.RTC_WAKEUP, new Date().getTime() + updaterSettings.getUpdatePeriodInMillis(), pendingIntent);
+
 				return null;
 			}
 		};

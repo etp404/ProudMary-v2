@@ -37,19 +37,21 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		//TODO: validate form
 
-		Intent intent = new Intent(context, SendUpdateBroadcastReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		Intent updateServiceIntent = new Intent(context, UpdaterService.class);
+
         if (isChecked) {
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, frequencyTextField.getUpdateInMillis(), pendingIntent);
+			context.startService(updateServiceIntent);
 			updaterSettings.setUpdatePeriodInMinutes(frequencyTextField.getUpdateInMinutes());
 			updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
 			updaterSettings.setDestination(destinationTextField.getDestination());
 			storedUpdateSetting.setUpdatesActive(true);
         }
         else {
-            alarmManager.cancel(pendingIntent);
+			Intent broadcastReceiverIntent = new Intent(context, SendUpdateBroadcastReceiver.class);
+			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastReceiverIntent, 0);
+			AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+			alarmManager.cancel(pendingIntent);
 			storedUpdateSetting.setUpdatesActive(false);
 		}
 		frequencyTextField.setEnabledOrDisabledAccordingToUpdateStatus();
