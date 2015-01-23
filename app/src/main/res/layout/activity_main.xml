@@ -45,6 +45,13 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/frequency_text_view"
         android:id="@+id/frequencyTextView"/>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker"
+        android:layout_gravity="center_horizontal"/>
+
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

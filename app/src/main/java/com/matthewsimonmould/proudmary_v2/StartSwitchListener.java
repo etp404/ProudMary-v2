@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
 import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
 import com.matthewsimonmould.proudmary_v2.uifields.DestinationTextField;
-import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
+import com.matthewsimonmould.proudmary_v2.uifields.FrequencyNumberPicker;
 import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
@@ -17,7 +17,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private final Context context;
 	private final StoredUpdateSetting storedUpdateSetting;
 	private final UpdaterSettings updaterSettings;
-	private final FrequencyTextField frequencyTextField;
+	private final FrequencyNumberPicker frequencyNumberPicker;
 	private final RecipientTextField recipientTextField;
 	private final DestinationTextField destinationTextField;
 
@@ -25,12 +25,12 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 							   StoredUpdateSetting storedUpdateSetting,
 							   UpdaterSettings updaterSettings,
 							   DestinationTextField destinationTextField,
-							   FrequencyTextField frequencyTextField,
+							   FrequencyNumberPicker frequencyNumberPicker,
 							   RecipientTextField recipientTextField) {
         this.context = context;
 		this.storedUpdateSetting = storedUpdateSetting;
 		this.updaterSettings = updaterSettings;
-		this.frequencyTextField = frequencyTextField;
+		this.frequencyNumberPicker = frequencyNumberPicker;
 		this.destinationTextField = destinationTextField;
 		this.recipientTextField = recipientTextField;
     }
@@ -45,7 +45,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
         if (isChecked) {
 			if (validateForm()) {
 				context.startService(updateServiceIntent);
-				updaterSettings.setUpdatePeriodInMinutes(frequencyTextField.getUpdateInMinutes());
+				updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
 				updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
 				updaterSettings.setDestination(destinationTextField.getDestination());
 				storedUpdateSetting.setUpdatesActive(true);
@@ -61,7 +61,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 			alarmManager.cancel(pendingIntent);
 			storedUpdateSetting.setUpdatesActive(false);
 		}
-		frequencyTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
     }

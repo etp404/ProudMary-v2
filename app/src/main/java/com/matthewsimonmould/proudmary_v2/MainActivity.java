@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +15,17 @@ import android.widget.Switch;
 import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
 import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
 import com.matthewsimonmould.proudmary_v2.uifields.DestinationTextField;
-import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
+import com.matthewsimonmould.proudmary_v2.uifields.FrequencyNumberPicker;
 import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 	static final int PICK_CONTACT_REQUEST = 1001;
 	private RecipientTextField recipientTextField;
+	final List<String> incrementValues = new ArrayList<>();
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,9 @@ public class MainActivity extends ActionBarActivity {
         Switch switchButton = (Switch)findViewById(R.id.start_switch);
 		switchButton.setChecked(storedUpdateSetting.isUpdatesActive());
 
-		FrequencyTextField frequencyTextField = new FrequencyTextField((EditText)findViewById(R.id.frequency), storedUpdateSetting);
-		frequencyTextField.setTextField(updaterSettings.getUpdatePeriodInMinutes());
-		frequencyTextField.setEnabledOrDisabledAccordingToUpdateStatus(); //TODO: set this to picker.
+		FrequencyNumberPicker frequencyNumberPicker = new FrequencyNumberPicker((android.widget.NumberPicker) findViewById(R.id.numberPicker), storedUpdateSetting);
+		frequencyNumberPicker.setSelectedFrequency(updaterSettings.getUpdatePeriodInMinutes());
+		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus(); //TODO: set this to picker.
 
 		recipientTextField = new RecipientTextField((EditText)findViewById(R.id.recipientNumber), storedUpdateSetting);
 		recipientTextField.setTextField(updaterSettings.getRecipient());
@@ -59,9 +61,9 @@ public class MainActivity extends ActionBarActivity {
 		destinationTextField.setTextField(updaterSettings.getDestination());
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
-		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), storedUpdateSetting, updaterSettings, destinationTextField, frequencyTextField, recipientTextField);
+		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), storedUpdateSetting, updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField);
 		switchButton.setOnCheckedChangeListener(startSwitchListener);
-    }
+	}
 
 	protected void onActivityResult(int requestCode, int resultCode,
 									Intent data) {

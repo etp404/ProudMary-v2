@@ -23,8 +23,8 @@ public class UpdaterSettings {
 		editor.apply();
 	}
 
-	public String getUpdatePeriodInMinutes() {
-		return sharedPreferences.getString(UPDATE_PERIOD_IN_MINUTES, "");
+	public Integer getUpdatePeriodInMinutes() {
+		return sharedPreferences.getInt(UPDATE_PERIOD_IN_MINUTES, 30);
 	}
 
 	public void setDestination(String destination) {
@@ -48,6 +48,6 @@ public class UpdaterSettings {
 	}
 
 	public Long getUpdatePeriodInMillis() {
-		return TimeUnit.MINUTES.toMillis(Integer.parseInt(getUpdatePeriodInMinutes()));
+		return TimeUnit.MINUTES.toMillis(getUpdatePeriodInMinutes());
 	}
 }
