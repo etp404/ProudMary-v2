@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.CompoundButton;
 
+import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
+import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
 import com.matthewsimonmould.proudmary_v2.uifields.DestinationTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;

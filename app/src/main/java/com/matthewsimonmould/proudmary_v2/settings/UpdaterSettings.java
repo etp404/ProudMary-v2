@@ -1,4 +1,4 @@
-package com.matthewsimonmould.proudmary_v2;
+package com.matthewsimonmould.proudmary_v2.settings;
 
 import android.content.SharedPreferences;
 
@@ -23,8 +23,8 @@ public class UpdaterSettings {
 		editor.apply();
 	}
 
-	public int getUpdatePeriodInMinutes() {
-		return sharedPreferences.getInt(UPDATE_PERIOD_IN_MINUTES, 1);
+	public String getUpdatePeriodInMinutes() {
+		return sharedPreferences.getString(UPDATE_PERIOD_IN_MINUTES, "");
 	}
 
 	public void setDestination(String destination) {
@@ -47,7 +47,7 @@ public class UpdaterSettings {
 		return sharedPreferences.getString(UPDATE_RECIPIENT, "");
 	}
 
-	public long getUpdatePeriodInMillis() {
-		return TimeUnit.MINUTES.toMillis(getUpdatePeriodInMinutes());
+	public Long getUpdatePeriodInMillis() {
+		return TimeUnit.MINUTES.toMillis(Integer.parseInt(getUpdatePeriodInMinutes()));
 	}
 }

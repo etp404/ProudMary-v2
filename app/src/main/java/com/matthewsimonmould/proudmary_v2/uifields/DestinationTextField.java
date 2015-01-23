@@ -2,7 +2,7 @@ package com.matthewsimonmould.proudmary_v2.uifields;
 
 import android.widget.EditText;
 
-import com.matthewsimonmould.proudmary_v2.StoredUpdateSetting;
+import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
 
 public class DestinationTextField {
 	private final EditText editableField;

@@ -1,4 +1,4 @@
-package com.matthewsimonmould.proudmary_v2;
+package com.matthewsimonmould.proudmary_v2.settings;
 
 import android.content.SharedPreferences;
 

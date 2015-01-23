@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
+import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
 import com.matthewsimonmould.proudmary_v2.uifields.DestinationTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.FrequencyTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
@@ -26,8 +28,8 @@ public class MainActivity extends ActionBarActivity {
 		switchButton.setChecked(storedUpdateSetting.isUpdatesActive());
 
 		FrequencyTextField frequencyTextField = new FrequencyTextField((EditText)findViewById(R.id.frequency), storedUpdateSetting);
-		frequencyTextField.setTextField(String.valueOf(updaterSettings.getUpdatePeriodInMinutes()));
-		frequencyTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+		frequencyTextField.setTextField(updaterSettings.getUpdatePeriodInMinutes());
+		frequencyTextField.setEnabledOrDisabledAccordingToUpdateStatus(); //TODO: set this to picker.
 
 		RecipientTextField recipientTextField = new RecipientTextField((EditText)findViewById(R.id.recipientNumber), storedUpdateSetting);
 		recipientTextField.setTextField(updaterSettings.getRecipient());
