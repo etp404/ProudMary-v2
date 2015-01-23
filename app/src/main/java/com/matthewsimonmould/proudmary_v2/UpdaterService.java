@@ -58,7 +58,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
     }
 
     private void sendUpdate() {
-		AsyncTask<Void, Void, Void> ayncUpdateTask = new AsyncTask<Void, Void, Void>() {
+		AsyncTask<Void, Void, Void> asyncUpdateTask = new AsyncTask<Void, Void, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -89,7 +89,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 				return null;
 			}
 		};
-		ayncUpdateTask.execute();
+		asyncUpdateTask.execute();
 	}
 
 
