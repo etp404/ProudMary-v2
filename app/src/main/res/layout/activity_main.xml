@@ -20,6 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/recipientNumber"
+            android:inputType="phone"
             android:layout_weight="1"/>
         <Button
             android:id="@+id/button_contact_picker"
@@ -27,8 +28,6 @@
             android:layout_height="wrap_content"
             android:text="Browse"/>
     </LinearLayout>
-
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,6 +58,5 @@
         android:enabled="true"
         android:checked="false"
         android:layout_gravity="center_horizontal" />
-
 </LinearLayout>
 
