@@ -43,11 +43,16 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		Intent updateServiceIntent = new Intent(context, UpdaterService.class);
 
         if (isChecked) {
-			context.startService(updateServiceIntent);
-			updaterSettings.setUpdatePeriodInMinutes(frequencyTextField.getUpdateInMinutes());
-			updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
-			updaterSettings.setDestination(destinationTextField.getDestination());
-			storedUpdateSetting.setUpdatesActive(true);
+			if (validateForm()) {
+				context.startService(updateServiceIntent);
+				updaterSettings.setUpdatePeriodInMinutes(frequencyTextField.getUpdateInMinutes());
+				updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
+				updaterSettings.setDestination(destinationTextField.getDestination());
+				storedUpdateSetting.setUpdatesActive(true);
+			}
+			else {
+				buttonView.setChecked(false);
+			}
         }
         else {
 			Intent broadcastReceiverIntent = new Intent(context, SendUpdateBroadcastReceiver.class);
@@ -60,4 +65,12 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
     }
+
+	private boolean validateForm() {
+		if (!PhoneNumberValidator.isValidPhoneNumber(recipientTextField.getRecipientNumber())) {
+			recipientTextField.highlightError();
+			return false;
+		}
+		return true;
+	}
 }

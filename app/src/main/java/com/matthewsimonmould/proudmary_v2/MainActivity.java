@@ -22,7 +22,7 @@ import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
 
 
 public class MainActivity extends ActionBarActivity {
-	static final int PICK_CONTACT_REQUEST = 0;
+	static final int PICK_CONTACT_REQUEST = 1001;
 	private RecipientTextField recipientTextField;
 
 	@Override

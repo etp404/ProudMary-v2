@@ -25,4 +25,8 @@ public class RecipientTextField {
 		editableField.setText(recipient);
 
 	}
+
+	public void highlightError() {
+		editableField.setError("Invalid number"); //TODO: extract this.
+	}
 }
