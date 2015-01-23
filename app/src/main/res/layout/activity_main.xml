@@ -14,18 +14,18 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        android:layout_alignParentBottom="true">
+
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/recipientNumber"
             android:layout_weight="1"/>
         <Button
+            android:id="@+id/button_contact_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Browse"
-            android:id="@+id/button_contact_picker"
-            android:layout_gravity="right"
-            style="?android:attr/buttonStyleSmall"/>
+            android:text="Browse"/>
     </LinearLayout>
 
 
