@@ -74,7 +74,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 									updaterSettings.getDestination());
 
 					String message = MessageGenerator.generateMessage(lastLocation, estimatedDuration);
-					//SMSSender.sendSMS(updaterSettings.getRecipient(), message);
+					SMSSender.sendSMS(updaterSettings.getRecipient(), message);
 				}
 				new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
 
