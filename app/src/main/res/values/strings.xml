@@ -9,5 +9,7 @@
     <string name="updates_being_sent">On</string>
     <string name="updates_not_being_sent">Off</string>
     <string name="update_sent_notification">An update has been sent.</string>
+    <string name="update_every">Update every</string>
+    <string name="minutes">minutes</string>
 
 </resources>
