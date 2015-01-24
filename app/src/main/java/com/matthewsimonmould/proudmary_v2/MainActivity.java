@@ -8,8 +8,8 @@ import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 
 import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
 		recipientTextField.setTextField(updaterSettings.getRecipient());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
-		Button contactPickerButton = (Button)findViewById(R.id.button_contact_picker);
+		ImageButton contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
 		contactPickerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

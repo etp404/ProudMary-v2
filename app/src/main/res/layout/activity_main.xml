@@ -22,11 +22,12 @@
             android:id="@+id/recipientNumber"
             android:inputType="phone"
             android:layout_weight="1"/>
-        <Button
+        <ImageButton
             android:id="@+id/button_contact_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Browse"/>
+            android:src="@drawable/ic_action_user"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <TextView
