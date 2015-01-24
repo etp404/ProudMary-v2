@@ -2,16 +2,25 @@ package com.matthewsimonmould.proudmary_v2;
 
 import org.junit.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static org.junit.Assert.assertEquals;
 
 public class GoogleMapsLinkGeneratorTest {
     @Test
-    public void testThatLinkIsGeneratorAsExpected() {
+    public void testThatMapLinkIsGeneratorAsExpected() {
 
         double latitude =  16.4;
         double longitude =  -2.2;
 
         assertEquals("https://www.google.co.uk/maps/@16.4,-2.2,10z", GoogleMapsLinkGenerator.generateLinkForLongLat(latitude, longitude));
     }
+
+	@Test
+	public void testThatGeocodingLinkIsGeneratedCorrectly() throws MalformedURLException {
+		String place = "Birmingham";
+		assertEquals(new URL("https://maps.googleapis.com/maps/api/geocode/json?address="+place), GoogleMapsLinkGenerator.generateLinkForGeoCoding(place));
+	}
 
 }
