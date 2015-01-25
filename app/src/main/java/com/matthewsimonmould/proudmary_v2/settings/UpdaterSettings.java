@@ -8,6 +8,7 @@ public class UpdaterSettings {
 
 	public static final String UPDATER_SETTINGS = "updates_period_preferences";
 	private static final String TIME_FOR_NEXT_UPDATE_IN_MILLIS = "time_for_next_update_in_millis";
+	private static final String UPDATES_ACTIVE_SETTING = "updates_active_setting";
 	private static final String UPDATE_PERIOD_IN_MINUTES = "update_period_in_minutes";
 	private static final String UPDATE_DESTINATION = "update_destination";
 	private static final String UPDATE_RECIPIENT = "update_recipient";
@@ -60,5 +61,15 @@ public class UpdaterSettings {
 
 	public Long getUpdatePeriodInMillis() {
 		return TimeUnit.MINUTES.toMillis(getUpdatePeriodInMinutes());
+	}
+
+	public void setUpdatesActive(boolean updatesActive) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(UPDATES_ACTIVE_SETTING, updatesActive);
+		editor.apply();
+	}
+
+	public boolean isUpdatesActive() {
+		return sharedPreferences.getBoolean(UPDATES_ACTIVE_SETTING, false);
 	}
 }

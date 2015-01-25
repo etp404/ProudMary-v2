@@ -1,16 +1,16 @@
 package com.matthewsimonmould.proudmary_v2.uifields;
 
-import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
+import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FrequencyNumberPicker {
 	private final android.widget.NumberPicker numberPicker;
-	private final StoredUpdateSetting storedUpdateSetting;
+	private final UpdaterSettings updaterSettings;
 	private final List<String> incrementValues;
 
-	public FrequencyNumberPicker(android.widget.NumberPicker numberPicker, StoredUpdateSetting storedUpdateSetting) {
+	public FrequencyNumberPicker(android.widget.NumberPicker numberPicker, UpdaterSettings updaterSettings) {
 		incrementValues = new ArrayList<>();
 		for (int i = 5; i <= 60; i+=5)  {
 			incrementValues.add(String.valueOf(i));
@@ -19,7 +19,7 @@ public class FrequencyNumberPicker {
 		numberPicker.setDisplayedValues(incrementValues.toArray(new String[incrementValues.size()]));
 		numberPicker.setMinValue(0);
 		numberPicker.setMaxValue(incrementValues.size()-1);
-		this.storedUpdateSetting = storedUpdateSetting;
+		this.updaterSettings = updaterSettings;
 	}
 
 	public Integer getUpdateInMinutes() {
@@ -27,7 +27,7 @@ public class FrequencyNumberPicker {
 	}
 
 	public void setEnabledOrDisabledAccordingToUpdateStatus() {
-		numberPicker.setEnabled(!storedUpdateSetting.isUpdatesActive());
+		numberPicker.setEnabled(!updaterSettings.isUpdatesActive());
 	}
 
 	public void setSelectedFrequency(Integer updatePeriodInMinutes) {

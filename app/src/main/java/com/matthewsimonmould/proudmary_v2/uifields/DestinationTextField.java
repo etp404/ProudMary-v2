@@ -2,15 +2,15 @@ package com.matthewsimonmould.proudmary_v2.uifields;
 
 import android.widget.EditText;
 
-import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
+import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
 
 public class DestinationTextField {
 	private final EditText editableField;
-	private final StoredUpdateSetting storedUpdateSetting;
+	private final UpdaterSettings updaterSettings;
 
-	public DestinationTextField(EditText editableField, StoredUpdateSetting storedUpdateSetting) {
+	public DestinationTextField(EditText editableField, UpdaterSettings updaterSettings) {
 		this.editableField = editableField;
-		this.storedUpdateSetting = storedUpdateSetting;
+		this.updaterSettings = updaterSettings;
 	}
 
 	public void setTextField(String destination) {
@@ -18,7 +18,7 @@ public class DestinationTextField {
 	}
 
 	public void setEnabledOrDisabledAccordingToUpdateStatus() {
-		editableField.setEnabled(!storedUpdateSetting.isUpdatesActive());
+		editableField.setEnabled(!updaterSettings.isUpdatesActive());
 	}
 
 	public String getDestination() {

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
-import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
 import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
 import com.matthewsimonmould.proudmary_v2.uifields.DestinationTextField;
 import com.matthewsimonmould.proudmary_v2.uifields.FrequencyNumberPicker;
@@ -16,7 +15,6 @@ import com.matthewsimonmould.proudmary_v2.uifields.RecipientTextField;
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
 	private final Context context;
-	private final StoredUpdateSetting storedUpdateSetting;
 	private final UpdaterSettings updaterSettings;
 	private final FrequencyNumberPicker frequencyNumberPicker;
 	private final RecipientTextField recipientTextField;
@@ -24,14 +22,12 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private final ImageButton contactPickerButton;
 
 	public StartSwitchListener(Context context,
-							   StoredUpdateSetting storedUpdateSetting,
 							   UpdaterSettings updaterSettings,
 							   DestinationTextField destinationTextField,
 							   FrequencyNumberPicker frequencyNumberPicker,
 							   RecipientTextField recipientTextField,
 							   ImageButton contactPickerButton) {
         this.context = context;
-		this.storedUpdateSetting = storedUpdateSetting;
 		this.updaterSettings = updaterSettings;
 		this.frequencyNumberPicker = frequencyNumberPicker;
 		this.destinationTextField = destinationTextField;
@@ -50,7 +46,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 				updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
 				updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
 				updaterSettings.setDestination(destinationTextField.getDestination());
-				storedUpdateSetting.setUpdatesActive(true);
+				updaterSettings.setUpdatesActive(true);
 			}
 			else {
 				buttonView.setChecked(false);
@@ -61,13 +57,13 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastReceiverIntent, 0);
 			AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 			alarmManager.cancel(pendingIntent);
-			storedUpdateSetting.setUpdatesActive(false);
+			updaterSettings.setUpdatesActive(false);
 		}
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
-		contactPickerButton.setEnabled(!storedUpdateSetting.isUpdatesActive());
-		contactPickerButton.setImageAlpha(storedUpdateSetting.isUpdatesActive() ? 100: 255); //TODO: pull our contact picker into own class.
+		contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
+		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255); //TODO: pull the contact picker into own class.
     }
 
 	private boolean validateForm() {
