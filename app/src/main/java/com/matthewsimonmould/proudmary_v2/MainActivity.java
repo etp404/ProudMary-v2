@@ -41,17 +41,7 @@ public class MainActivity extends ActionBarActivity {
 
 		FrequencyNumberPicker frequencyNumberPicker = createFrequencyNumberPicker(storedUpdateSetting, updaterSettings);
 		setUpRecipientTextField(storedUpdateSetting, updaterSettings);
-		setUpContactPicker();
 
-		DestinationTextField destinationTextField = new DestinationTextField((EditText)findViewById(R.id.destination), storedUpdateSetting);
-		destinationTextField.setTextField(updaterSettings.getDestination());
-		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
-
-		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), storedUpdateSetting, updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField);
-		toggleButton.setOnCheckedChangeListener(startSwitchListener);
-	}
-
-	private void setUpContactPicker() {
 		ImageButton contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
 		contactPickerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -61,6 +51,15 @@ public class MainActivity extends ActionBarActivity {
 
 			}
 		});
+		contactPickerButton.setEnabled(!storedUpdateSetting.isUpdatesActive());
+		contactPickerButton.setImageAlpha(storedUpdateSetting.isUpdatesActive() ? 100: 255);
+
+		DestinationTextField destinationTextField = new DestinationTextField((EditText)findViewById(R.id.destination), storedUpdateSetting);
+		destinationTextField.setTextField(updaterSettings.getDestination());
+		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+
+		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), storedUpdateSetting, updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField, contactPickerButton);
+		toggleButton.setOnCheckedChangeListener(startSwitchListener);
 	}
 
 	private void setUpRecipientTextField(StoredUpdateSetting storedUpdateSetting, UpdaterSettings updaterSettings) {

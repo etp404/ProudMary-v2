@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 
 import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
 import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
@@ -20,26 +21,27 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private final FrequencyNumberPicker frequencyNumberPicker;
 	private final RecipientTextField recipientTextField;
 	private final DestinationTextField destinationTextField;
+	private final ImageButton contactPickerButton;
 
 	public StartSwitchListener(Context context,
 							   StoredUpdateSetting storedUpdateSetting,
 							   UpdaterSettings updaterSettings,
 							   DestinationTextField destinationTextField,
 							   FrequencyNumberPicker frequencyNumberPicker,
-							   RecipientTextField recipientTextField) {
+							   RecipientTextField recipientTextField,
+							   ImageButton contactPickerButton) {
         this.context = context;
 		this.storedUpdateSetting = storedUpdateSetting;
 		this.updaterSettings = updaterSettings;
 		this.frequencyNumberPicker = frequencyNumberPicker;
 		this.destinationTextField = destinationTextField;
 		this.recipientTextField = recipientTextField;
+		this.contactPickerButton = contactPickerButton;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		//TODO: validate form
-
-
 		Intent updateServiceIntent = new Intent(context, UpdaterService.class);
 
         if (isChecked) {
@@ -64,6 +66,8 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+		contactPickerButton.setEnabled(!storedUpdateSetting.isUpdatesActive());
+		contactPickerButton.setImageAlpha(storedUpdateSetting.isUpdatesActive() ? 100: 255);
     }
 
 	private boolean validateForm() {
