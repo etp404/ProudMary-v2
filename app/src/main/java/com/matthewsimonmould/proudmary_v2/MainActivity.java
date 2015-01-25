@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Switch;
+import android.widget.ToggleButton;
 
 import com.matthewsimonmould.proudmary_v2.settings.StoredUpdateSetting;
 import com.matthewsimonmould.proudmary_v2.settings.UpdaterSettings;
@@ -36,8 +36,8 @@ public class MainActivity extends ActionBarActivity {
 		StoredUpdateSetting storedUpdateSetting = new StoredUpdateSetting(updatesActiveSharedPreferences);
 		UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
 
-        Switch switchButton = (Switch)findViewById(R.id.start_switch);
-		switchButton.setChecked(storedUpdateSetting.isUpdatesActive());
+		ToggleButton toggleButton = (ToggleButton)findViewById(R.id.start_toggle);
+		toggleButton.setChecked(storedUpdateSetting.isUpdatesActive());
 
 		FrequencyNumberPicker frequencyNumberPicker = createFrequencyNumberPicker(storedUpdateSetting, updaterSettings);
 		setUpRecipientTextField(storedUpdateSetting, updaterSettings);
@@ -48,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), storedUpdateSetting, updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField);
-		switchButton.setOnCheckedChangeListener(startSwitchListener);
+		toggleButton.setOnCheckedChangeListener(startSwitchListener);
 	}
 
 	private void setUpContactPicker() {

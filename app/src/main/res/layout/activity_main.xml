@@ -41,30 +41,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/destination"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/update_every"
-            android:id="@+id/update_every"
-            android:layout_gravity="center_vertical"/>
-        <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/numberPicker"
-            android:layout_gravity="center_horizontal"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/minutes"
-            android:id="@+id/minutes"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
-    <Switch
-        android:id="@+id/start_switch"
+        android:text="@string/update_frequency"
+        android:id="@+id/update_every"
+        android:layout_gravity="center_horizontal"/>
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignStart="@+id/numberPicker"/>
+    <ToggleButton
+        android:id="@+id/start_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOn="@string/updates_being_sent"
