@@ -80,10 +80,10 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 
 					notifier.notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
 
-					scheduleNextUpdate(updaterSettings.getUpdatePeriodInMillis());
+					scheduleNextUpdate(updaterSettings.getUpdatePeriodInMillis(), updaterSettings);
 				} else {
 					notifier.notify(getApplicationContext().getResources().getString(R.string.update_could_not_be_sent));
-					scheduleNextUpdate(retryIfFailDelay);
+					scheduleNextUpdate(retryIfFailDelay, updaterSettings);
 				}
 				return null;
 			}
@@ -92,13 +92,16 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 		asyncUpdateTask.execute();
 	}
 
-	private void scheduleNextUpdate(Long delay) {
+	private void scheduleNextUpdate(Long delay, UpdaterSettings updaterSettings) {
 		Intent intent = new Intent(getApplicationContext(), SendUpdateBroadcastReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
 		AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);
 
-		alarmManager.set(AlarmManager.RTC_WAKEUP, new Date().getTime() + delay, pendingIntent);
+		long triggerAtMillis = new Date().getTime() + delay;
+		alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+
+		updaterSettings.setTimeForNextUpdateInMillis(triggerAtMillis);
 	}
 
 

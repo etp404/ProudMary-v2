@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 public class UpdaterSettings {
 
 	public static final String UPDATER_SETTINGS = "updates_period_preferences";
+	private static final String TIME_FOR_NEXT_UPDATE_IN_MILLIS = "time_for_next_update_in_millis";
 	private static final String UPDATE_PERIOD_IN_MINUTES = "update_period_in_minutes";
 	private static final String UPDATE_DESTINATION = "update_destination";
 	private static final String UPDATE_RECIPIENT = "update_recipient";
@@ -15,6 +16,16 @@ public class UpdaterSettings {
 
 	public UpdaterSettings(SharedPreferences sharedPreferences) {
 		this.sharedPreferences = sharedPreferences;
+	}
+
+	public void setTimeForNextUpdateInMillis(long timeForNextUpdateInMillis) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putLong(TIME_FOR_NEXT_UPDATE_IN_MILLIS, timeForNextUpdateInMillis);
+		editor.apply();
+	}
+
+	public long getTimeForNextUpdateInMillis() {
+		return sharedPreferences.getLong(TIME_FOR_NEXT_UPDATE_IN_MILLIS, 0);
 	}
 
 	public void setUpdatePeriodInMinutes(int updatePeriodInMinutes) {
