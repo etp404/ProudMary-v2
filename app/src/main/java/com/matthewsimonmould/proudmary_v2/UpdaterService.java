@@ -83,7 +83,6 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 					scheduleNextUpdate(updaterSettings.getUpdatePeriodInMillis());
 				} else {
 					notifier.notify(getApplicationContext().getResources().getString(R.string.update_could_not_be_sent));
-
 					scheduleNextUpdate(retryIfFailDelay);
 				}
 				return null;
