@@ -11,5 +11,6 @@
     <string name="update_sent_notification">An update has been sent.</string>
     <string name="update_every">Update every</string>
     <string name="minutes">minutes</string>
+    <string name="update_could_not_be_sent">Error: will retry in 5 minutes.</string>
 
 </resources>
