@@ -1,6 +1,4 @@
-package com.example;
-
-import com.matthewsimonmould.proudmary_v2.PhoneNumberValidator;
+package com.matthewsimonmould.proudmary_v2;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,8 @@
 package com.matthewsimonmould.proudmary_v2;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.matthewsimonmould.proudmary_v2.google.datamodel.NoDurationInResponseException;
+import com.matthewsimonmould.proudmary_v2.google.datamodel.ResponseBody;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,22 +14,17 @@ public class GoogleMapsDurationGetter {
 		this.urlAccessor = urlAccessor;
 	}
 
-	public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination) {
-
-		URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLat, currentLong, destination);
+	public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination) throws UnableToGetEstimatedJourneyTimeException {
 		try {
-			JSONObject json = new JSONObject(urlAccessor.getResponse(url)); //TODO: should handle null pointers here.
-			return json.getJSONArray("routes")
-					.getJSONObject(0)
-					.getJSONArray("legs")
-					.getJSONObject(0)
-					.getJSONObject("duration")
-					.get("text").toString();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
+			URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLat, currentLong, destination);
+			Gson gson = new Gson();
+			String responseBodyAsJsonString = urlAccessor.getResponse(url);
+			ResponseBody responseBody = gson.fromJson(responseBodyAsJsonString, ResponseBody.class);
+			return responseBody.getDurationText();
+		} catch (NoDurationInResponseException | IOException e) {
 			e.printStackTrace();
 		}
-		return null; //TODO: Handle this.
+
+		throw new UnableToGetEstimatedJourneyTimeException();
 	}
 }

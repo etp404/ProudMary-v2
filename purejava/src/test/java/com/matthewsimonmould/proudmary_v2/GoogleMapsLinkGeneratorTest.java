@@ -11,8 +11,8 @@ public class GoogleMapsLinkGeneratorTest {
     @Test
     public void testThatMapLinkIsGeneratorAsExpected() {
 
-        double latitude =  16.4;
-        double longitude =  -2.2;
+        String latitude =  "16.4";
+		String longitude =  "-2.2";
 
         assertEquals("https://www.google.co.uk/maps/@16.4,-2.2,10z", GoogleMapsLinkGenerator.generateLinkForLongLat(latitude, longitude));
     }

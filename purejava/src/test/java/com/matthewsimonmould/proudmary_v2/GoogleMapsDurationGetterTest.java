@@ -3,7 +3,6 @@ package com.matthewsimonmould.proudmary_v2;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,14 +12,14 @@ import static org.junit.Assert.assertEquals;
 public class GoogleMapsDurationGetterTest {
 
 	@Test
-	public void testThatCanGetDurationEstimateBetweenTwoLocations() throws MalformedURLException {
+	public void testThatCanGetDurationEstimateBetweenTwoLocations() throws UnableToGetEstimatedJourneyTimeException, MalformedURLException {
 		String duration = "2 hours and 30 minutes";
 		String originLat = "51";
 		String originLong = "-0.1";
 		String destination = "Birmingham";
-		URI url = URI.create(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s", originLat, originLong, destination));
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s", originLat, originLong, destination));
 
-		FakeUrlAccessor fakeUrlAccessor = new FakeUrlAccessor(url.toURL(), duration);
+		FakeUrlAccessor fakeUrlAccessor = new FakeUrlAccessor(url, duration);
 		GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(fakeUrlAccessor);
 		String returnedJourneyEta = googleMapsDurationGetter.getEstimatedJourneyTime(originLat, originLong, destination);
 		assertEquals(duration, returnedJourneyEta);

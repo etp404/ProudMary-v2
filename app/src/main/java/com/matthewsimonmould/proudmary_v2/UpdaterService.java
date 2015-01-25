@@ -64,19 +64,16 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 			@Override
 			protected Void doInBackground(Void... params) {
 				UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
-				Location lastLocation =
-						LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-				if (lastLocation != null) {
-					GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
-					String estimatedDuration =
-							googleMapsDurationGetter.getEstimatedJourneyTime(
-									String.valueOf(lastLocation.getLatitude()),
-									String.valueOf(lastLocation.getLongitude()),
-									updaterSettings.getDestination());
+				Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-					String message = MessageGenerator.generateMessage(lastLocation, estimatedDuration);
-					SMSSender.sendSMS(updaterSettings.getRecipient(), message);
-				}
+				//TODO: validate last location.
+				GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
+				MessageGenerator messageGenerator = new MessageGenerator(googleMapsDurationGetter);
+				String message = messageGenerator.generateMessage(
+						String.valueOf(lastLocation.getLatitude()),
+						String.valueOf(lastLocation.getLongitude()),
+						updaterSettings.getDestination());
+				SMSSender.sendSMS(updaterSettings.getRecipient(), message);
 				new Notifier(getApplicationContext()).notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
 
 				Intent intent = new Intent(getApplicationContext(), SendUpdateBroadcastReceiver.class);
