@@ -67,7 +67,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		contactPickerButton.setEnabled(!storedUpdateSetting.isUpdatesActive());
-		contactPickerButton.setImageAlpha(storedUpdateSetting.isUpdatesActive() ? 100: 255);
+		contactPickerButton.setImageAlpha(storedUpdateSetting.isUpdatesActive() ? 100: 255); //TODO: pull our contact picker into own class.
     }
 
 	private boolean validateForm() {

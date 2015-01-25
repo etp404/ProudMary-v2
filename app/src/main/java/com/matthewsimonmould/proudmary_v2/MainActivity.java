@@ -52,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 		contactPickerButton.setEnabled(!storedUpdateSetting.isUpdatesActive());
-		contactPickerButton.setImageAlpha(storedUpdateSetting.isUpdatesActive() ? 100: 255);
+		contactPickerButton.setImageAlpha(storedUpdateSetting.isUpdatesActive() ? 100: 255); //TODO: pull our contact picker into own class.
 
 		DestinationTextField destinationTextField = new DestinationTextField((EditText)findViewById(R.id.destination), storedUpdateSetting);
 		destinationTextField.setTextField(updaterSettings.getDestination());
