@@ -62,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
 	private FrequencyNumberPicker createFrequencyNumberPicker(UpdaterSettings updaterSettings) {
 		FrequencyNumberPicker frequencyNumberPicker = new FrequencyNumberPicker((android.widget.NumberPicker) findViewById(R.id.numberPicker), updaterSettings);
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
+		frequencyNumberPicker.setSelectedFrequency(updaterSettings.getUpdatePeriodInMinutes());
 		return frequencyNumberPicker;
 	}
 
