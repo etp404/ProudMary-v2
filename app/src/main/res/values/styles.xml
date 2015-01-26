@@ -7,7 +7,7 @@
 
     <style name="ActionBar">
         <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@drawable/pm_logo</item>
+        <item name="logo">@drawable/ic_launcher</item>
     </style>
 
     <color name="dark_brown">#370A0B</color>
