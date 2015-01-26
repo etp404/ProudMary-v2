@@ -22,7 +22,7 @@ public class Notifier {
 				.setContentTitle(resources.getString(R.string.app_name))
 				.setContentText(message)
 				.setDefaults(Notification.DEFAULT_LIGHTS)
-				.setSmallIcon(R.drawable.pm_logo)
+				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
 
         Notification notification = notificationBuilder.build();
