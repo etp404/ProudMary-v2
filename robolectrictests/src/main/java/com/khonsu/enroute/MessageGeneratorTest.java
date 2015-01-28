@@ -3,7 +3,9 @@ package com.khonsu.enroute;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowToast;
 
 import java.net.MalformedURLException;
 
@@ -17,9 +19,10 @@ public class MessageGeneratorTest {
 		String expectedMessage = "My current location is: https://www.google.co.uk/maps/@16.4,-2.2,10z";
 
 		MessageGenerator messageGenerator = new MessageGenerator(new ErrorThrowingGoogleMapsDurationGetter(null));
-		String actualMessage = messageGenerator.generateMessage("16.4", "-2.2", "Destination");
+		String actualMessage = messageGenerator.generateMessage(Robolectric.application, "16.4", "-2.2", "Destination");
 
 		assertEquals(expectedMessage, actualMessage);
+		assertEquals("Could not obtain ETA. Please check destination value and internet connection.", ShadowToast.getTextOfLatestToast());
 	}
 
 	@Test
@@ -35,7 +38,7 @@ public class MessageGeneratorTest {
 		fakeGoogleMapsDurationGetter.duration = duration;
 
 		MessageGenerator messageGenerator = new MessageGenerator(fakeGoogleMapsDurationGetter);
-		String actualMessage = messageGenerator.generateMessage(originLat, originLong, destination);
+		String actualMessage = messageGenerator.generateMessage(Robolectric.application, originLat, originLong, destination);
 		assertEquals(expectedMessage, actualMessage);
 	}
 

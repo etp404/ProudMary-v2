@@ -70,6 +70,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 					GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
 					MessageGenerator messageGenerator = new MessageGenerator(googleMapsDurationGetter);
 					String message = messageGenerator.generateMessage(
+							getApplicationContext(),
 							String.valueOf(lastLocation.getLatitude()),
 							String.valueOf(lastLocation.getLongitude()),
 							updaterSettings.getDestination());
