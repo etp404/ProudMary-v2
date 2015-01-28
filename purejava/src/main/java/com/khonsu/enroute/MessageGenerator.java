@@ -21,7 +21,7 @@ public class MessageGenerator {
 		if (message.length()>0) {
 			message.append(" ");
 		}
-		message.append(String.format(CURRENT_LOCATION_ESTIMATE_FORMAT, GoogleMapsLinkGenerator.generateLinkForLongLat(currentLatitude, currentLongitude)));
+		message.append(String.format(CURRENT_LOCATION_ESTIMATE_FORMAT, GoogleMapsLinkGenerator.generateLinkForLatLong(currentLatitude, currentLongitude)));
 	}
 
 	private void appendEstimateIfPossible(String currentLatitude, String currentLongitude, String destination, StringBuffer message) {
