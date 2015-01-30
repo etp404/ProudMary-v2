@@ -26,6 +26,7 @@ public class Notifier {
 				.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
 
         Notification notification = notificationBuilder.build();
+		notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 		notificationManager.notify(0, notification);
 	}
 
