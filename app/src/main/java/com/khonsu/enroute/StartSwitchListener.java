@@ -1,7 +1,5 @@
 package com.khonsu.enroute;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.CompoundButton;
@@ -42,22 +40,19 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 
         if (isChecked) {
 			if (validateForm()) {
-				context.startService(updateServiceIntent);
 				updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
 				updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
 				updaterSettings.setDestination(destinationTextField.getDestination());
 				updaterSettings.setUpdatesActive(true);
+				context.startService(updateServiceIntent);
 			}
 			else {
 				buttonView.setChecked(false);
 			}
         }
         else {
-			Intent broadcastReceiverIntent = new Intent(context, SendUpdateBroadcastReceiver.class);
-			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastReceiverIntent, 0);
-			AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-			alarmManager.cancel(pendingIntent);
 			updaterSettings.setUpdatesActive(false);
+			UpdateScheduler.cancelUpdate(context);
 		}
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();

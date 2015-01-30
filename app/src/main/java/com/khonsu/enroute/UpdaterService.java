@@ -91,9 +91,6 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 		asyncUpdateTask.execute();
 	}
 
-
-
-
 	@Override
 	public void onConnectionSuspended(int i) {
 		Log.d(debugTag, "UpdaterService.onConnectionSuspended"); //TODO: handle this.

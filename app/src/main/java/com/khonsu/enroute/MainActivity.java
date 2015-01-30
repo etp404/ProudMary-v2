@@ -1,6 +1,9 @@
 package com.khonsu.enroute;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.khonsu.enroute.settings.UpdaterSettings;
@@ -19,13 +23,14 @@ import com.khonsu.enroute.uifields.RecipientTextField;
 public class MainActivity extends ActionBarActivity {
 	static final int PICK_CONTACT_REQUEST = 1001;
 	private RecipientTextField recipientTextField;
-
+	private BroadcastReceiver nextMessageReceiver;
+	private UpdaterSettings updaterSettings;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-		UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
+		updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
 
 		ToggleButton toggleButton = (ToggleButton)findViewById(R.id.start_toggle);
 		toggleButton.setChecked(updaterSettings.isUpdatesActive());
@@ -51,6 +56,39 @@ public class MainActivity extends ActionBarActivity {
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField, contactPickerButton);
 		toggleButton.setOnCheckedChangeListener(startSwitchListener);
+
+		updateNextUpdateView();
+
+		nextMessageReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				updateNextUpdateView();
+			}
+		};
+		registerReceiver(nextMessageReceiver, new IntentFilter(UpdateScheduler.SCHEDULE_CHANGE));
+	}
+
+	private void updateNextUpdateView() {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				TextView nextUpdateView = (TextView) MainActivity.this.findViewById(R.id.next_update_view);
+				if (updaterSettings.isUpdatesActive()) {
+					nextUpdateView.setText(NextUpdateFormatter.format(updaterSettings.getTimeForNextUpdateInMillis()));
+					nextUpdateView.setVisibility(View.VISIBLE);
+				} else {
+					nextUpdateView.setVisibility(View.GONE);
+				}
+			}
+		};
+		runnable.run();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(nextMessageReceiver);
 	}
 
 	private void setUpRecipientTextField(UpdaterSettings updaterSettings) {
