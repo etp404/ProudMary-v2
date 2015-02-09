@@ -10,7 +10,7 @@ import com.khonsu.enroute.settings.UpdaterSettings;
 public class UpdateScheduler {
 	public static String SCHEDULE_CHANGE = "schedule_change";
 	public static void scheduleNextUpdate(Context context, long triggerAtMillis, UpdaterSettings updaterSettings) {
-		PendingIntent pendingIntent = getPendingIntent(context);
+		PendingIntent pendingIntent = createPendingIntent(context);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);
 
@@ -22,7 +22,7 @@ public class UpdateScheduler {
 	}
 
 	public static void cancelUpdate(Context context) {
-		PendingIntent pendingIntent = getPendingIntent(context);
+		PendingIntent pendingIntent = createPendingIntent(context);
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);
 		notifyScheduleChange(context);
@@ -32,7 +32,7 @@ public class UpdateScheduler {
 		context.sendBroadcast(new Intent(SCHEDULE_CHANGE));
 	}
 
-	private static PendingIntent getPendingIntent(Context context) {
+	private static PendingIntent createPendingIntent(Context context) {
 		Intent intent = new Intent(context, SendUpdateBroadcastReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, 0);
 	}

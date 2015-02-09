@@ -1,76 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:weightSum="1">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Recipient"
-        android:id="@+id/recipientNumberLabel"/>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_weight="1">
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:weightSum="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Recipient"
+            android:id="@+id/recipientNumberLabel"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recipientNumber"
+                android:inputType="phone"
+                android:layout_weight="1"
+                android:maxLines="1"/>
+            <ImageButton
+                android:id="@+id/button_contact_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_user"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/destination_label"
+            android:id="@+id/destinationLabel"/>
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/recipientNumber"
-            android:inputType="phone"
-            android:layout_weight="1"
-            android:maxLines="1"/>
-        <ImageButton
-            android:id="@+id/button_contact_picker"
+            android:id="@+id/destination"
+            android:inputType="text"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_user"
-            android:background="@android:color/transparent"/>
+            android:text="@string/update_frequency"
+            android:id="@+id/update_every"
+            android:layout_gravity="center_horizontal"/>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/numberPicker"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignStart="@+id/numberPicker"
+            android:layout_alignLeft="@+id/numberPicker"/>
+        <ToggleButton
+            android:id="@+id/start_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="@string/updates_being_sent"
+            android:textOff="@string/updates_not_being_sent"
+            android:enabled="true"
+            android:checked="false"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/next_update_view"
+            android:text="ABC"
+            android:layout_gravity="center_horizontal"/>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/destination_label"
-        android:id="@+id/destinationLabel"/>
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/destination"
-        android:inputType="text"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/update_frequency"
-        android:id="@+id/update_every"
-        android:layout_gravity="center_horizontal"/>
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/numberPicker"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignStart="@+id/numberPicker"
-        android:layout_alignLeft="@+id/numberPicker"/>
-    <ToggleButton
-        android:id="@+id/start_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOn="@string/updates_being_sent"
-        android:textOff="@string/updates_not_being_sent"
-        android:enabled="true"
-        android:checked="false"
-        android:layout_gravity="center_horizontal" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/next_update_view"
-        android:text="ABC"
-        android:layout_gravity="center_horizontal"/>
-</LinearLayout>
-
+</ScrollView>
