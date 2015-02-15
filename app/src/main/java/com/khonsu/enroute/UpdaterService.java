@@ -58,12 +58,13 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 	}
 
 	private void sendUpdate() {
+		final UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
+
 		AsyncTask<Void, Void, Void> asyncUpdateTask = new AsyncTask<Void, Void, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
 				Notifier notifier = new Notifier(getApplicationContext());
-				UpdaterSettings updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
 				Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
 				if (lastLocation != null) {
@@ -88,7 +89,10 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 			}
 		};
 
-		asyncUpdateTask.execute();
+		//This is to alleviate a weird bug where messages randomly started being sent when the service should have been off!
+		if (updaterSettings.isUpdatesActive()) {
+			asyncUpdateTask.execute();
+		}
 	}
 
 	@Override
