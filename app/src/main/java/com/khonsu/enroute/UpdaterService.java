@@ -42,7 +42,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 			mGoogleApiClient.connect();
 		}
 		stopSelf();
-		return 0;
+		return Service.START_NOT_STICKY;
 	}
 
 
