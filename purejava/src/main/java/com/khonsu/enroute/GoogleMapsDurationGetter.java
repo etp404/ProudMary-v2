@@ -1,8 +1,8 @@
 package com.khonsu.enroute;
 
 import com.google.gson.Gson;
-import com.khonsu.enroute.google.datamodel.NoDurationInResponseException;
-import com.khonsu.enroute.google.datamodel.ResponseBody;
+import com.khonsu.enroute.google.datamodel.maps.NoDurationInResponseException;
+import com.khonsu.enroute.google.datamodel.maps.ResponseBody;
 
 import java.io.IOException;
 import java.net.URL;
