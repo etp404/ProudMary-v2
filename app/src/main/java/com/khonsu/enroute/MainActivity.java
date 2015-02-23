@@ -10,6 +10,7 @@ import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -50,7 +51,10 @@ public class MainActivity extends ActionBarActivity {
 		contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
 		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255); //TODO: pull our contact picker into own class.
 
-		DestinationTextField destinationTextField = new DestinationTextField((EditText)findViewById(R.id.destination), updaterSettings);
+		AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.destination);
+		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, new GooglePlacesAutocompleter(new UrlAccessor())));
+
+		DestinationTextField destinationTextField = new DestinationTextField(autoCompView, updaterSettings);
 		destinationTextField.setTextField(updaterSettings.getDestination());
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
