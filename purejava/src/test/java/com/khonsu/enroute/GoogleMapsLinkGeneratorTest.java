@@ -42,4 +42,12 @@ public class GoogleMapsLinkGeneratorTest {
 		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, "AB6 7RQ"));
 	}
 
+	@Test
+	public void testThatAutocompleteLinkIsGeneratedCorrectlyForAddressWithNoSpaces() throws MalformedURLException {
+		String place = "Bradford";
+		URL url = new URL(String.format("http://54.171.194.38/google_places_proxy.php?location_input=%s", place));
+
+		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForAutocomplete(place));
+	}
+
 }
