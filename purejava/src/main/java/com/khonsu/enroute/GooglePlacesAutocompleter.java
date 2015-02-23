@@ -3,18 +3,23 @@ package com.khonsu.enroute;
 import com.google.gson.Gson;
 import com.khonsu.enroute.google.datamodel.places.PlacesAutoCompleteResponseBody;
 
+import java.io.IOException;
 import java.util.List;
 
 public class GooglePlacesAutocompleter {
-	private AutoCompleteAccessor autoCompleteAccessor;
+	private UrlAccessor urlAccessor;
 
-	public GooglePlacesAutocompleter(AutoCompleteAccessor autoCompleteAccessor) {
-
-		this.autoCompleteAccessor = autoCompleteAccessor;
+	public GooglePlacesAutocompleter(UrlAccessor urlAccessor) {
+		this.urlAccessor = urlAccessor;
 	}
 
-	public List<String> getSuggestions(String anyString) {
-		String responseBodyAsJsonString = autoCompleteAccessor.getAutoCompleteForString(anyString);
+	public List<String> getSuggestions(String location) {
+		String responseBodyAsJsonString = null;
+		try {
+			responseBodyAsJsonString = urlAccessor.getResponse(GoogleMapsLinkGenerator.generateLinkForAutocomplete(location));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Gson gson = new Gson();
 		PlacesAutoCompleteResponseBody placesAutoCompleteResponseBody = gson.fromJson(responseBodyAsJsonString, PlacesAutoCompleteResponseBody.class);
 
