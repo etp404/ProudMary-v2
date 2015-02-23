@@ -28,6 +28,6 @@ public class GoogleMapsLinkGenerator {
 	}
 
 	public static URL generateLinkForAutocomplete(String place) throws MalformedURLException {
-		return new URL(String.format(GOOGLE_PLACES_AUTOCOMPLETE, place));
+		return new URL(String.format(GOOGLE_PLACES_AUTOCOMPLETE, URIUtil.encode(place)));
 	}
 }
