@@ -1,5 +1,6 @@
 package com.khonsu.enroute.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +30,7 @@ import com.khonsu.enroute.uifields.DestinationTextField;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.RecipientTextField;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 	static final int PICK_CONTACT_REQUEST = 1001;
 	private RecipientTextField recipientTextField;
 	private BroadcastReceiver nextMessageReceiver;
@@ -79,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		};
 		registerReceiver(nextMessageReceiver, new IntentFilter(UpdateScheduler.SCHEDULE_CHANGE));
+
 	}
 
 	private void updateNextUpdateView() {
@@ -111,6 +112,7 @@ public class MainActivity extends ActionBarActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return true;
+
 	}
 
 	@Override
@@ -119,7 +121,9 @@ public class MainActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-
+		if (id == R.id.terms_and_conditions) {
+			startActivity(new Intent(this, TermsAndConditionsActivity.class));
+		}
 
 		return super.onOptionsItemSelected(item);
 	}

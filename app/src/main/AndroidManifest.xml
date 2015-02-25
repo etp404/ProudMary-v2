@@ -21,6 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name="com.khonsu.enroute.activities.TermsAndConditionsActivity"
+                  android:parentActivityName="com.khonsu.enroute.activities.MainActivity"
+                  android:label="@string/terms_and_conditions"
+        />
 
         <service android:name="com.khonsu.enroute.UpdaterService"/>
 

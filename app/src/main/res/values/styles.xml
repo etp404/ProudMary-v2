@@ -1,15 +1,3 @@
 <resources>
-
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="actionBarStyle">@style/ActionBar</item>
-        <item name="background">@color/dark_brown</item>
-        <item name="android:actionOverflowButtonStyle">@android:style/Widget.Holo.ActionButton.Overflow</item>
-    </style>
-
-    <style name="ActionBar">
-        <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@drawable/ic_launcher</item>
-    </style>
-
-    <color name="dark_brown">#370A0B</color>
+    <style name="AppTheme" parent="@android:style/Theme.Holo.Light"/>
 </resources>

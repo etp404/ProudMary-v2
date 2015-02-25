@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/terms_and_conditions_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/users_are_subject_to"
+        android:linksClickable="true"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/google_terms_and_conditions_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/google_terms_of_service"
+        android:layout_gravity="center_horizontal"
+        android:linksClickable="true"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/google_privacy_policy_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/google_privacy_policy"
+        android:layout_gravity="center_horizontal"
+        android:linksClickable="true"
+        android:gravity="center"/>
+</LinearLayout>
