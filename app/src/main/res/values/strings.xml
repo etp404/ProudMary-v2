@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">En Route!</string>
-    <string name="action_settings">Settings</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
 
     <string name="frequency_text_view">Frequency (minutes)</string>
     <string name="destination_label">Destination</string>

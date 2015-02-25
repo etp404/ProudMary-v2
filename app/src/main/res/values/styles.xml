@@ -1,8 +1,9 @@
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <item name="actionBarStyle">@style/ActionBar</item>
         <item name="background">@color/dark_brown</item>
+        <item name="android:actionOverflowButtonStyle">@android:style/Widget.Holo.ActionButton.Overflow</item>
     </style>
 
     <style name="ActionBar">

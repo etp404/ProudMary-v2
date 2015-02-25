@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 
+import com.khonsu.enroute.activities.MainActivity;
+
 public class Notifier {
 	private final NotificationManager notificationManager;
 	private Context context;
