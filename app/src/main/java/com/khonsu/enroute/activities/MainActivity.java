@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.NextUpdateFormatter;
 import com.khonsu.enroute.PhoneNumberValidator;
@@ -62,9 +63,10 @@ public class MainActivity extends Activity {
 		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255); //TODO: pull our contact picker into own class.
 
 		AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.destination);
-		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, new GooglePlacesAutocompleter(new UrlAccessor())));
+		GooglePlacesAutocompleter googlePlacesAutocompleter = new GooglePlacesAutocompleter(new UrlAccessor());
+		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
 
-		DestinationTextField destinationTextField = new DestinationTextField(autoCompView, updaterSettings);
+		DestinationTextField destinationTextField = new DestinationTextField(autoCompView, updaterSettings, new AddressValidator(googlePlacesAutocompleter));
 		destinationTextField.setTextField(updaterSettings.getDestination());
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
