@@ -11,36 +11,36 @@ import static org.junit.Assert.assertTrue;
 public class PhoneNumberValidatorTest {
 	@Test
 	 public void testThatPhoneNumberValidatorRejectsNullPhoneNumber() {
-		assertFalse(PhoneNumberValidator.isValidPhoneNumber(null));
+		assertFalse(new PhoneNumberValidator().isValidPhoneNumber(null));
 	}
 
 	@Test
 	public void testThatPhoneNumberValidatorRejectsEmptyPhoneNumber() {
-		assertFalse(PhoneNumberValidator.isValidPhoneNumber(""));
+		assertFalse(new PhoneNumberValidator().isValidPhoneNumber(""));
 	}
 
 	@Test
 	public void testThatPhoneNumberValidatorAcceptsValidPhoneNumber() {
-		assertTrue(PhoneNumberValidator.isValidPhoneNumber("07791123456"));
+		assertTrue(new PhoneNumberValidator().isValidPhoneNumber("07791123456"));
 	}
 
 	@Test
 	public void testThatPhoneNumberValidatorAcceptsInternationalPhoneNumber() {
-		assertTrue(PhoneNumberValidator.isValidPhoneNumber("+447791123456"));
+		assertTrue(new PhoneNumberValidator().isValidPhoneNumber("+447791123456"));
 	}
 
 	@Test
 	public void testThatPhoneNumberValidatorAcceptsValidPhoneNumberWithDashes() {
-		assertTrue(PhoneNumberValidator.isValidPhoneNumber("+44779-112-3456"));
+		assertTrue(new PhoneNumberValidator().isValidPhoneNumber("+44779-112-3456"));
 	}
 
 	@Test
 	public void testThatPhoneNumberValidatorRejectsPhoneNumberWithLetters() {
-		assertFalse(PhoneNumberValidator.isValidPhoneNumber("9779-1A2-3B56"));
+		assertFalse(new PhoneNumberValidator().isValidPhoneNumber("9779-1A2-3B56"));
 	}
 
 	@Test
 	public void testThatPhoneNumberValidatorRejectsPhoneNumberWithTooFewNumbers() {
-		assertFalse(PhoneNumberValidator.isValidPhoneNumber("42"));
+		assertFalse(new PhoneNumberValidator().isValidPhoneNumber("42"));
 	}
 }

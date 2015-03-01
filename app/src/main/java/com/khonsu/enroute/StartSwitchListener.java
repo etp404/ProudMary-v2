@@ -62,10 +62,9 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
     }
 
 	private boolean validateForm() {
-		if (!PhoneNumberValidator.isValidPhoneNumber(recipientTextField.getRecipientNumber())) {
-			recipientTextField.highlightError();
+		if (!recipientTextField.validate()) {
 			return false;
-		}
+		};
 		return true;
 	}
 }

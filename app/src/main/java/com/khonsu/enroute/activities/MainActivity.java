@@ -20,6 +20,7 @@ import android.widget.ToggleButton;
 
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.NextUpdateFormatter;
+import com.khonsu.enroute.PhoneNumberValidator;
 import com.khonsu.enroute.PlacesAutoCompleteAdapter;
 import com.khonsu.enroute.R;
 import com.khonsu.enroute.StartSwitchListener;
@@ -129,7 +130,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void setUpRecipientTextField(UpdaterSettings updaterSettings) {
-		recipientTextField = new RecipientTextField((EditText)findViewById(R.id.recipientNumber), updaterSettings);
+		recipientTextField = new RecipientTextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator());
 		recipientTextField.setTextField(updaterSettings.getRecipient());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}

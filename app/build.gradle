@@ -40,5 +40,6 @@ dependencies {
     compile project(':purejava')
     compile 'com.google.android.gms:play-services:6.5.87'
 	testCompile 'junit:junit:4.12'
+	testCompile "org.mockito:mockito-core:1.9.5"
 	androidTestCompile 'junit:junit:4.12'
 }
