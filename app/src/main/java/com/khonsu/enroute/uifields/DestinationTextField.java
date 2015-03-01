@@ -28,7 +28,15 @@ public class DestinationTextField {
 		return editableField.getText().toString();
 	}
 
+	public void highlightError() {
+		editableField.setError("Invalid address");
+	}
+
 	public boolean validate() {
-		return addressValidator.validate(getDestination());
+		if (!addressValidator.validate(getDestination())) {
+			highlightError();
+			return false;
+		}
+		return true;
 	}
 }

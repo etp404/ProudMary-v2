@@ -62,12 +62,13 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
     }
 
 	private boolean validateForm() {
+		boolean formValid = true;
 		if (!recipientTextField.validate()) {
-			return false;
+			formValid = false;
 		};
 		if (!destinationTextField.validate()) {
-			return false;
+			formValid = false;
 		}
-		return true;
+		return formValid;
 	}
 }
