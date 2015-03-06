@@ -9,6 +9,7 @@ public class DestinationTextField {
 	private final EditText editableField;
 	private final UpdaterSettings updaterSettings;
 	private final AddressValidator addressValidator;
+	private boolean isInErrorState = false;
 
 	public DestinationTextField(EditText editableField, UpdaterSettings updaterSettings, AddressValidator addressValidator) {
 		this.editableField = editableField;
@@ -22,6 +23,9 @@ public class DestinationTextField {
 
 	public void setEnabledOrDisabledAccordingToUpdateStatus() {
 		editableField.setEnabled(!updaterSettings.isUpdatesActive());
+		if (isInErrorState) {
+			highlightError();
+		}
 	}
 
 	public String getDestination() {
@@ -33,8 +37,9 @@ public class DestinationTextField {
 	}
 
 	public boolean validate() {
+		isInErrorState = false;
 		if (!addressValidator.validate(getDestination())) {
-			highlightError();
+			isInErrorState = true;
 			return false;
 		}
 		return true;

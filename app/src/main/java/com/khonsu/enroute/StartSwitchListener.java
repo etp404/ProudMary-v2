@@ -1,7 +1,9 @@
 package com.khonsu.enroute;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
@@ -39,29 +41,38 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		Intent updateServiceIntent = new Intent(context, UpdaterService.class);
 
         if (isChecked) {
-			if (validateForm()) {
-				updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
-				updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
-				updaterSettings.setDestination(destinationTextField.getDestination());
-				updaterSettings.setUpdatesActive(true);
-				context.startService(updateServiceIntent);
-			}
-			else {
-				buttonView.setChecked(false);
-			}
+			AsynchronousFormValidator asychronousFormValidator = new AsynchronousFormValidator(buttonView, updateServiceIntent);
+			asychronousFormValidator.execute();
         }
         else {
 			updaterSettings.setUpdatesActive(false);
 			UpdateScheduler.cancelUpdate(context);
+			updateButtonStates();
 		}
+    }
+
+	private void updateButtonStates() {
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
 		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255); //TODO: pull the contact picker into own class.
-    }
+	}
+
+	private void onFormValidateFailure(CompoundButton buttonView) {
+		buttonView.setChecked(false);
+	}
+
+	private void onFormValidateSuccess(Intent updateServiceIntent) {
+		updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
+		updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
+		updaterSettings.setDestination(destinationTextField.getDestination());
+		updaterSettings.setUpdatesActive(true);
+		context.startService(updateServiceIntent);
+	}
 
 	private boolean validateForm() {
+
 		boolean formValid = true;
 		if (!recipientTextField.validate()) {
 			formValid = false;
@@ -70,5 +81,31 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 			formValid = false;
 		}
 		return formValid;
+	}
+
+	private class AsynchronousFormValidator extends AsyncTask<Void, Void, Boolean> {
+
+		private CompoundButton buttonView;
+		private Intent intent;
+
+		public AsynchronousFormValidator(CompoundButton buttonView, Intent intent) {
+			this.buttonView = buttonView;
+			this.intent = intent;
+		}
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			return validateForm();
+		}
+
+		@Override
+		protected void onPostExecute(Boolean validatedSuccessfully) {
+			if (validatedSuccessfully) {
+				StartSwitchListener.this.onFormValidateSuccess(intent);
+			}
+			else {
+				StartSwitchListener.this.onFormValidateFailure(buttonView);
+			}
+			updateButtonStates();
+		}
 	}
 }

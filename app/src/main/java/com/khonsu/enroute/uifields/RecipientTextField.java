@@ -9,6 +9,7 @@ public class RecipientTextField {
 	private final EditText editableField;
 	private final UpdaterSettings updaterSettings;
 	private PhoneNumberValidator phoneNumberValidator;
+	boolean isInErrorState = false;
 
 	public RecipientTextField(EditText editableField, UpdaterSettings updaterSettings, PhoneNumberValidator phoneNumberValidator) {
 		this.editableField = editableField;
@@ -22,11 +23,13 @@ public class RecipientTextField {
 
 	public void setEnabledOrDisabledAccordingToUpdateStatus() {
 		editableField.setEnabled(!updaterSettings.isUpdatesActive());
+		if (isInErrorState) {
+			highlightError();
+		}
 	}
 
 	public void setTextField(String recipient) {
 		editableField.setText(recipient);
-
 	}
 
 	public void highlightError() {
@@ -34,8 +37,9 @@ public class RecipientTextField {
 	}
 
 	public boolean validate() {
+		isInErrorState = false;
 		if (!phoneNumberValidator.isValidPhoneNumber(editableField.getText().toString())) {
-			highlightError();
+			isInErrorState = true;
 			return false;
 		}
 		return true;
