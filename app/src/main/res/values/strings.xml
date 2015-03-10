@@ -13,7 +13,7 @@
     <string name="update_could_not_be_sent">Error: will retry in 5 minutes.</string>
 
     <string name="users_are_subject_to">Users are subject to the following terms. </string>
-    <string name="google_terms_of_service">Google\'s <a href="http://www.google.com/intl/en/policies/terms">Terms of Service</a></string>
-    <string name="google_privacy_policy">Google\'s <a href="http://www.google.com/policies/privacy">Privacy Policy</a></string>
+    <string name="google_terms_of_service"><a href="http://www.google.com/intl/en/policies/terms">Google\'s Terms of Service</a></string>
+    <string name="google_privacy_policy"><a href="http://www.google.com/policies/privacy">Google\'s Privacy Policy</a></string>
 
 </resources>
