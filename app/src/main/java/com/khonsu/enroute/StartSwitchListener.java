@@ -3,9 +3,13 @@ package com.khonsu.enroute;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.DestinationTextField;
@@ -14,6 +18,7 @@ import com.khonsu.enroute.uifields.RecipientTextField;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
+	private static final String NO_INTERNET_CONNECTION = "Please ensure network is enabled.";
 	private final Context context;
 	private final UpdaterSettings updaterSettings;
 	private final FrequencyNumberPicker frequencyNumberPicker;
@@ -40,16 +45,27 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		//TODO: validate form
 		Intent updateServiceIntent = new Intent(context, UpdaterService.class);
 
-        if (isChecked) {
+        if (isChecked && validateNetworkAvailable()) {
 			AsynchronousFormValidator asychronousFormValidator = new AsynchronousFormValidator(buttonView, updateServiceIntent);
 			asychronousFormValidator.execute();
         }
         else {
+			onFormValidateFailure(buttonView);
 			updaterSettings.setUpdatesActive(false);
 			UpdateScheduler.cancelUpdate(context);
 			updateButtonStates();
 		}
     }
+
+	private boolean validateNetworkAvailable() {
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		boolean networkState = netInfo != null && netInfo.isConnected();
+		if (!networkState) {
+			Toast.makeText(context, NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
+		}
+		return networkState;
+	}
 
 	private void updateButtonStates() {
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
