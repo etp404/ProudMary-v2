@@ -38,7 +38,7 @@ public class RecipientTextField {
 
 	public boolean validate() {
 		isInErrorState = false;
-		if (!phoneNumberValidator.isValidPhoneNumber(editableField.getText().toString())) {
+		if (!phoneNumberValidator.validate(editableField.getText().toString())) {
 			isInErrorState = true;
 			return false;
 		}

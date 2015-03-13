@@ -1,16 +1,18 @@
 package com.khonsu.enroute.uifields;
 
+import android.widget.NumberPicker;
+
 import com.khonsu.enroute.settings.UpdaterSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FrequencyNumberPicker {
-	private final android.widget.NumberPicker numberPicker;
+	private final NumberPicker numberPicker;
 	private final UpdaterSettings updaterSettings;
 	private final List<String> incrementValues;
 
-	public FrequencyNumberPicker(android.widget.NumberPicker numberPicker, UpdaterSettings updaterSettings) {
+	public FrequencyNumberPicker(NumberPicker numberPicker, UpdaterSettings updaterSettings) {
 		incrementValues = new ArrayList<>();
 		for (int i = 5; i <= 60; i+=5)  {
 			incrementValues.add(String.valueOf(i));

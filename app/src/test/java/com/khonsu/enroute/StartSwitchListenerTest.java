@@ -1,6 +1,7 @@
 package com.khonsu.enroute;
 
 import android.content.Context;
+import android.net.NetworkInfo;
 import android.text.Editable;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -10,7 +11,9 @@ import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.DestinationTextField;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.RecipientTextField;
+import com.khonsu.enroute.uifields.TextFieldWrapper;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.Matchers.anyString;
@@ -21,6 +24,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class StartSwitchListenerTest {
+	private NetworkStatusProvider networkStatusProvider;
+
+	@Before
+	public void setup() {
+		networkStatusProvider = mock(NetworkStatusProvider.class);
+		when(networkStatusProvider.networkAvailable()).thenReturn(true);
+	}
+
 	@Test
 	public void testThatIfNumberIncorrectFormIsRejected() {
 		Editable recipientEditable = mock(Editable.class);
@@ -30,9 +41,9 @@ public class StartSwitchListenerTest {
 		when(recipientEditText.getText()).thenReturn(recipientEditable);
 
 		PhoneNumberValidator phoneNumberValidator = mock(PhoneNumberValidator.class);
-		when(phoneNumberValidator.isValidPhoneNumber(anyString())).thenReturn(false);
+		when(phoneNumberValidator.validate(anyString())).thenReturn(false);
 
-		RecipientTextField recipientTextField = new RecipientTextField(recipientEditText, mock(UpdaterSettings.class), phoneNumberValidator);
+		TextFieldWrapper recipientTextField = new TextFieldWrapper(recipientEditText, mock(UpdaterSettings.class), phoneNumberValidator, null);
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
 				mock(Context.class),
@@ -40,7 +51,8 @@ public class StartSwitchListenerTest {
 				mock(DestinationTextField.class),
 				mock(FrequencyNumberPicker.class),
 				recipientTextField,
-				mock(ImageButton.class));
+				mock(ImageButton.class),
+				networkStatusProvider);
 
 		CompoundButton compoundButton = mock(CompoundButton.class);
 		startSwitchListener.onCheckedChanged(compoundButton, true);
@@ -61,12 +73,12 @@ public class StartSwitchListenerTest {
 		when(mockDestinationEditText.getText()).thenReturn(mockEditable);
 
 		PhoneNumberValidator phoneNumberValidator = mock(PhoneNumberValidator.class);
-		when(phoneNumberValidator.isValidPhoneNumber(anyString())).thenReturn(true);
+		when(phoneNumberValidator.validate(anyString())).thenReturn(true);
 
 		AddressValidator addressValidator = mock(AddressValidator.class);
 		when(addressValidator.validate(anyString())).thenReturn(false);
 
-		RecipientTextField recipientTextField = new RecipientTextField(mockRecipientEditText, mock(UpdaterSettings.class), phoneNumberValidator);
+		TextFieldWrapper recipientTextField = new TextFieldWrapper(mockRecipientEditText, mock(UpdaterSettings.class), phoneNumberValidator, null);
 		DestinationTextField destinationTextField = new DestinationTextField(mockDestinationEditText, mock(UpdaterSettings.class), addressValidator);
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
@@ -75,7 +87,8 @@ public class StartSwitchListenerTest {
 				destinationTextField,
 				mock(FrequencyNumberPicker.class),
 				recipientTextField,
-				mock(ImageButton.class));
+				mock(ImageButton.class),
+				networkStatusProvider);
 
 		CompoundButton compoundButton = mock(CompoundButton.class);
 		startSwitchListener.onCheckedChanged(compoundButton, true);
@@ -94,12 +107,12 @@ public class StartSwitchListenerTest {
 		when(mockEditText.getText()).thenReturn(mockEditable);
 
 		PhoneNumberValidator phoneNumberValidator = mock(PhoneNumberValidator.class);
-		when(phoneNumberValidator.isValidPhoneNumber(anyString())).thenReturn(true);
+		when(phoneNumberValidator.validate(anyString())).thenReturn(true);
 
 		AddressValidator addressValidator = mock(AddressValidator.class);
 		when(addressValidator.validate(anyString())).thenReturn(true);
 
-		RecipientTextField recipientTextField = new RecipientTextField(mockEditText, mock(UpdaterSettings.class), phoneNumberValidator);
+		TextFieldWrapper recipientTextField = new TextFieldWrapper(mockEditText, mock(UpdaterSettings.class), phoneNumberValidator, null);
 		DestinationTextField destinationTextField = new DestinationTextField(mockEditText, mock(UpdaterSettings.class), addressValidator);
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
@@ -108,7 +121,8 @@ public class StartSwitchListenerTest {
 				destinationTextField,
 				mock(FrequencyNumberPicker.class),
 				recipientTextField,
-				mock(ImageButton.class));
+				mock(ImageButton.class),
+				networkStatusProvider);
 
 		CompoundButton compoundButton = mock(CompoundButton.class);
 		startSwitchListener.onCheckedChanged(compoundButton, true);
@@ -128,12 +142,12 @@ public class StartSwitchListenerTest {
 		when(mockDestinationEditText.getText()).thenReturn(mockEditable);
 
 		PhoneNumberValidator phoneNumberValidator = mock(PhoneNumberValidator.class);
-		when(phoneNumberValidator.isValidPhoneNumber(anyString())).thenReturn(false);
+		when(phoneNumberValidator.validate(anyString())).thenReturn(false);
 
 		AddressValidator addressValidator = mock(AddressValidator.class);
 		when(addressValidator.validate(anyString())).thenReturn(false);
 
-		RecipientTextField recipientTextField = new RecipientTextField(mockRecipientEditText, mock(UpdaterSettings.class), phoneNumberValidator);
+		TextFieldWrapper recipientTextField = new TextFieldWrapper(mockRecipientEditText, mock(UpdaterSettings.class), phoneNumberValidator, null);
 		DestinationTextField destinationTextField = new DestinationTextField(mockDestinationEditText, mock(UpdaterSettings.class), addressValidator);
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
@@ -142,7 +156,8 @@ public class StartSwitchListenerTest {
 				destinationTextField,
 				mock(FrequencyNumberPicker.class),
 				recipientTextField,
-				mock(ImageButton.class));
+				mock(ImageButton.class),
+				networkStatusProvider);
 
 		CompoundButton compoundButton = mock(CompoundButton.class);
 		startSwitchListener.onCheckedChanged(compoundButton, true);

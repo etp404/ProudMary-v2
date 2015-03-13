@@ -1,12 +1,7 @@
 package com.khonsu.enroute;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -14,7 +9,9 @@ import android.widget.Toast;
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.DestinationTextField;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
-import com.khonsu.enroute.uifields.RecipientTextField;
+import com.khonsu.enroute.uifields.TextFieldWrapper;
+
+import java.util.ArrayList;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
@@ -22,22 +19,25 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private final Context context;
 	private final UpdaterSettings updaterSettings;
 	private final FrequencyNumberPicker frequencyNumberPicker;
-	private final RecipientTextField recipientTextField;
+	private final TextFieldWrapper recipientTextField;
 	private final DestinationTextField destinationTextField;
 	private final ImageButton contactPickerButton;
+	private final NetworkStatusProvider networkStatusProvider;
 
 	public StartSwitchListener(Context context,
 							   UpdaterSettings updaterSettings,
 							   DestinationTextField destinationTextField,
 							   FrequencyNumberPicker frequencyNumberPicker,
-							   RecipientTextField recipientTextField,
-							   ImageButton contactPickerButton) {
+							   TextFieldWrapper recipientTextField,
+							   ImageButton contactPickerButton,
+							   NetworkStatusProvider networkStatusProvider) {
         this.context = context;
 		this.updaterSettings = updaterSettings;
 		this.frequencyNumberPicker = frequencyNumberPicker;
 		this.destinationTextField = destinationTextField;
 		this.recipientTextField = recipientTextField;
 		this.contactPickerButton = contactPickerButton;
+		this.networkStatusProvider = networkStatusProvider;
     }
 
     @Override
@@ -46,8 +46,10 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		Intent updateServiceIntent = new Intent(context, UpdaterService.class);
 
         if (isChecked && validateNetworkAvailable()) {
-			AsynchronousFormValidator asychronousFormValidator = new AsynchronousFormValidator(buttonView, updateServiceIntent);
-			asychronousFormValidator.execute();
+			AsynchronousFormValidator asychronousFormValidator = new AsynchronousFormValidator(this, buttonView, updateServiceIntent);
+			asychronousFormValidator.execute(new ArrayList<TextFieldWrapper>(){{
+				add(recipientTextField);
+			}});
         }
         else {
 			onFormValidateFailure(buttonView);
@@ -58,16 +60,14 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
     }
 
 	private boolean validateNetworkAvailable() {
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		boolean networkState = netInfo != null && netInfo.isConnected();
+		boolean networkState = networkStatusProvider.networkAvailable();
 		if (!networkState) {
 			Toast.makeText(context, NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 		}
 		return networkState;
 	}
 
-	private void updateButtonStates() {
+	public void updateButtonStates() {
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
@@ -75,53 +75,8 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255); //TODO: pull the contact picker into own class.
 	}
 
-	private void onFormValidateFailure(CompoundButton buttonView) {
+	public void onFormValidateFailure(CompoundButton buttonView) {
 		buttonView.setChecked(false);
 	}
 
-	private void onFormValidateSuccess(Intent updateServiceIntent) {
-		updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
-		updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
-		updaterSettings.setDestination(destinationTextField.getDestination());
-		updaterSettings.setUpdatesActive(true);
-		context.startService(updateServiceIntent);
-	}
-
-	private boolean validateForm() {
-
-		boolean formValid = true;
-		if (!recipientTextField.validate()) {
-			formValid = false;
-		};
-		if (!destinationTextField.validate()) {
-			formValid = false;
-		}
-		return formValid;
-	}
-
-	private class AsynchronousFormValidator extends AsyncTask<Void, Void, Boolean> {
-
-		private CompoundButton buttonView;
-		private Intent intent;
-
-		public AsynchronousFormValidator(CompoundButton buttonView, Intent intent) {
-			this.buttonView = buttonView;
-			this.intent = intent;
-		}
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			return validateForm();
-		}
-
-		@Override
-		protected void onPostExecute(Boolean validatedSuccessfully) {
-			if (validatedSuccessfully) {
-				StartSwitchListener.this.onFormValidateSuccess(intent);
-			}
-			else {
-				StartSwitchListener.this.onFormValidateFailure(buttonView);
-			}
-			updateButtonStates();
-		}
-	}
 }

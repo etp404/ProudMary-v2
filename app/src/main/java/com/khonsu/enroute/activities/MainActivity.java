@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
+import com.khonsu.enroute.NetworkStatusProvider;
 import com.khonsu.enroute.NextUpdateFormatter;
 import com.khonsu.enroute.PhoneNumberValidator;
 import com.khonsu.enroute.PlacesAutoCompleteAdapter;
@@ -30,11 +32,11 @@ import com.khonsu.enroute.UrlAccessor;
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.DestinationTextField;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
-import com.khonsu.enroute.uifields.RecipientTextField;
+import com.khonsu.enroute.uifields.TextFieldWrapper;
 
 public class MainActivity extends Activity {
 	static final int PICK_CONTACT_REQUEST = 1001;
-	private RecipientTextField recipientTextField;
+	private TextFieldWrapper recipientTextField;
 	private BroadcastReceiver nextMessageReceiver;
 	private UpdaterSettings updaterSettings;
 	@Override
@@ -70,7 +72,8 @@ public class MainActivity extends Activity {
 		destinationTextField.setTextField(updaterSettings.getDestination());
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
-		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField, contactPickerButton);
+		NetworkStatusProvider networkStatusProvider = new NetworkStatusProvider((ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE));
+		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField, contactPickerButton, networkStatusProvider);
 		toggleButton.setOnCheckedChangeListener(startSwitchListener);
 
 		updateNextUpdateView();
@@ -132,7 +135,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void setUpRecipientTextField(UpdaterSettings updaterSettings) {
-		recipientTextField = new RecipientTextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator());
+		recipientTextField = new TextFieldWrapper((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator(), getResources().getString(R.string.recipient_error_message));
 		recipientTextField.setTextField(updaterSettings.getRecipient());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
