@@ -48,16 +48,7 @@ public class MainActivity extends Activity {
 		initialiseRecipientTextField();
 
 		ImageButton contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
-		contactPickerButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-				startActivityForResult(intent, PICK_CONTACT_REQUEST);
-
-			}
-		});
-		contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
-		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255);
+		setUpContactPickerButton(contactPickerButton);
 
 		TextField destinationTextField = initialiseDestinationTextField();
 
@@ -67,6 +58,19 @@ public class MainActivity extends Activity {
 
 		initialiseNextMessageUpdateReceiver();
 
+	}
+
+	private ImageButton setUpContactPickerButton(ImageButton contactPickerButton) {
+		contactPickerButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+				startActivityForResult(intent, PICK_CONTACT_REQUEST);
+			}
+		});
+		contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
+		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255);
+		return contactPickerButton;
 	}
 
 	private void initialiseNextMessageUpdateReceiver() {
