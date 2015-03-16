@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
-import com.khonsu.enroute.uifields.RecipientTextField;
 import com.khonsu.enroute.uifields.TextField;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
@@ -20,7 +19,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private final Context context;
 	private final UpdaterSettings updaterSettings;
 	private final FrequencyNumberPicker frequencyNumberPicker;
-	private final RecipientTextField recipientTextField;
+	private final TextField recipientTextField;
 	private final TextField destinationTextField;
 	private final ImageButton contactPickerButton;
 
@@ -28,7 +27,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 							   UpdaterSettings updaterSettings,
 							   TextField destinationTextField,
 							   FrequencyNumberPicker frequencyNumberPicker,
-							   RecipientTextField recipientTextField,
+							   TextField recipientTextField,
 							   ImageButton contactPickerButton) {
         this.context = context;
 		this.updaterSettings = updaterSettings;
@@ -79,7 +78,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 
 	private void onFormValidateSuccess(Intent updateServiceIntent) {
 		updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
-		updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
+		updaterSettings.setRecipient(recipientTextField.getContent());
 		updaterSettings.setDestination(destinationTextField.getContent());
 		updaterSettings.setUpdatesActive(true);
 		context.startService(updateServiceIntent);

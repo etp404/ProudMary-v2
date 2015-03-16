@@ -29,12 +29,11 @@ import com.khonsu.enroute.UpdateScheduler;
 import com.khonsu.enroute.UrlAccessor;
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
-import com.khonsu.enroute.uifields.RecipientTextField;
 import com.khonsu.enroute.uifields.TextField;
 
 public class MainActivity extends Activity {
 	static final int PICK_CONTACT_REQUEST = 1001;
-	private RecipientTextField recipientTextField;
+	private TextField recipientTextField;
 	private BroadcastReceiver nextMessageReceiver;
 	private UpdaterSettings updaterSettings;
 	@Override
@@ -132,7 +131,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void setUpRecipientTextField(UpdaterSettings updaterSettings) {
-		recipientTextField = new RecipientTextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator());
+		recipientTextField = new TextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator(), "Invalid number");
 		recipientTextField.setTextField(updaterSettings.getRecipient());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
