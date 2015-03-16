@@ -43,11 +43,9 @@ public class MainActivity extends Activity {
 
 		updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
 
-		ToggleButton toggleButton = (ToggleButton)findViewById(R.id.start_toggle);
-		toggleButton.setChecked(updaterSettings.isUpdatesActive());
+		FrequencyNumberPicker frequencyNumberPicker = initialiseFrequencyNumberPicker();
 
-		FrequencyNumberPicker frequencyNumberPicker = createFrequencyNumberPicker(updaterSettings);
-		setUpRecipientTextField(updaterSettings);
+		initialiseRecipientTextField();
 
 		ImageButton contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
 		contactPickerButton.setOnClickListener(new View.OnClickListener() {
@@ -59,21 +57,19 @@ public class MainActivity extends Activity {
 			}
 		});
 		contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
-		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255); //TODO: pull our contact picker into own class.
+		contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255);
 
-		AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.destination);
-		GooglePlacesAutocompleter googlePlacesAutocompleter = new GooglePlacesAutocompleter(new UrlAccessor());
-		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
+		TextField destinationTextField = initialiseDestinationTextField();
 
-		TextField destinationTextField = new TextField(autoCompView, updaterSettings, new AddressValidator(googlePlacesAutocompleter), "Invalid address");
-		destinationTextField.setTextField(updaterSettings.getDestination());
-		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
-
-		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField, contactPickerButton);
-		toggleButton.setOnCheckedChangeListener(startSwitchListener);
+		initialiseToggleButton(frequencyNumberPicker, contactPickerButton, destinationTextField);
 
 		updateNextUpdateView();
 
+		initialiseNextMessageUpdateReceiver();
+
+	}
+
+	private void initialiseNextMessageUpdateReceiver() {
 		nextMessageReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
@@ -81,7 +77,17 @@ public class MainActivity extends Activity {
 			}
 		};
 		registerReceiver(nextMessageReceiver, new IntentFilter(UpdateScheduler.SCHEDULE_CHANGE));
+	}
 
+	private TextField initialiseDestinationTextField() {
+		AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.destination);
+		GooglePlacesAutocompleter googlePlacesAutocompleter = new GooglePlacesAutocompleter(new UrlAccessor());
+		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
+
+		TextField destinationTextField = new TextField(autoCompView, updaterSettings, new AddressValidator(googlePlacesAutocompleter), "Invalid address");
+		destinationTextField.setTextField(updaterSettings.getDestination());
+		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+		return destinationTextField;
 	}
 
 	private void updateNextUpdateView() {
@@ -130,17 +136,24 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void setUpRecipientTextField(UpdaterSettings updaterSettings) {
+	private void initialiseRecipientTextField() {
 		recipientTextField = new TextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator(), "Invalid number");
 		recipientTextField.setTextField(updaterSettings.getRecipient());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
 
-	private FrequencyNumberPicker createFrequencyNumberPicker(UpdaterSettings updaterSettings) {
+	private FrequencyNumberPicker initialiseFrequencyNumberPicker() {
 		FrequencyNumberPicker frequencyNumberPicker = new FrequencyNumberPicker((android.widget.NumberPicker) findViewById(R.id.numberPicker), updaterSettings);
 		frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
 		frequencyNumberPicker.setSelectedFrequency(updaterSettings.getUpdatePeriodInMinutes());
 		return frequencyNumberPicker;
+	}
+
+	private void initialiseToggleButton(FrequencyNumberPicker frequencyNumberPicker, ImageButton contactPickerButton, TextField destinationTextField) {
+		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField, contactPickerButton);
+		ToggleButton toggleButton = (ToggleButton)findViewById(R.id.start_toggle);
+		toggleButton.setChecked(updaterSettings.isUpdatesActive());
+		toggleButton.setOnCheckedChangeListener(startSwitchListener);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode,
