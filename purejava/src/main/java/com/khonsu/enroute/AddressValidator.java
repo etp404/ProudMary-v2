@@ -2,7 +2,7 @@ package com.khonsu.enroute;
 
 import java.util.List;
 
-public class AddressValidator {
+public class AddressValidator implements FieldValidator {
 
 	private GooglePlacesAutocompleter googlePlacesAutocompleter;
 

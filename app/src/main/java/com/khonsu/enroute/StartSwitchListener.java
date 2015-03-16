@@ -1,20 +1,18 @@
 package com.khonsu.enroute;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.khonsu.enroute.settings.UpdaterSettings;
-import com.khonsu.enroute.uifields.DestinationTextField;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.RecipientTextField;
+import com.khonsu.enroute.uifields.TextField;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
 
@@ -23,12 +21,12 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private final UpdaterSettings updaterSettings;
 	private final FrequencyNumberPicker frequencyNumberPicker;
 	private final RecipientTextField recipientTextField;
-	private final DestinationTextField destinationTextField;
+	private final TextField destinationTextField;
 	private final ImageButton contactPickerButton;
 
 	public StartSwitchListener(Context context,
 							   UpdaterSettings updaterSettings,
-							   DestinationTextField destinationTextField,
+							   TextField destinationTextField,
 							   FrequencyNumberPicker frequencyNumberPicker,
 							   RecipientTextField recipientTextField,
 							   ImageButton contactPickerButton) {
@@ -82,7 +80,7 @@ public class StartSwitchListener implements CompoundButton.OnCheckedChangeListen
 	private void onFormValidateSuccess(Intent updateServiceIntent) {
 		updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
 		updaterSettings.setRecipient(recipientTextField.getRecipientNumber());
-		updaterSettings.setDestination(destinationTextField.getDestination());
+		updaterSettings.setDestination(destinationTextField.getContent());
 		updaterSettings.setUpdatesActive(true);
 		context.startService(updateServiceIntent);
 	}

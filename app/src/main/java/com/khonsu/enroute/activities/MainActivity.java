@@ -28,9 +28,9 @@ import com.khonsu.enroute.StartSwitchListener;
 import com.khonsu.enroute.UpdateScheduler;
 import com.khonsu.enroute.UrlAccessor;
 import com.khonsu.enroute.settings.UpdaterSettings;
-import com.khonsu.enroute.uifields.DestinationTextField;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.RecipientTextField;
+import com.khonsu.enroute.uifields.TextField;
 
 public class MainActivity extends Activity {
 	static final int PICK_CONTACT_REQUEST = 1001;
@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
 		GooglePlacesAutocompleter googlePlacesAutocompleter = new GooglePlacesAutocompleter(new UrlAccessor());
 		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
 
-		DestinationTextField destinationTextField = new DestinationTextField(autoCompView, updaterSettings, new AddressValidator(googlePlacesAutocompleter));
+		TextField destinationTextField = new TextField(autoCompView, updaterSettings, new AddressValidator(googlePlacesAutocompleter), "Invalid address");
 		destinationTextField.setTextField(updaterSettings.getDestination());
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 
