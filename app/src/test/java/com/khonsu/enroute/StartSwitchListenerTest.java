@@ -7,9 +7,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.khonsu.enroute.settings.UpdaterSettings;
-import com.khonsu.enroute.uifields.DestinationTextField;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.RecipientTextField;
+import com.khonsu.enroute.uifields.TextField;
 
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class StartSwitchListenerTest {
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
 				mock(Context.class),
 				mock(UpdaterSettings.class),
-				mock(DestinationTextField.class),
+				mock(TextField.class),
 				mock(FrequencyNumberPicker.class),
 				recipientTextField,
 				mock(ImageButton.class));
@@ -67,7 +67,7 @@ public class StartSwitchListenerTest {
 		when(addressValidator.validate(anyString())).thenReturn(false);
 
 		RecipientTextField recipientTextField = new RecipientTextField(mockRecipientEditText, mock(UpdaterSettings.class), phoneNumberValidator);
-		DestinationTextField destinationTextField = new DestinationTextField(mockDestinationEditText, mock(UpdaterSettings.class), addressValidator);
+		TextField destinationTextField = new TextField(mockDestinationEditText, mock(UpdaterSettings.class), addressValidator, "some message");
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
 				mock(Context.class),
@@ -100,7 +100,7 @@ public class StartSwitchListenerTest {
 		when(addressValidator.validate(anyString())).thenReturn(true);
 
 		RecipientTextField recipientTextField = new RecipientTextField(mockEditText, mock(UpdaterSettings.class), phoneNumberValidator);
-		DestinationTextField destinationTextField = new DestinationTextField(mockEditText, mock(UpdaterSettings.class), addressValidator);
+		TextField destinationTextField = new TextField(mockEditText, mock(UpdaterSettings.class), addressValidator, "some message");
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
 				mock(Context.class),
@@ -134,7 +134,7 @@ public class StartSwitchListenerTest {
 		when(addressValidator.validate(anyString())).thenReturn(false);
 
 		RecipientTextField recipientTextField = new RecipientTextField(mockRecipientEditText, mock(UpdaterSettings.class), phoneNumberValidator);
-		DestinationTextField destinationTextField = new DestinationTextField(mockDestinationEditText, mock(UpdaterSettings.class), addressValidator);
+		TextField destinationTextField = new TextField(mockDestinationEditText, mock(UpdaterSettings.class), addressValidator, "some message");
 
 		StartSwitchListener startSwitchListener = new StartSwitchListener(
 				mock(Context.class),
