@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,39 +21,46 @@ import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
+import com.khonsu.enroute.NetworkStatus;
 import com.khonsu.enroute.NextUpdateFormatter;
 import com.khonsu.enroute.PhoneNumberValidator;
 import com.khonsu.enroute.PlacesAutoCompleteAdapter;
 import com.khonsu.enroute.R;
-import com.khonsu.enroute.StartSwitchListener;
 import com.khonsu.enroute.UpdateScheduler;
+import com.khonsu.enroute.UpdaterService;
 import com.khonsu.enroute.UrlAccessor;
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.TextField;
+import com.khonsu.enroute.validator.FormValidator;
 
 public class MainActivity extends Activity {
 	static final int PICK_CONTACT_REQUEST = 1001;
 	private TextField recipientTextField;
 	private BroadcastReceiver nextMessageReceiver;
+    private TextField destinationTextField;
+    private FrequencyNumberPicker frequencyNumberPicker;
+    private ImageButton contactPickerButton;
 	private UpdaterSettings updaterSettings;
-	@Override
+    private ToggleButton toggleButton;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 		updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
 
-		FrequencyNumberPicker frequencyNumberPicker = initialiseFrequencyNumberPicker();
+		frequencyNumberPicker = initialiseFrequencyNumberPicker();
 
 		initialiseRecipientTextField();
 
-		ImageButton contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
+		contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
 		setUpContactPickerButton(contactPickerButton);
 
-		TextField destinationTextField = initialiseDestinationTextField();
+		destinationTextField = initialiseDestinationTextField();
 
-		initialiseToggleButton(frequencyNumberPicker, contactPickerButton, destinationTextField);
+		initialiseToggleButton();
 
 		updateNextUpdateView();
 
@@ -153,9 +161,9 @@ public class MainActivity extends Activity {
 		return frequencyNumberPicker;
 	}
 
-	private void initialiseToggleButton(FrequencyNumberPicker frequencyNumberPicker, ImageButton contactPickerButton, TextField destinationTextField) {
-		StartSwitchListener startSwitchListener = new StartSwitchListener(getApplicationContext(), updaterSettings, destinationTextField, frequencyNumberPicker, recipientTextField, contactPickerButton);
-		ToggleButton toggleButton = (ToggleButton)findViewById(R.id.start_toggle);
+	private void initialiseToggleButton() {
+        StartSwitchListener startSwitchListener = new StartSwitchListener(new NetworkStatus(getApplicationContext()));
+		toggleButton = (ToggleButton)findViewById(R.id.start_toggle);
 		toggleButton.setChecked(updaterSettings.isUpdatesActive());
 		toggleButton.setOnCheckedChangeListener(startSwitchListener);
 	}
@@ -172,4 +180,52 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
+
+    private void updateButtonStates() {
+        frequencyNumberPicker.setEnabledOrDisabledAccordingToUpdateStatus();
+        recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+        destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+        contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
+        contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255);
+        toggleButton.setChecked(updaterSettings.isUpdatesActive());
+
+    }
+
+    private class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
+
+        private final NetworkStatus networkStatus;
+
+        public StartSwitchListener(NetworkStatus networkStatus) {
+            this.networkStatus = networkStatus;
+        }
+        @Override
+        public void onCheckedChanged(final CompoundButton buttonView, boolean isChecked) {
+            if (isChecked && networkStatus.isAvailable()) {
+                FormValidator formValidator = new FormValidator(new FormValidator.FormValidatorListener() {
+                    @Override
+                    public void success() {
+                        updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
+                        updaterSettings.setRecipient(recipientTextField.getContent());
+                        updaterSettings.setDestination(destinationTextField.getContent());
+                        updaterSettings.setUpdatesActive(true);
+
+                        Intent updateServiceIntent = new Intent(getApplicationContext(), UpdaterService.class);
+                        getApplicationContext().startService(updateServiceIntent);
+                        updateButtonStates();
+                    }
+
+                    @Override
+                    public void failure() {
+                        buttonView.setChecked(false);
+                    }
+                });
+                formValidator.execute(recipientTextField, destinationTextField);
+            }
+            else {
+                updaterSettings.setUpdatesActive(false);
+                UpdateScheduler.cancelUpdate(getApplicationContext());
+                updateButtonStates();
+            }
+        }
+    }
 }
