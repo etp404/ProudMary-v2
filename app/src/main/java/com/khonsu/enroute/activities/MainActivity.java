@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
 		initialiseNextMessageUpdateReceiver();
 
         modeOfTravelRadioGroup = (RadioGroup)findViewById(R.id.mode_of_travel_radio_group);
-        modeOfTravelRadioGroup.check(updaterSettings.getTransportMode());
+        modeOfTravelRadioGroup.check(updaterSettings.getTransportMode() == -1 ? R.id.mode_of_travel_car : updaterSettings.getTransportMode());
 	}
 
 	private ImageButton setUpContactPickerButton(ImageButton contactPickerButton) {
@@ -191,7 +191,10 @@ public class MainActivity extends Activity {
         recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
         destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
         contactPickerButton.setEnabled(!updaterSettings.isUpdatesActive());
-        contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100: 255);
+        contactPickerButton.setImageAlpha(updaterSettings.isUpdatesActive() ? 100 : 255);
+        for (int i=0;i<modeOfTravelRadioGroup.getChildCount();i++) {
+            modeOfTravelRadioGroup.getChildAt(i).setEnabled(!updaterSettings.isUpdatesActive());
+        }
         toggleButton.setChecked(updaterSettings.isUpdatesActive());
 
     }

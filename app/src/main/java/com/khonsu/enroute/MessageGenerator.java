@@ -7,7 +7,9 @@ import android.widget.Toast;
 
 public class MessageGenerator {
 	static final String MESSAGE_ESTIMATE_FORMAT = "I should arrive in approximately %s.";
-	static final String CURRENT_LOCATION_ESTIMATE_FORMAT = "My current location is: %s";
+	static final String CURRENT_LOCATION_ESTIMATE_FORMAT = "My current location is: %s.";
+    static final String PLUG=" Update sent by En Route!";
+
 	static final String COULD_NOT_UPDATE_ETA = "Could not obtain ETA. Please check destination value and internet connection.";
 	private final GoogleMapsDurationGetter googleMapsDurationGetter;
 
@@ -19,6 +21,7 @@ public class MessageGenerator {
 		StringBuffer message = new StringBuffer();
 		appendEstimateIfPossible(context, currentLatitude, currentLongitude, destination, mode, message);
 		appendCurrentLocationLink(currentLatitude, currentLongitude, message);
+        message.append(PLUG);
 		return message.toString();
 	}
 
