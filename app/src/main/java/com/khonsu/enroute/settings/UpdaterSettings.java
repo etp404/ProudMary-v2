@@ -12,8 +12,9 @@ public class UpdaterSettings {
 	private static final String UPDATE_PERIOD_IN_MINUTES = "update_period_in_minutes";
 	private static final String UPDATE_DESTINATION = "update_destination";
 	private static final String UPDATE_RECIPIENT = "update_recipient";
+    private static final String UPDATE_MODE_OF_TRANSPORT = "update_mode_of_transport";
 
-	private final SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
 	public UpdaterSettings(SharedPreferences sharedPreferences) {
 		this.sharedPreferences = sharedPreferences;
@@ -58,6 +59,16 @@ public class UpdaterSettings {
 	public String getRecipient() {
 		return sharedPreferences.getString(UPDATE_RECIPIENT, "");
 	}
+
+    public void setTransportMode(int transportMode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(UPDATE_MODE_OF_TRANSPORT, transportMode);
+        editor.apply();
+    }
+
+    public int getTransportMode() {
+        return sharedPreferences.getInt(UPDATE_MODE_OF_TRANSPORT, -1);
+    }
 
 	public Long getUpdatePeriodInMillis() {
 		return TimeUnit.MINUTES.toMillis(getUpdatePeriodInMinutes());

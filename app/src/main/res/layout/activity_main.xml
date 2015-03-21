@@ -13,7 +13,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Recipient"
-            android:id="@+id/recipientNumberLabel"/>
+            android:id="@+id/recipientNumberLabel"
+            android:paddingTop="10dp" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -40,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/destination_label"
-            android:id="@+id/destinationLabel"/>
+            android:id="@+id/destinationLabel"
+            android:paddingTop="10dp" />
         <AutoCompleteTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -50,9 +52,51 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/mode_of_travel"
+            android:id="@+id/modeOfTravelLabel"
+            android:paddingTop="10dp" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/mode_of_travel_radio_group">
+            <RadioButton
+                android:id="@+id/car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car"
+                android:layout_gravity="center|left"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bike"
+                android:id="@+id/radioButbiketon"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:textSize="14dp"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Walking"
+                android:id="@+id/radioButton"
+                android:checked="false"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:textSize="14dp" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/update_frequency"
             android:id="@+id/update_every"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="10dp" />
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

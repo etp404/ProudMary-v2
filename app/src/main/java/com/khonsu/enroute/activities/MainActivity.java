@@ -16,6 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -43,10 +44,12 @@ public class MainActivity extends Activity {
     private ImageButton contactPickerButton;
 	private UpdaterSettings updaterSettings;
     private ToggleButton toggleButton;
+    private RadioGroup modeOfTravelRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
 		updaterSettings = new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0));
@@ -66,6 +69,8 @@ public class MainActivity extends Activity {
 
 		initialiseNextMessageUpdateReceiver();
 
+        modeOfTravelRadioGroup = (RadioGroup)findViewById(R.id.mode_of_travel_radio_group);
+        modeOfTravelRadioGroup.check(updaterSettings.getTransportMode());
 	}
 
 	private ImageButton setUpContactPickerButton(ImageButton contactPickerButton) {
@@ -207,7 +212,9 @@ public class MainActivity extends Activity {
                         updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
                         updaterSettings.setRecipient(recipientTextField.getContent());
                         updaterSettings.setDestination(destinationTextField.getContent());
+                        updaterSettings.setTransportMode(modeOfTravelRadioGroup.getCheckedRadioButtonId());
                         updaterSettings.setUpdatesActive(true);
+
 
                         Intent updateServiceIntent = new Intent(getApplicationContext(), UpdaterService.class);
                         getApplicationContext().startService(updateServiceIntent);
