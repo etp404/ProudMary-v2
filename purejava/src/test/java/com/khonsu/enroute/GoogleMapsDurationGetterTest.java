@@ -17,11 +17,12 @@ public class GoogleMapsDurationGetterTest {
 		String originLat = "51";
 		String originLong = "-0.1";
 		String destination = "Birmingham";
-		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s", originLat, originLong, destination));
+        String mode = "cycling";
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&mode=%s", originLat, originLong, destination, mode));
 
 		FakeUrlAccessor fakeUrlAccessor = new FakeUrlAccessor(url, duration);
 		GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(fakeUrlAccessor);
-		String returnedJourneyEta = googleMapsDurationGetter.getEstimatedJourneyTime(originLat, originLong, destination);
+		String returnedJourneyEta = googleMapsDurationGetter.getEstimatedJourneyTime(originLat, originLong, destination, mode);
 		assertEquals(duration, returnedJourneyEta);
 
 	}

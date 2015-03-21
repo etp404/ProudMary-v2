@@ -8,6 +8,8 @@ import java.net.URL;
 import static org.junit.Assert.assertEquals;
 
 public class GoogleMapsLinkGeneratorTest {
+    String mode = "walking";
+
     @Test
     public void testThatMapLinkIsGeneratorAsExpected() {
 
@@ -29,8 +31,8 @@ public class GoogleMapsLinkGeneratorTest {
 		String currentLongitude = "10";
 		String destination="Leeds";
 
-		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s", currentLatitude, currentLongitude, destination));
-		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, destination));
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&mode=%s", currentLatitude, currentLongitude, destination, mode));
+		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, destination, mode));
 	}
 
 	@Test
@@ -38,8 +40,8 @@ public class GoogleMapsLinkGeneratorTest {
 		String currentLatitude = "5";
 		String currentLongitude = "10";
 
-		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=AB6%%207RQ", currentLatitude, currentLongitude));
-		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, "AB6 7RQ"));
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=AB6%%207RQ&mode=%s", currentLatitude, currentLongitude, mode));
+		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, "AB6 7RQ", mode));
 	}
 
 	@Test

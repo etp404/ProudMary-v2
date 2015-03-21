@@ -15,9 +15,9 @@ public class MessageGenerator {
 		this.googleMapsDurationGetter = googleMapsDurationGetter;
 	}
 
-	public String generateMessage(Context context, String currentLatitude, String currentLongitude, String destination) {
+	public String generateMessage(Context context, String currentLatitude, String currentLongitude, String destination, String mode) {
 		StringBuffer message = new StringBuffer();
-		appendEstimateIfPossible(context, currentLatitude, currentLongitude, destination, message);
+		appendEstimateIfPossible(context, currentLatitude, currentLongitude, destination, mode, message);
 		appendCurrentLocationLink(currentLatitude, currentLongitude, message);
 		return message.toString();
 	}
@@ -29,9 +29,9 @@ public class MessageGenerator {
 		message.append(String.format(CURRENT_LOCATION_ESTIMATE_FORMAT, GoogleMapsLinkGenerator.generateLinkForLatLong(currentLatitude, currentLongitude)));
 	}
 
-	private void appendEstimateIfPossible(final Context context, String currentLatitude, String currentLongitude, String destination, StringBuffer message) {
+	private void appendEstimateIfPossible(final Context context, String currentLatitude, String currentLongitude, String destination, String mode, StringBuffer message) {
 		try {
-			message.append(String.format(MESSAGE_ESTIMATE_FORMAT, googleMapsDurationGetter.getEstimatedJourneyTime(currentLatitude, currentLongitude, destination)));
+			message.append(String.format(MESSAGE_ESTIMATE_FORMAT, googleMapsDurationGetter.getEstimatedJourneyTime(currentLatitude, currentLongitude, destination, mode)));
 		} catch (UnableToGetEstimatedJourneyTimeException e) {
 			e.printStackTrace();
 

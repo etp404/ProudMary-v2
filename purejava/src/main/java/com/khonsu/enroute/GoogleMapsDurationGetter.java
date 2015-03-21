@@ -14,9 +14,9 @@ public class GoogleMapsDurationGetter {
 		this.urlAccessor = urlAccessor;
 	}
 
-	public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination) throws UnableToGetEstimatedJourneyTimeException {
+	public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination, String mode) throws UnableToGetEstimatedJourneyTimeException {
 		try {
-			URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLat, currentLong, destination);
+			URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLat, currentLong, destination, mode);
 			Gson gson = new Gson();
 			String responseBodyAsJsonString = urlAccessor.getResponse(url);
 			ResponseBody responseBody = gson.fromJson(responseBodyAsJsonString, ResponseBody.class);
