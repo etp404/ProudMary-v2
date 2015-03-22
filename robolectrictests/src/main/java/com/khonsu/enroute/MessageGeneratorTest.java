@@ -16,10 +16,10 @@ public class MessageGeneratorTest {
 
 	@Test
 	public void testThatOnlyCurrentLocationIsIncludedInTheMessageIfItIsAllThatIsAvailable() throws UnableToGetEstimatedJourneyTimeException {
-		String expectedMessage = "My current location is: https://www.google.co.uk/maps/@16.4,-2.2,10z";
+		String expectedMessage = "My current location is: http://maps.google.co.uk/maps?q=16.4,-2.2. Update sent by En Route!";
 
 		MessageGenerator messageGenerator = new MessageGenerator(new ErrorThrowingGoogleMapsDurationGetter(null));
-		String actualMessage = messageGenerator.generateMessage(Robolectric.application, "16.4", "-2.2", "Destination");
+		String actualMessage = messageGenerator.generateMessage(Robolectric.application, "16.4", "-2.2", "Destination", "cycling");
 
 		assertEquals(expectedMessage, actualMessage);
 		assertEquals("Could not obtain ETA. Please check destination value and internet connection.", ShadowToast.getTextOfLatestToast());
@@ -31,14 +31,15 @@ public class MessageGeneratorTest {
 		String destination = "Edinburgh";
 		String originLat = "16";
 		String originLong = "2";
+        String mode = "bicycling";
 
-		String expectedMessage = String.format("I should arrive in approximately %s. My current location is: https://www.google.co.uk/maps/@%s,%s,10z", duration, originLat, originLong);
+		String expectedMessage = String.format("I should arrive in approximately %s. My current location is: http://maps.google.co.uk/maps?q=%s,%s. Update sent by En Route!", duration, originLat, originLong);
 
-		FakeGoogleMapsDurationGetter fakeGoogleMapsDurationGetter = new FakeGoogleMapsDurationGetter(originLat, originLong, destination, duration);
+		FakeGoogleMapsDurationGetter fakeGoogleMapsDurationGetter = new FakeGoogleMapsDurationGetter(originLat, originLong, destination, duration, mode);
 		fakeGoogleMapsDurationGetter.duration = duration;
 
 		MessageGenerator messageGenerator = new MessageGenerator(fakeGoogleMapsDurationGetter);
-		String actualMessage = messageGenerator.generateMessage(Robolectric.application, originLat, originLong, destination);
+		String actualMessage = messageGenerator.generateMessage(Robolectric.application, originLat, originLong, destination, mode);
 		assertEquals(expectedMessage, actualMessage);
 	}
 
@@ -48,7 +49,7 @@ public class MessageGeneratorTest {
 		}
 
 		@Override
-		public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination) throws UnableToGetEstimatedJourneyTimeException {
+		public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination, String mode) throws UnableToGetEstimatedJourneyTimeException {
 			throw new UnableToGetEstimatedJourneyTimeException();
 		}
 	}
@@ -59,17 +60,19 @@ public class MessageGeneratorTest {
 		private String mockedForLat;
 		private String mockedForLong;
 		private String mockedForDestination;
+		private String mockedForMode;
 
-		public FakeGoogleMapsDurationGetter(String mockedForLat, String mockedForLong, String mockedForDestination, String duration) {
+		public FakeGoogleMapsDurationGetter(String mockedForLat, String mockedForLong, String mockedForDestination, String duration, String mockedForMode) {
 			super(null);
 			this.mockedForLat = mockedForLat;
 			this.mockedForLong = mockedForLong;
 			this.mockedForDestination = mockedForDestination;
+            this.mockedForMode = mockedForMode;
 			this.duration = duration;
 		}
 
-		public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination) throws UnableToGetEstimatedJourneyTimeException {
-			if (currentLat.equals(mockedForLat) && currentLong.equals(mockedForLong) && destination.equals(mockedForDestination)) {
+		public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination, String mode) throws UnableToGetEstimatedJourneyTimeException {
+			if (currentLat.equals(mockedForLat) && currentLong.equals(mockedForLong) && destination.equals(mockedForDestination) && mode.equals(mockedForMode)) {
 				return duration;
 			}
 			return null;
