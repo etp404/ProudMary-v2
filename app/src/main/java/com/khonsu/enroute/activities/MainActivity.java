@@ -26,7 +26,7 @@ import com.khonsu.enroute.Contact;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.NetworkStatus;
 import com.khonsu.enroute.NextUpdateFormatter;
-import com.khonsu.enroute.PhoneNumberValidator;
+import com.khonsu.enroute.RecipientValidator;
 import com.khonsu.enroute.R;
 import com.khonsu.enroute.UpdateScheduler;
 import com.khonsu.enroute.UpdaterService;
@@ -155,7 +155,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void initialiseRecipientTextField() {
-		recipientTextField = new TextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator(), "Invalid number");
+		recipientTextField = new TextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new RecipientValidator(), "Invalid number");
 		recipientTextField.setTextField(updaterSettings.getRecipient().toString());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
