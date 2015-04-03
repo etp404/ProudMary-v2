@@ -21,11 +21,11 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AddressValidator;
+import com.khonsu.enroute.AutoCompleteAdapter;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.NetworkStatus;
 import com.khonsu.enroute.NextUpdateFormatter;
 import com.khonsu.enroute.PhoneNumberValidator;
-import com.khonsu.enroute.PlacesAutoCompleteAdapter;
 import com.khonsu.enroute.R;
 import com.khonsu.enroute.UpdateScheduler;
 import com.khonsu.enroute.UpdaterService;
@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
 	private TextField initialiseDestinationTextField() {
 		AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.destination);
 		GooglePlacesAutocompleter googlePlacesAutocompleter = new GooglePlacesAutocompleter(new UrlAccessor());
-		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
+		autoCompView.setAdapter(new AutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
 
 		TextField destinationTextField = new TextField(autoCompView, updaterSettings, new AddressValidator(googlePlacesAutocompleter), "Invalid address");
 		destinationTextField.setTextField(updaterSettings.getDestination());

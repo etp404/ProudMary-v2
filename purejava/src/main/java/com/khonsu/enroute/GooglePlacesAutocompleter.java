@@ -6,7 +6,7 @@ import com.khonsu.enroute.google.datamodel.places.PlacesAutoCompleteResponseBody
 import java.io.IOException;
 import java.util.List;
 
-public class GooglePlacesAutocompleter {
+public class GooglePlacesAutocompleter implements AutocompleteSuggestor {
 	private UrlAccessor urlAccessor;
 
 	public GooglePlacesAutocompleter(UrlAccessor urlAccessor) {
