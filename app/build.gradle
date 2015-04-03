@@ -18,8 +18,8 @@ android {
         applicationId "com.khonsu.enroute"
         minSdkVersion 16
         targetSdkVersion 18
-        versionCode 9
-        versionName "1.8"
+        versionCode 10
+        versionName "1.9"
     }
     buildTypes {
         release {

@@ -84,4 +84,5 @@ public class DeserialiseGoogleMapsDataModelTest {
 		ResponseBody routes = gson.fromJson(response, ResponseBody.class);
 		assertEquals(durationText, routes.getDurationText());
 	}
+
 }

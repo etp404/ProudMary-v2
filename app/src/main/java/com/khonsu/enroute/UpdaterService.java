@@ -13,6 +13,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.khonsu.enroute.contactsautocomplete.ContactsFormatter;
 import com.khonsu.enroute.settings.UpdaterSettings;
 
 import java.util.Date;
@@ -25,6 +26,8 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 	private long retryIfFailDelay = TimeUnit.MINUTES.toMillis(5);
 	private String debugTag;
 	private GoogleApiClient mGoogleApiClient;
+    private ContactsFormatter contactsFormatter = new ContactsFormatter(new PhoneNumberValidator());
+
     private final static Map<Integer, String> MODE_OF_TRANPORT_ID_TO_STRING = new HashMap<Integer, String>(){{
         put(R.id.mode_of_travel_car, "driving");
         put(R.id.mode_of_travel_bike, "bicycling");
@@ -84,7 +87,8 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 							updaterSettings.getDestination(),
                             MODE_OF_TRANPORT_ID_TO_STRING.get(updaterSettings.getTransportMode()));
 
-					SMSSender.sendSMS(updaterSettings.getRecipient(), message);
+                    String number = contactsFormatter.getNumberFromContact(updaterSettings.getRecipient());
+					SMSSender.sendSMS(number, message);
 
 					notifier.notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
 

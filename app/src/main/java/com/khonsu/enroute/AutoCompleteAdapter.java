@@ -7,13 +7,13 @@ import android.widget.Filterable;
 
 import java.util.List;
 
-public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
+public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 	private List<String> resultList;
-	private GooglePlacesAutocompleter googlePlacesAutocompleter;
+	private AutoCompleterSuggestionsGetter suggestions;
 
-	public PlacesAutoCompleteAdapter(Context context, int textViewResourceId, GooglePlacesAutocompleter googlePlacesAutocompleter) {
+	public AutoCompleteAdapter(Context context, int textViewResourceId, AutoCompleterSuggestionsGetter suggestions) {
 		super(context, textViewResourceId);
-		this.googlePlacesAutocompleter = googlePlacesAutocompleter;
+		this.suggestions = suggestions;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 				FilterResults filterResults = new FilterResults();
 				if (constraint != null) {
 					// Retrieve the autocomplete results.
-					resultList =  googlePlacesAutocompleter.getSuggestions(constraint.toString());
+					resultList =  suggestions.getSuggestions(constraint.toString());
 
 					// Assign the data to the FilterResults
 					filterResults.values = resultList;

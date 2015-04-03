@@ -14,22 +14,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AddressValidator;
+import com.khonsu.enroute.AutoCompleteAdapter;
+import com.khonsu.enroute.contactsautocomplete.ContactSuggester;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.NetworkStatus;
 import com.khonsu.enroute.NextUpdateFormatter;
 import com.khonsu.enroute.PhoneNumberValidator;
-import com.khonsu.enroute.PlacesAutoCompleteAdapter;
 import com.khonsu.enroute.R;
 import com.khonsu.enroute.UpdateScheduler;
 import com.khonsu.enroute.UpdaterService;
 import com.khonsu.enroute.UrlAccessor;
+import com.khonsu.enroute.contactsautocomplete.ContactsAccessor;
+import com.khonsu.enroute.contactsautocomplete.ContactsFormatter;
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.TextField;
@@ -61,7 +63,7 @@ public class MainActivity extends Activity {
 		contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
 		setUpContactPickerButton(contactPickerButton);
 
-		destinationTextField = initialiseDestinationTextField();
+		initialiseDestinationTextField();
 
 		initialiseToggleButton();
 
@@ -71,6 +73,7 @@ public class MainActivity extends Activity {
 
         modeOfTravelRadioGroup = (RadioGroup)findViewById(R.id.mode_of_travel_radio_group);
         modeOfTravelRadioGroup.check(updaterSettings.getTransportMode() == -1 ? R.id.mode_of_travel_car : updaterSettings.getTransportMode());
+
 	}
 
 	private ImageButton setUpContactPickerButton(ImageButton contactPickerButton) {
@@ -96,16 +99,25 @@ public class MainActivity extends Activity {
 		registerReceiver(nextMessageReceiver, new IntentFilter(UpdateScheduler.SCHEDULE_CHANGE));
 	}
 
-	private TextField initialiseDestinationTextField() {
+	private void initialiseDestinationTextField() {
 		AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.destination);
 		GooglePlacesAutocompleter googlePlacesAutocompleter = new GooglePlacesAutocompleter(new UrlAccessor());
-		autoCompView.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
+		autoCompView.setAdapter(new AutoCompleteAdapter(this, R.layout.list_item, googlePlacesAutocompleter));
 
 		TextField destinationTextField = new TextField(autoCompView, updaterSettings, new AddressValidator(googlePlacesAutocompleter), "Invalid address");
 		destinationTextField.setTextField(updaterSettings.getDestination());
 		destinationTextField.setEnabledOrDisabledAccordingToUpdateStatus();
-		return destinationTextField;
 	}
+
+    private void initialiseRecipientTextField() {
+        AutoCompleteTextView contactsAutocomplete = (AutoCompleteTextView)findViewById(R.id.recipientNumber);
+        ContactSuggester contactSuggester = new ContactSuggester(new ContactsAccessor(getContentResolver()));
+        contactsAutocomplete.setAdapter(new AutoCompleteAdapter(this, R.layout.list_item, contactSuggester));
+
+        recipientTextField = new TextField(contactsAutocomplete, updaterSettings, new PhoneNumberValidator(), "Invalid number");
+        recipientTextField.setTextField(updaterSettings.getRecipient());
+        recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
+    }
 
 	private void updateNextUpdateView() {
 		Runnable runnable = new Runnable() {
@@ -130,8 +142,6 @@ public class MainActivity extends Activity {
 		unregisterReceiver(nextMessageReceiver);
 	}
 
-
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -151,12 +161,6 @@ public class MainActivity extends Activity {
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void initialiseRecipientTextField() {
-		recipientTextField = new TextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator(), "Invalid number");
-		recipientTextField.setTextField(updaterSettings.getRecipient());
-		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
 
 	private FrequencyNumberPicker initialiseFrequencyNumberPicker() {
@@ -180,8 +184,10 @@ public class MainActivity extends Activity {
 				Uri uri = data.getData();
 				Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 				cursor.moveToFirst();
+                int displayNameIx = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                String name = cursor.getString(displayNameIx);
 				int  phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-				recipientTextField.setTextField(cursor.getString(phoneIndex));
+				recipientTextField.setTextField(ContactsFormatter.format(name, cursor.getString(phoneIndex)));
 			}
 		}
 	}
