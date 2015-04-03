@@ -1,4 +1,8 @@
-package com.khonsu.enroute;
+package com.khonsu.enroute.contactsautocomplete;
+
+import android.text.TextUtils;
+
+import com.khonsu.enroute.PhoneNumberValidator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +38,6 @@ public class Contact {
 	}
 
 	public static boolean isValidString(String candidateContact) {
-		return CONTACT_PATTERN.matcher(candidateContact).matches();
+		return !TextUtils.isEmpty(candidateContact) && (PhoneNumberValidator.isValidPhoneNumber(candidateContact) || CONTACT_PATTERN.matcher(candidateContact).matches());
 	}
 }

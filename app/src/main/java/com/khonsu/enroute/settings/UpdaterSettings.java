@@ -2,7 +2,7 @@ package com.khonsu.enroute.settings;
 
 import android.content.SharedPreferences;
 
-import com.khonsu.enroute.Contact;
+import com.khonsu.enroute.contactsautocomplete.Contact;
 
 import java.util.concurrent.TimeUnit;
 

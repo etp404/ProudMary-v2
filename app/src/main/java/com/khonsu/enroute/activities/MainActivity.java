@@ -22,7 +22,7 @@ import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.AutoCompleteAdapter;
-import com.khonsu.enroute.Contact;
+import com.khonsu.enroute.contactsautocomplete.Contact;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.NetworkStatus;
 import com.khonsu.enroute.NextUpdateFormatter;

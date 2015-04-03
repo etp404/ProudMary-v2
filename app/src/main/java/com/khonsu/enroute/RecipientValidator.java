@@ -1,10 +1,9 @@
 package com.khonsu.enroute;
 
-import android.text.TextUtils;
-import android.util.Patterns;
+import com.khonsu.enroute.contactsautocomplete.Contact;
 
 public class RecipientValidator implements FieldValidator {
-	public boolean validate(String phoneNumber) {
-		return !TextUtils.isEmpty(phoneNumber) && Patterns.PHONE.matcher(phoneNumber).matches();
+	public boolean validate(String recipient) {
+		return Contact.isValidString(recipient);
 	}
 }
