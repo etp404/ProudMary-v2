@@ -9,7 +9,7 @@ public class Contact {
 	private String name;
 	private String number;
 
-	private Contact(String name, String number) {
+	public Contact(String name, String number) {
 		this.name = name;
 		this.number = number;
 	}
@@ -31,5 +31,9 @@ public class Contact {
 
 	public String getNumber() {
 		return number;
+	}
+
+	public static boolean isValidString(String candidateContact) {
+		return CONTACT_PATTERN.matcher(candidateContact).matches();
 	}
 }

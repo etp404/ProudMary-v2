@@ -22,6 +22,7 @@ import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.AutoCompleteAdapter;
+import com.khonsu.enroute.Contact;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.NetworkStatus;
 import com.khonsu.enroute.NextUpdateFormatter;
@@ -155,7 +156,7 @@ public class MainActivity extends Activity {
 
 	private void initialiseRecipientTextField() {
 		recipientTextField = new TextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new PhoneNumberValidator(), "Invalid number");
-		recipientTextField.setTextField(updaterSettings.getRecipient());
+		recipientTextField.setTextField(updaterSettings.getRecipient().toString());
 		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
 
@@ -180,8 +181,10 @@ public class MainActivity extends Activity {
 				Uri uri = data.getData();
 				Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 				cursor.moveToFirst();
-				int  phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-				recipientTextField.setTextField(cursor.getString(phoneIndex));
+				String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+				String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+				Contact contact = new Contact(name, number);
+				recipientTextField.setTextField(contact.toString());
 			}
 		}
 	}
@@ -213,7 +216,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void success() {
                         updaterSettings.setUpdatePeriodInMinutes(frequencyNumberPicker.getUpdateInMinutes());
-                        updaterSettings.setRecipient(recipientTextField.getContent());
+                        updaterSettings.setRecipient(Contact.fromString(recipientTextField.getContent()));
                         updaterSettings.setDestination(destinationTextField.getContent());
                         updaterSettings.setTransportMode(modeOfTravelRadioGroup.getCheckedRadioButtonId());
                         updaterSettings.setUpdatesActive(true);

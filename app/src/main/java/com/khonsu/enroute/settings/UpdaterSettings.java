@@ -2,6 +2,8 @@ package com.khonsu.enroute.settings;
 
 import android.content.SharedPreferences;
 
+import com.khonsu.enroute.Contact;
+
 import java.util.concurrent.TimeUnit;
 
 public class UpdaterSettings {
@@ -50,14 +52,14 @@ public class UpdaterSettings {
 		return sharedPreferences.getString(UPDATE_DESTINATION, "");
 	}
 
-	public void setRecipient(String recipient) {
+	public void setRecipient(Contact recipient) {
 		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putString(UPDATE_RECIPIENT, recipient);
+		editor.putString(UPDATE_RECIPIENT, recipient.toString());
 		editor.apply();
 	}
 
-	public String getRecipient() {
-		return sharedPreferences.getString(UPDATE_RECIPIENT, "");
+	public Contact getRecipient() {
+		return Contact.fromString(sharedPreferences.getString(UPDATE_RECIPIENT, ""));
 	}
 
     public void setTransportMode(int transportMode) {

@@ -84,7 +84,7 @@ public class UpdaterService extends Service implements ConnectionCallbacks, OnCo
 							updaterSettings.getDestination(),
                             MODE_OF_TRANPORT_ID_TO_STRING.get(updaterSettings.getTransportMode()));
 
-					SMSSender.sendSMS(updaterSettings.getRecipient(), message);
+					SMSSender.sendSMS(updaterSettings.getRecipient().getNumber(), message);
 
 					notifier.notify(getApplicationContext().getResources().getString(R.string.update_sent_notification));
 
