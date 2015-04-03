@@ -21,11 +21,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
-            <EditText
+            <AutoCompleteTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recipientNumber"
-                android:inputType="phone"
+                android:id="@+id/recipient"
                 android:layout_weight="1"
                 android:maxLines="1"/>
             <ImageButton

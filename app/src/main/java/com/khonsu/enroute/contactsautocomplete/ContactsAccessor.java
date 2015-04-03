@@ -11,13 +11,18 @@ import java.util.List;
 
 public class ContactsAccessor {
 	private final ContentResolver contentResolver;
+	private List<Contact> contacts;
 
 	public ContactsAccessor(ContentResolver contentResolver) {
 		this.contentResolver = contentResolver;
 	}
 
-	public List<Contact> getContacts() {
-		List<Contact> contacts = new ArrayList<>();
+	public void invalidateCache() {
+		contacts = null;
+	}
+
+	private void updateCachedContacts() {
+		contacts = new ArrayList<>();
 		Cursor contactsCursor =
 				contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.Contacts.SORT_KEY_PRIMARY);
 		ContentProviderClient mCProviderClient = contentResolver.acquireContentProviderClient(ContactsContract.Contacts.CONTENT_URI);
@@ -52,6 +57,12 @@ public class ContactsAccessor {
 			}
 		}
 		contactsCursor.close();
+	}
+
+	public List<Contact> getCachedContacts() {
+		if (contacts == null) {
+			updateCachedContacts();
+		}
 		return contacts;
 	}
 }

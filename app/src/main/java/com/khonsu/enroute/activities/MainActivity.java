@@ -31,6 +31,8 @@ import com.khonsu.enroute.R;
 import com.khonsu.enroute.UpdateScheduler;
 import com.khonsu.enroute.UpdaterService;
 import com.khonsu.enroute.UrlAccessor;
+import com.khonsu.enroute.contactsautocomplete.ContactSuggester;
+import com.khonsu.enroute.contactsautocomplete.ContactsAccessor;
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.TextField;
@@ -46,8 +48,9 @@ public class MainActivity extends Activity {
 	private UpdaterSettings updaterSettings;
     private ToggleButton toggleButton;
     private RadioGroup modeOfTravelRadioGroup;
+	private ContactsAccessor contactsAccessor;
 
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -57,6 +60,7 @@ public class MainActivity extends Activity {
 
 		frequencyNumberPicker = initialiseFrequencyNumberPicker();
 
+		contactsAccessor = new ContactsAccessor(getContentResolver());
 		initialiseRecipientTextField();
 
 		contactPickerButton = (ImageButton)findViewById(R.id.button_contact_picker);
@@ -74,6 +78,11 @@ public class MainActivity extends Activity {
         modeOfTravelRadioGroup.check(updaterSettings.getTransportMode() == -1 ? R.id.mode_of_travel_car : updaterSettings.getTransportMode());
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		contactsAccessor.invalidateCache();
+	}
 	private ImageButton setUpContactPickerButton(ImageButton contactPickerButton) {
 		contactPickerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -95,6 +104,15 @@ public class MainActivity extends Activity {
 			}
 		};
 		registerReceiver(nextMessageReceiver, new IntentFilter(UpdateScheduler.SCHEDULE_CHANGE));
+	}
+
+	private void initialiseRecipientTextField() {
+		AutoCompleteTextView recipientTextView = (AutoCompleteTextView) findViewById(R.id.recipient);
+		ContactSuggester contactSuggester = new ContactSuggester(contactsAccessor);
+		recipientTextView.setAdapter(new AutoCompleteAdapter(this, R.layout.list_item, contactSuggester));
+		recipientTextField = new TextField((EditText)findViewById(R.id.recipient), updaterSettings, new RecipientValidator(), "Invalid number");
+		recipientTextField.setTextField(updaterSettings.getRecipient().toString());
+		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
 
 	private TextField initialiseDestinationTextField() {
@@ -152,12 +170,6 @@ public class MainActivity extends Activity {
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void initialiseRecipientTextField() {
-		recipientTextField = new TextField((EditText)findViewById(R.id.recipientNumber), updaterSettings, new RecipientValidator(), "Invalid number");
-		recipientTextField.setTextField(updaterSettings.getRecipient().toString());
-		recipientTextField.setEnabledOrDisabledAccordingToUpdateStatus();
 	}
 
 	private FrequencyNumberPicker initialiseFrequencyNumberPicker() {

@@ -16,7 +16,7 @@ public class ContactSuggester implements AutocompleteSuggestor {
 	public List<String> getSuggestions(String input) {
 		List<String> suggestions = new ArrayList<>();
 
-		List<Contact> contacts = contactsAccessor.getContacts();
+		List<Contact> contacts = contactsAccessor.getCachedContacts();
 
 		for (Contact contact : contacts) {
 			String stringContact = contact.toString();
