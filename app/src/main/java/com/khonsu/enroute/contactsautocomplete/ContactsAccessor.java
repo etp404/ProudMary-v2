@@ -12,6 +12,7 @@ import java.util.List;
 public class ContactsAccessor {
 	private final ContentResolver contentResolver;
 	private List<Contact> contacts;
+	private ContactsAccessorListener listener;
 
 	public ContactsAccessor(ContentResolver contentResolver) {
 		this.contentResolver = contentResolver;
@@ -22,6 +23,9 @@ public class ContactsAccessor {
 	}
 
 	private void updateCachedContacts() {
+		if (listener != null) {
+			listener.startingToFetchContacts();
+		}
 		contacts = new ArrayList<>();
 		Cursor contactsCursor =
 				contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.Contacts.SORT_KEY_PRIMARY);
@@ -56,6 +60,9 @@ public class ContactsAccessor {
 			}
 		}
 		contactsCursor.close();
+		if (listener != null) {
+			listener.finishedFetchingContacts();
+		}
 	}
 
 	public List<Contact> getCachedContacts() {
@@ -63,5 +70,14 @@ public class ContactsAccessor {
 			updateCachedContacts();
 		}
 		return contacts;
+	}
+
+	public void setListener(ContactsAccessorListener listener) {
+		this.listener = listener;
+	}
+
+	public interface ContactsAccessorListener {
+		public void startingToFetchContacts();
+		public void finishedFetchingContacts();
 	}
 }
