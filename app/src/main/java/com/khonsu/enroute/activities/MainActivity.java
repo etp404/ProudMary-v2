@@ -16,6 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -33,6 +34,7 @@ import com.khonsu.enroute.UpdaterService;
 import com.khonsu.enroute.UrlAccessor;
 import com.khonsu.enroute.contactsautocomplete.ContactSuggester;
 import com.khonsu.enroute.contactsautocomplete.ContactsAccessor;
+import com.khonsu.enroute.customviewcomponents.AutoCompleteLoading;
 import com.khonsu.enroute.settings.UpdaterSettings;
 import com.khonsu.enroute.uifields.FrequencyNumberPicker;
 import com.khonsu.enroute.uifields.TextField;
@@ -107,7 +109,8 @@ public class MainActivity extends Activity {
 	}
 
 	private void initialiseRecipientTextField() {
-		AutoCompleteTextView recipientTextView = (AutoCompleteTextView) findViewById(R.id.recipient);
+		AutoCompleteLoading recipientTextView = (AutoCompleteLoading) findViewById(R.id.recipient);
+		recipientTextView.setLoadingIndicator((ProgressBar)findViewById(R.id.recipientsLoadingSpinner));
 		ContactSuggester contactSuggester = new ContactSuggester(contactsAccessor);
 		recipientTextView.setAdapter(new AutoCompleteAdapter(this, R.layout.list_item, contactSuggester));
 		recipientTextField = new TextField((EditText)findViewById(R.id.recipient), updaterSettings, new RecipientValidator(), "Invalid number");

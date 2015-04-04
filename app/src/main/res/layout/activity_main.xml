@@ -15,18 +15,28 @@
             android:text="Recipient"
             android:id="@+id/recipientNumberLabel"
             android:paddingTop="10dp" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
-            <AutoCompleteTextView
+            <com.khonsu.enroute.customviewcomponents.AutoCompleteLoading
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/recipient"
                 android:layout_weight="1"
                 android:maxLines="1"/>
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:id="@+id/recipientsLoadingSpinner"
+                android:visibility="gone"
+                android:indeterminate="false" />
+
             <ImageButton
                 android:id="@+id/button_contact_picker"
                 android:layout_width="wrap_content"
@@ -35,6 +45,7 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,6 +53,7 @@
             android:text="@string/destination_label"
             android:id="@+id/destinationLabel"
             android:paddingTop="10dp" />
+
         <AutoCompleteTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
