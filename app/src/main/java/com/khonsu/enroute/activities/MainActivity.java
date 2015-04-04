@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
 		initialiseNextMessageUpdateReceiver();
 
         modeOfTravelRadioGroup = (RadioGroup)findViewById(R.id.mode_of_travel_radio_group);
-        modeOfTravelRadioGroup.check(updaterSettings.getTransportMode() == -1 ? R.id.mode_of_travel_car : updaterSettings.getTransportMode());
+        modeOfTravelRadioGroup.check(updaterSettings.getTransportMode());
 	}
 
 	@Override

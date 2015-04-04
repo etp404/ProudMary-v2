@@ -2,6 +2,7 @@ package com.khonsu.enroute.settings;
 
 import android.content.SharedPreferences;
 
+import com.khonsu.enroute.R;
 import com.khonsu.enroute.contactsautocomplete.Contact;
 
 import java.util.concurrent.TimeUnit;
@@ -69,7 +70,7 @@ public class UpdaterSettings {
     }
 
     public int getTransportMode() {
-        return sharedPreferences.getInt(UPDATE_MODE_OF_TRANSPORT, -1);
+        return sharedPreferences.getInt(UPDATE_MODE_OF_TRANSPORT,  R.id.mode_of_travel_car);
     }
 
 	public Long getUpdatePeriodInMillis() {
