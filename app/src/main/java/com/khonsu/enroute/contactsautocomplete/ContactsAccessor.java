@@ -45,7 +45,6 @@ public class ContactsAccessor {
 						while (pCur.moveToNext()) {
 							int numberIx = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
 							String phoneNo = pCur.getString(numberIx);
-							phoneNo = phoneNo.replaceAll("-", "");
 							contacts.add(new Contact(name, phoneNo));
 						}
 						pCur.close();

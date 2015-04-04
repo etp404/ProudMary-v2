@@ -20,7 +20,9 @@ public class ContactSuggester implements AutocompleteSuggestor {
 
 		for (Contact contact : contacts) {
 			String stringContact = contact.toString();
-			if (stringContact.toLowerCase().contains(input.toLowerCase())) {
+			String sanitisedContactString = stringContact.toLowerCase().replaceAll("[-\\s]", "");
+			String sanitisedInputString = input.toLowerCase().replaceAll("[-\\s]", "");
+			if (sanitisedContactString.contains(sanitisedInputString)) {
 				suggestions.add(stringContact);
 			}
 		}
