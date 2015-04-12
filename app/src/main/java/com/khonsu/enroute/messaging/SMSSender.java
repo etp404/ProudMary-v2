@@ -1,4 +1,4 @@
-package com.khonsu.enroute;
+package com.khonsu.enroute.messaging;
 
 import android.telephony.SmsManager;
 
