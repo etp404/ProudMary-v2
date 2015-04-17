@@ -2,6 +2,7 @@ package com.khonsu.enroute.messaging;
 
 import com.khonsu.enroute.GoogleMapsDurationGetter;
 import com.khonsu.enroute.GoogleMapsLinkGenerator;
+import com.khonsu.enroute.ModeOfTransport;
 import com.khonsu.enroute.UnableToGetEstimatedJourneyTimeException;
 
 public class MessageGenerator {
@@ -15,7 +16,7 @@ public class MessageGenerator {
 		this.googleMapsDurationGetter = googleMapsDurationGetter;
 	}
 
-	public String generateMessage(String currentLatitude, String currentLongitude, String destination, String mode) throws UnableToGetEstimatedJourneyTimeException {
+	public String generateMessage(String currentLatitude, String currentLongitude, String destination, ModeOfTransport mode) throws UnableToGetEstimatedJourneyTimeException {
 		StringBuffer message = new StringBuffer();
 		appendEstimate(currentLatitude, currentLongitude, destination, mode, message);
 		appendCurrentLocationLink(currentLatitude, currentLongitude, message);
@@ -30,7 +31,7 @@ public class MessageGenerator {
 		message.append(String.format(CURRENT_LOCATION_ESTIMATE_FORMAT, GoogleMapsLinkGenerator.generateLinkForLatLong(currentLatitude, currentLongitude)));
 	}
 
-	private void appendEstimate(String currentLatitude, String currentLongitude, String destination, String mode, StringBuffer message) throws UnableToGetEstimatedJourneyTimeException {
+	private void appendEstimate(String currentLatitude, String currentLongitude, String destination, ModeOfTransport mode, StringBuffer message) throws UnableToGetEstimatedJourneyTimeException {
 			message.append(String.format(MESSAGE_ESTIMATE_FORMAT, googleMapsDurationGetter.getEstimatedJourneyTime(currentLatitude, currentLongitude, destination, mode)));
 	}
 }

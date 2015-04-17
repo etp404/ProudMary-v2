@@ -33,4 +33,5 @@ public class FrequencyNumberPicker {
 	public void setSelectedFrequency(Integer updatePeriodInMinutes) {
 		numberPicker.setValue(incrementValues.indexOf(String.valueOf(updatePeriodInMinutes)));
 	}
+
 }

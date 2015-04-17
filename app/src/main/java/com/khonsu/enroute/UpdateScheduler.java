@@ -36,4 +36,8 @@ public class UpdateScheduler {
 		Intent intent = new Intent(context, SendUpdateBroadcastReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, 0);
 	}
+
+	public static void scheduleNextUpdate(long l) {
+
+	}
 }

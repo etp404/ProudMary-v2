@@ -32,4 +32,15 @@ public class Notifier {
 		notificationManager.notify(0, notification);
 	}
 
+	public void notifyUpdateSent() {
+		notify(context.getResources().getString(R.string.update_sent_notification));
+	}
+
+	public void notifyLocationUnavailable() {
+		notify(context.getResources().getString(R.string.unable_to_get_location));
+	}
+
+	public void notifyUnableToGetEta() {
+		notify(context.getResources().getString(R.string.unable_to_get_estimated_journey_time));
+	}
 }

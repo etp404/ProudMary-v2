@@ -19,6 +19,8 @@ public class AddressValidatorTest {
 	public void testThatCorrectAddressIsValidatedAsTrue() {
 		AddressValidator addressValidator = new AddressValidator(new FakeGooglePlacesAutocompleter());
 		assertTrue(addressValidator.validate(validAddress));
+
+		ModeOfTransport.valueOf("BIKE");
 	}
 
 	@Test

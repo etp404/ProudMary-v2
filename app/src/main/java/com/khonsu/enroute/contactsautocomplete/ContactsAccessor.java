@@ -2,7 +2,9 @@ package com.khonsu.enroute.contactsautocomplete;
 
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 
@@ -70,6 +72,14 @@ public class ContactsAccessor {
 			updateCachedContacts();
 		}
 		return contacts;
+	}
+
+	public Contact getContact(Uri uri) {
+		Cursor cursor = contentResolver.query(uri, null, null, null, null);
+		cursor.moveToFirst();
+		String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+		String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+		return new Contact(name, number);
 	}
 
 	public void setListener(ContactsAccessorListener listener) {

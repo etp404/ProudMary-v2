@@ -2,7 +2,7 @@ package com.khonsu.enroute.settings;
 
 import android.content.SharedPreferences;
 
-import com.khonsu.enroute.R;
+import com.khonsu.enroute.ModeOfTransport;
 import com.khonsu.enroute.contactsautocomplete.Contact;
 
 import java.util.concurrent.TimeUnit;
@@ -63,14 +63,14 @@ public class UpdaterSettings {
 		return Contact.fromString(sharedPreferences.getString(UPDATE_RECIPIENT, ""));
 	}
 
-    public void setTransportMode(int transportMode) {
+    public void setTransportMode(ModeOfTransport transportMode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(UPDATE_MODE_OF_TRANSPORT, transportMode);
+        editor.putString(UPDATE_MODE_OF_TRANSPORT, transportMode.toString());
         editor.apply();
     }
 
-    public int getTransportMode() {
-        return sharedPreferences.getInt(UPDATE_MODE_OF_TRANSPORT,  R.id.mode_of_travel_car);
+    public ModeOfTransport getTransportMode() {
+        return ModeOfTransport.getEnum(sharedPreferences.getString(UPDATE_MODE_OF_TRANSPORT, ""));
     }
 
 	public Long getUpdatePeriodInMillis() {

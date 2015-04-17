@@ -17,7 +17,7 @@ public class GoogleMapsDurationGetterTest {
 		String originLat = "51";
 		String originLong = "-0.1";
 		String destination = "Birmingham";
-        String mode = "cycling";
+        ModeOfTransport mode = ModeOfTransport.BIKE;
 		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&mode=%s", originLat, originLong, destination, mode));
 
 		FakeUrlAccessor fakeUrlAccessor = new FakeUrlAccessor(url, duration);
