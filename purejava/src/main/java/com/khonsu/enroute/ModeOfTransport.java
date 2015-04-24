@@ -7,7 +7,7 @@ public enum ModeOfTransport {
 
 	public static ModeOfTransport getEnum(String string) {
 		for (ModeOfTransport value : ModeOfTransport.values()) {
-			if (value.toString().equals(string)) {
+			if (value.toString().toLowerCase().equals(string.toLowerCase())) {
 				return value;
 			}
 		}

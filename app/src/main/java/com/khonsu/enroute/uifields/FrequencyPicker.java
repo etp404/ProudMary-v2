@@ -1,16 +1,15 @@
 package com.khonsu.enroute.uifields;
 
-import com.khonsu.enroute.settings.UpdaterSettings;
+import android.widget.NumberPicker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrequencyNumberPicker {
-	private final android.widget.NumberPicker numberPicker;
-	private final UpdaterSettings updaterSettings;
+public class FrequencyPicker {
+	private final NumberPicker numberPicker;
 	private final List<String> incrementValues;
 
-	public FrequencyNumberPicker(android.widget.NumberPicker numberPicker, UpdaterSettings updaterSettings) {
+	public FrequencyPicker(NumberPicker numberPicker) {
 		incrementValues = new ArrayList<>();
 		for (int i = 5; i <= 60; i+=5)  {
 			incrementValues.add(String.valueOf(i));
@@ -19,18 +18,17 @@ public class FrequencyNumberPicker {
 		numberPicker.setDisplayedValues(incrementValues.toArray(new String[incrementValues.size()]));
 		numberPicker.setMinValue(0);
 		numberPicker.setMaxValue(incrementValues.size()-1);
-		this.updaterSettings = updaterSettings;
 	}
 
 	public Integer getUpdateInMinutes() {
 		return Integer.valueOf(incrementValues.get(numberPicker.getValue()));
 	}
 
-	public void setEnabledOrDisabledAccordingToUpdateStatus() {
-		numberPicker.setEnabled(!updaterSettings.isUpdatesActive());
+	public void setEnabled(boolean active) {
+		numberPicker.setEnabled(active);
 	}
 
-	public void setSelectedFrequency(Integer updatePeriodInMinutes) {
+	public void setUpdatePeriodInMinute(Integer updatePeriodInMinutes) {
 		numberPicker.setValue(incrementValues.indexOf(String.valueOf(updatePeriodInMinutes)));
 	}
 

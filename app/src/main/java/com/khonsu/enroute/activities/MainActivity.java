@@ -15,10 +15,13 @@ import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AutoCompleteAdapter;
+import com.khonsu.enroute.MainPresenter;
 import com.khonsu.enroute.MainView;
 import com.khonsu.enroute.R;
 import com.khonsu.enroute.contactsautocomplete.ContactSuggester;
 import com.khonsu.enroute.contactsautocomplete.ContactsAccessor;
+import com.khonsu.enroute.settings.UpdaterSettings;
+import com.khonsu.enroute.uifields.FrequencyPicker;
 
 public class MainActivity extends Activity {
 
@@ -46,10 +49,14 @@ public class MainActivity extends Activity {
 								contactPickerButton,
 								(EditText) findViewById(R.id.destination),
 								(RadioGroup)findViewById(R.id.mode_of_travel_radio_group),
-								(NumberPicker) findViewById(R.id.numberPicker),
+								new FrequencyPicker((NumberPicker) findViewById(R.id.numberPicker)),
 								startToggleButton);
 
-		startToggleButton.setOnCheckedChangeListener(new StartSwitchListener(mainView));
+		MainPresenter mainPresenter = new MainPresenter(new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0)), mainView);
+
+		mainPresenter.populateView();
+
+		startToggleButton.setOnCheckedChangeListener(new StartSwitchListener(mainPresenter));
 		contactsAccessor.setListener(new ContactsAccessorListener(mainView));
 
 	}

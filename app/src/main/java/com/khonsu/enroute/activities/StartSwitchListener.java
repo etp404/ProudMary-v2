@@ -2,21 +2,21 @@ package com.khonsu.enroute.activities;
 
 import android.widget.CompoundButton;
 
-import com.khonsu.enroute.MainView;
+import com.khonsu.enroute.MainPresenter;
 
 public class StartSwitchListener implements CompoundButton.OnCheckedChangeListener {
-	private MainView mainView;
+	private MainPresenter mainPresenter;
 
-	public StartSwitchListener(MainView mainView) {
-		this.mainView = mainView;
+	public StartSwitchListener(MainPresenter mainPresenter) {
+		this.mainPresenter = mainPresenter;
 	}
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		if (isChecked) {
-			mainView.makeFormActive(false);
+			mainPresenter.startPressed();
 		}
 		else {
-			mainView.makeFormActive(true);
+			mainPresenter.stopPressed();
 		}
 	}
 }
