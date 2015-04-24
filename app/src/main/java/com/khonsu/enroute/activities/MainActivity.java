@@ -15,9 +15,11 @@ import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AutoCompleteAdapter;
+import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.MainPresenter;
 import com.khonsu.enroute.MainView;
 import com.khonsu.enroute.R;
+import com.khonsu.enroute.UrlAccessor;
 import com.khonsu.enroute.contactsautocomplete.ContactSuggester;
 import com.khonsu.enroute.contactsautocomplete.ContactsAccessor;
 import com.khonsu.enroute.settings.UpdaterSettings;
@@ -38,16 +40,14 @@ public class MainActivity extends Activity {
 		ImageButton contactPickerButton = (ImageButton) findViewById(R.id.button_contact_picker);
 		contactPickerButton.setOnClickListener(new ContactPickerButtonListener());
 
-		AutoCompleteTextView recipientTextView = (AutoCompleteTextView) findViewById(R.id.recipientNumber);
-
-		recipientTextView.setAdapter(
-				new AutoCompleteAdapter(this, R.layout.list_item, new ContactSuggester(contactsAccessor)));
+		AutoCompleteTextView recipientTextView = initaliseRecipientField();
+		AutoCompleteTextView destinationTextView = initaliseDestinationField();
 
 		ToggleButton startToggleButton = (ToggleButton) findViewById(R.id.start_toggle);
 		mainView = new MainView(recipientTextView,
 								(ProgressBar) findViewById(R.id.recipientsLoadingSpinner),
 								contactPickerButton,
-								(EditText) findViewById(R.id.destination),
+								destinationTextView,
 								(RadioGroup)findViewById(R.id.mode_of_travel_radio_group),
 								new FrequencyPicker((NumberPicker) findViewById(R.id.numberPicker)),
 								startToggleButton);
@@ -59,6 +59,20 @@ public class MainActivity extends Activity {
 		startToggleButton.setOnCheckedChangeListener(new StartSwitchListener(mainPresenter));
 		contactsAccessor.setListener(new ContactsAccessorListener(mainView));
 
+	}
+
+	private AutoCompleteTextView initaliseRecipientField() {
+		AutoCompleteTextView recipientTextView = (AutoCompleteTextView) findViewById(R.id.recipientNumber);
+		recipientTextView.setAdapter(
+				new AutoCompleteAdapter(this, R.layout.list_item, new ContactSuggester(contactsAccessor)));
+		return recipientTextView;
+	}
+
+	private AutoCompleteTextView initaliseDestinationField() {
+		AutoCompleteTextView destinationTextView = (AutoCompleteTextView) findViewById(R.id.destination);
+		destinationTextView.setAdapter(
+				new AutoCompleteAdapter(this, R.layout.list_item, new GooglePlacesAutocompleter(new UrlAccessor())));
+		return destinationTextView;
 	}
 
 	@Override
