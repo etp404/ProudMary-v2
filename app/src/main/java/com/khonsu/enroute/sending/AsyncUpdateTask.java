@@ -66,6 +66,7 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Void> {
 
 			long triggerAtMillis = new Date().getTime() + updaterSettings.getUpdatePeriodInMillis();
 			updateScheduler.scheduleNextUpdate(triggerAtMillis);
+			updaterSettings.setTimeForNextUpdateInMillis(triggerAtMillis);
 			notifier.notifyNextUpdate(triggerAtMillis);
 
 		} catch (UnableToGetEstimatedJourneyTimeException e) {
