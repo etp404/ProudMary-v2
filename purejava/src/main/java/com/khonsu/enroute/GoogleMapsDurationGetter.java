@@ -29,7 +29,7 @@ public class GoogleMapsDurationGetter {
 			Gson gson = new Gson();
 			String responseBodyAsJsonString = urlAccessor.getResponse(url);
 			ResponseBody responseBody = gson.fromJson(responseBodyAsJsonString, ResponseBody.class);
-			return new Estimate(responseBody.getDurationText(), responseBody.getDistanceTest());
+			return new Estimate(responseBody.getDurationText(), responseBody.getDistanceValue());
 		} catch (EstimateUnavailableException | IOException e) {
 			e.printStackTrace();
 		}

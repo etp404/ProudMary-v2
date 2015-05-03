@@ -1,5 +1,6 @@
 package com.khonsu.enroute.sending.messaging;
 
+import com.khonsu.enroute.DistanceFormatter;
 import com.khonsu.enroute.Estimate;
 import com.khonsu.enroute.GoogleMapsDurationGetter;
 import com.khonsu.enroute.GoogleMapsLinkGenerator;
@@ -36,9 +37,9 @@ public class MessageGenerator {
 		message.append(String.format(MESSAGE_DURATION_ESTIMATE_FORMAT, duration));
 	}
 
-	private void appendDistanceEstimate(StringBuffer message, String distance) {
+	private void appendDistanceEstimate(StringBuffer message, String distanceInMetres) {
 		appendSpaceIfNecessary(message);
-		message.append(String.format(MESSAGE_DISTANCE_FORMAT, distance));
+		message.append(String.format(MESSAGE_DISTANCE_FORMAT, DistanceFormatter.formatMetersAsMiles(distanceInMetres)));
 	}
 
 	private void appendCurrentLocationLink(String currentLatitude, String currentLongitude, StringBuffer message) {

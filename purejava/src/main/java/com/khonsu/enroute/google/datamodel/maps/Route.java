@@ -13,10 +13,10 @@ public class Route {
 		return legs.get(0).getDurationText();
 	}
 
-	public String getDistanceText() throws EstimateUnavailableException {
+	public String getDistanceValue() throws EstimateUnavailableException {
 		if (legs == null || legs.isEmpty()) {
 			throw new EstimateUnavailableException();
 		}
-		return legs.get(0).getDistanceTest();
+		return legs.get(0).getDistanceValue();
 	}
 }

@@ -31,7 +31,7 @@ public class GoogleMapsLinkGeneratorTest {
 		String currentLongitude = "10";
 		String destination="Leeds";
 
-		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&mode=%s&units=imperial", currentLatitude, currentLongitude, destination, mode));
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&mode=%s", currentLatitude, currentLongitude, destination, mode));
 		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, destination, mode));
 	}
 
@@ -40,7 +40,7 @@ public class GoogleMapsLinkGeneratorTest {
 		String currentLatitude = "5";
 		String currentLongitude = "10";
 
-		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=AB6%%207RQ&mode=%s&units=imperial", currentLatitude, currentLongitude, mode));
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=AB6%%207RQ&mode=%s", currentLatitude, currentLongitude, mode));
 		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, "AB6 7RQ", mode));
 	}
 

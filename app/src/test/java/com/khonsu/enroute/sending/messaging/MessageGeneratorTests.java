@@ -2,23 +2,21 @@ package com.khonsu.enroute.sending.messaging;
 
 
 import com.khonsu.enroute.Estimate;
-import com.khonsu.enroute.GoogleMapsDurationGetter;
-import com.khonsu.enroute.ModeOfTransport;
 import com.khonsu.enroute.UnableToGetEstimatedJourneyTimeException;
 import com.khonsu.enroute.settings.UpdaterSettings;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public final class MessageGeneratorTests {
 
 	private String duration = "2.5 hours";
-	private String distance = "50 miles";
+	private String distanceInMeters = "8400";
+	private String distanceInMiles = "5.2 miles";
+
 	private String originLat = "16";
 	private String originLong = "2";
 	private UpdaterSettings mockUpdaterSettings = mock(UpdaterSettings.class);
@@ -30,7 +28,7 @@ public final class MessageGeneratorTests {
 		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings);
 
 		String expectedMessage = String.format("I should arrive in approximately %s. My current location is: http://maps.google.co.uk/maps?q=%s,%s. Update sent by En Route!", duration, originLat, originLong);
-		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, distance));
+		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, null));
 		assertEquals(expectedMessage, actualMessage);
 	}
 
@@ -40,7 +38,7 @@ public final class MessageGeneratorTests {
 		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings);
 
 		String expectedMessage = String.format("I should arrive in approximately %s. Update sent by En Route!", duration);
-		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, distance));
+		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, null));
 		assertEquals(expectedMessage, actualMessage);
 	}
 
@@ -50,8 +48,8 @@ public final class MessageGeneratorTests {
 		when(mockUpdaterSettings.isIncludeDistanceInMessage()).thenReturn(true);
 		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings);
 
-		String expectedMessage = String.format("I should arrive in approximately %s. I am %s away. My current location is: http://maps.google.co.uk/maps?q=%s,%s. Update sent by En Route!", duration, distance, originLat, originLong);
-		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, distance));
+		String expectedMessage = String.format("I should arrive in approximately %s. I am %s away. My current location is: http://maps.google.co.uk/maps?q=%s,%s. Update sent by En Route!", duration, distanceInMiles, originLat, originLong);
+		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, distanceInMeters));
 		assertEquals(expectedMessage, actualMessage);
 	}
 }

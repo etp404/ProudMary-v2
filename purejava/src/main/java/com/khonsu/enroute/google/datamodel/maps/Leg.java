@@ -13,9 +13,9 @@ public class Leg {
 		return duration.getText();
 	}
 
-	public String getDistanceTest() throws EstimateUnavailableException {
+	public String getDistanceValue() throws EstimateUnavailableException {
 		if (distance == null) {
 			throw new EstimateUnavailableException();
 		}
-		return distance.getText();	}
+		return distance.getValue();	}
 }

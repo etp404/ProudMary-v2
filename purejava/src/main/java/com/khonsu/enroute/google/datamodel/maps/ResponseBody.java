@@ -13,10 +13,10 @@ public class ResponseBody {
 		return routes.get(0).getDurationText();
 	}
 
-	public String getDistanceTest() throws EstimateUnavailableException {
+	public String getDistanceValue() throws EstimateUnavailableException {
 		if (routes == null || routes.isEmpty()) {
 			throw new EstimateUnavailableException();
 		}
-		return routes.get(0).getDistanceText();
+		return routes.get(0).getDistanceValue();
 	}
 }

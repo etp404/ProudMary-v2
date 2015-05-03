@@ -23,6 +23,7 @@ public final class SettingsActivity extends Activity {
 	private void setUpDistanceButton(final UpdaterSettings updaterSettings) {
 		CheckBox includeDistanceCheckBox = (CheckBox)findViewById(R.id.includeDistanceInMessage);
 		includeDistanceCheckBox.setChecked(updaterSettings.isIncludeMapsLink());
+
 		includeDistanceCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -33,7 +34,8 @@ public final class SettingsActivity extends Activity {
 
 	private void setUpMapsLinkButton(final UpdaterSettings updaterSettings) {
 		CheckBox includeMapsLinkCheckBox = (CheckBox)findViewById(R.id.includeMapsLinkCheckBox);
-		includeMapsLinkCheckBox.setChecked(updaterSettings.isIncludeMapsLink());
+		includeMapsLinkCheckBox.setChecked(updaterSettings.isIncludeDistanceInMessage());
+
 		includeMapsLinkCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

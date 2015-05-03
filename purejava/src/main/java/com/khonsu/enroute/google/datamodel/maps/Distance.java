@@ -2,12 +2,12 @@ package com.khonsu.enroute.google.datamodel.maps;
 
 public final class Distance {
 	@SuppressWarnings("unused")
-	private String text;
+	private String value;
 
-	public String getText() throws EstimateUnavailableException {
-		if (text == null) {
+	public String getValue() throws EstimateUnavailableException {
+		if (value == null) {
 			throw new EstimateUnavailableException();
 		}
-		return text;
+		return value;
 	}
 }
