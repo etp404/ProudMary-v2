@@ -22,28 +22,25 @@ public final class MessageGeneratorTests {
 	private String originLat = "16";
 	private String originLong = "2";
 	private UpdaterSettings mockUpdaterSettings = mock(UpdaterSettings.class);
-	private GoogleMapsDurationGetter mockGoogleMapsDurationGetter = mock(GoogleMapsDurationGetter.class);
 
 
 	@Test
 	public void testThatMessageIsAsExpectedWhenBothTimeEstimateAndMapLinkAreRequired() throws UnableToGetEstimatedJourneyTimeException {
 		when(mockUpdaterSettings.isIncludeMapsLink()).thenReturn(true);
-		when(mockGoogleMapsDurationGetter.getJourneyEstimate(anyString(), anyString(), anyString(), any(ModeOfTransport.class))).thenReturn(new Estimate(duration, distance));
-		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings, mockGoogleMapsDurationGetter);
+		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings);
 
 		String expectedMessage = String.format("I should arrive in approximately %s. My current location is: http://maps.google.co.uk/maps?q=%s,%s. Update sent by En Route!", duration, originLat, originLong);
-		String actualMessage = messageGenerator.generateMessage(originLat, originLong);
+		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, distance));
 		assertEquals(expectedMessage, actualMessage);
 	}
 
 	@Test
 	public void testThatMessageIsAsExpectedWhenBothTimeEstimateButNotMapLinkIsRequired() throws UnableToGetEstimatedJourneyTimeException {
 		when(mockUpdaterSettings.isIncludeMapsLink()).thenReturn(false);
-		when(mockGoogleMapsDurationGetter.getJourneyEstimate(anyString(), anyString(), anyString(), any(ModeOfTransport.class))).thenReturn(new Estimate(duration, distance));
-		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings, mockGoogleMapsDurationGetter);
+		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings);
 
 		String expectedMessage = String.format("I should arrive in approximately %s. Update sent by En Route!", duration);
-		String actualMessage = messageGenerator.generateMessage(originLat, originLong);
+		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, distance));
 		assertEquals(expectedMessage, actualMessage);
 	}
 
@@ -51,11 +48,10 @@ public final class MessageGeneratorTests {
 	public void testThatMessageIsAsExpectedWhenDistanceIsRequired() throws UnableToGetEstimatedJourneyTimeException {
 		when(mockUpdaterSettings.isIncludeMapsLink()).thenReturn(true);
 		when(mockUpdaterSettings.isIncludeDistanceInMessage()).thenReturn(true);
-		when(mockGoogleMapsDurationGetter.getJourneyEstimate(anyString(), anyString(), anyString(), any(ModeOfTransport.class))).thenReturn(new Estimate(duration, distance));
-		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings, mockGoogleMapsDurationGetter);
+		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings);
 
 		String expectedMessage = String.format("I should arrive in approximately %s. I am %s away. My current location is: http://maps.google.co.uk/maps?q=%s,%s. Update sent by En Route!", duration, distance, originLat, originLong);
-		String actualMessage = messageGenerator.generateMessage(originLat, originLong);
+		String actualMessage = messageGenerator.generateMessage(originLat, originLong, new Estimate(duration, distance));
 		assertEquals(expectedMessage, actualMessage);
 	}
 }

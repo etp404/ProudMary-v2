@@ -14,11 +14,9 @@ public class MessageGenerator {
 	private static final String PLUG=" Update sent by En Route!";
 
 	private UpdaterSettings updaterSettings;
-	private final GoogleMapsDurationGetter googleMapsDurationGetter;
 
-	public MessageGenerator(UpdaterSettings updaterSettings, GoogleMapsDurationGetter googleMapsDurationGetter) {
+	public MessageGenerator(UpdaterSettings updaterSettings) {
 		this.updaterSettings = updaterSettings;
-		this.googleMapsDurationGetter = googleMapsDurationGetter;
 	}
 
 	public String generateMessage(String currentLatitude, String currentLongitude, Estimate estimate) {

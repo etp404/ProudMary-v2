@@ -54,7 +54,7 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Void> {
 				updaterSettings.getDestination(),
 				updaterSettings.getTransportMode());
 
-			MessageGenerator messageGenerator = new MessageGenerator(updaterSettings, googleMapsDurationGetter);
+			MessageGenerator messageGenerator = new MessageGenerator(updaterSettings);
 			String message = messageGenerator.generateMessage(
 					String.valueOf(lastLocation.getLatitude()),
 					String.valueOf(lastLocation.getLongitude()),
