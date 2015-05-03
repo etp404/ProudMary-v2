@@ -18,6 +18,7 @@ public class UpdaterSettings {
     private static final String UPDATE_MODE_OF_TRANSPORT = "update_mode_of_transport";
 	private static final String INCLUDE_MAPS_LINK = "include_maps_link";
 	private static final String INCLUDE_DISTANCE = "include_distance";
+	private static final String INCLUDE_DESINATION = "include_destination";
 
 	private final SharedPreferences sharedPreferences;
 
@@ -107,6 +108,16 @@ public class UpdaterSettings {
 
 	public boolean isIncludeDistanceInMessage() {
 		return sharedPreferences.getBoolean(INCLUDE_DISTANCE, false);
+	}
+
+	public void setIncludeDestinationInMessage(boolean includeDestination) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(INCLUDE_DESINATION, includeDestination);
+		editor.apply();
+	}
+
+	public boolean isIncludeDestinationInMessage() {
+		return sharedPreferences.getBoolean(INCLUDE_DESINATION, false);
 	}
 
 }

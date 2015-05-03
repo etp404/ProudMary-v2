@@ -9,13 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Message content"
+        android:text="@string/message_content"
         android:id="@+id/textView"/>
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Include distance in message."
+        android:text="@string/include_distance"
         android:id="@+id/includeDistanceInMessage"
         android:layout_gravity="center_horizontal|left"
         android:checked="false"/>
@@ -23,7 +23,15 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Include maps link in message."
+        android:text="@string/include_destination"
+        android:id="@+id/includeDestinationInMessage"
+        android:layout_gravity="center_horizontal|left"
+        android:checked="false"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/include_maps_link"
         android:id="@+id/includeMapsLinkCheckBox"
         android:layout_gravity="center_horizontal|left"
         android:checked="false"/>

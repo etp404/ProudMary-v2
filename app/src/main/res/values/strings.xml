@@ -18,5 +18,9 @@
     <string name="google_terms_of_service"><a href="http://www.google.com/intl/en/policies/terms">Google\'s Terms of Service</a></string>
     <string name="google_privacy_policy"><a href="http://www.google.com/policies/privacy">Google\'s Privacy Policy</a></string>
     <string name="mode_of_travel">Mode of Travel</string>
+    <string name="message_content">Message content</string>
+    <string name="include_distance">Include distance in message.</string>
+    <string name="include_destination">Include destination in message.</string>
+    <string name="include_maps_link">Include maps link in message.</string>
 
 </resources>

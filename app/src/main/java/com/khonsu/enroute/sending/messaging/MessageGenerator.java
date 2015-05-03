@@ -9,6 +9,7 @@ import com.khonsu.enroute.UnableToGetEstimatedJourneyTimeException;
 import com.khonsu.enroute.settings.UpdaterSettings;
 
 public class MessageGenerator {
+	private static final String MESSAGE_DESTINATION_FORMAT = "I am en route to %s.";
 	private static final String MESSAGE_DURATION_ESTIMATE_FORMAT = "I should arrive in approximately %s.";
 	private static final String CURRENT_LOCATION_ESTIMATE_FORMAT = "My current location is: %s.";
 	private static final String MESSAGE_DISTANCE_FORMAT = "I am %s away.";
@@ -22,6 +23,9 @@ public class MessageGenerator {
 
 	public String generateMessage(String currentLatitude, String currentLongitude, Estimate estimate) {
 		StringBuffer message = new StringBuffer();
+		if (updaterSettings.isIncludeDestinationInMessage()) {
+			appendDestination(message, updaterSettings.getDestination());
+		}
 		appendDurationEstimate(message, estimate.duration);
 		if (updaterSettings.isIncludeDistanceInMessage()) {
 			appendDistanceEstimate(message, estimate.distance);
@@ -33,7 +37,13 @@ public class MessageGenerator {
 		return message.toString();
 	}
 
+	private void appendDestination(StringBuffer message, String destination) {
+		appendSpaceIfNecessary(message);
+		message.append(String.format(MESSAGE_DESTINATION_FORMAT, destination));
+	}
+
 	private void appendDurationEstimate(StringBuffer message, String duration) {
+		appendSpaceIfNecessary(message);
 		message.append(String.format(MESSAGE_DURATION_ESTIMATE_FORMAT, duration));
 	}
 
