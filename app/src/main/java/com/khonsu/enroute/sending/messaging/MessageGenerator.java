@@ -1,5 +1,6 @@
 package com.khonsu.enroute.sending.messaging;
 
+import com.khonsu.enroute.Estimate;
 import com.khonsu.enroute.GoogleMapsDurationGetter;
 import com.khonsu.enroute.GoogleMapsLinkGenerator;
 import com.khonsu.enroute.ModeOfTransport;
@@ -20,11 +21,11 @@ public class MessageGenerator {
 		this.googleMapsDurationGetter = googleMapsDurationGetter;
 	}
 
-	public String generateMessage(String currentLatitude, String currentLongitude) throws UnableToGetEstimatedJourneyTimeException {
+	public String generateMessage(String currentLatitude, String currentLongitude, Estimate estimate) {
 		StringBuffer message = new StringBuffer();
-		appendDurationEstimate(currentLatitude, currentLongitude, updaterSettings.getDestination(), updaterSettings.getTransportMode(), message);
+		appendDurationEstimate(message, estimate.duration);
 		if (updaterSettings.isIncludeDistanceInMessage()) {
-			appendDistanceEstimate(currentLatitude, currentLongitude, updaterSettings.getDestination(), updaterSettings.getTransportMode(), message);
+			appendDistanceEstimate(message, estimate.distance);
 		}
 		if (updaterSettings.isIncludeMapsLink()) {
 			appendCurrentLocationLink(currentLatitude, currentLongitude, message);
@@ -33,13 +34,13 @@ public class MessageGenerator {
 		return message.toString();
 	}
 
-	private void appendDurationEstimate(String currentLatitude, String currentLongitude, String destination, ModeOfTransport mode, StringBuffer message) throws UnableToGetEstimatedJourneyTimeException {
-		message.append(String.format(MESSAGE_DURATION_ESTIMATE_FORMAT, googleMapsDurationGetter.getJourneyEstimate(currentLatitude, currentLongitude, destination, mode).duration));
+	private void appendDurationEstimate(StringBuffer message, String duration) {
+		message.append(String.format(MESSAGE_DURATION_ESTIMATE_FORMAT, duration));
 	}
 
-	private void appendDistanceEstimate(String currentLatitude, String currentLongitude, String destination, ModeOfTransport mode, StringBuffer message) throws UnableToGetEstimatedJourneyTimeException {
+	private void appendDistanceEstimate(StringBuffer message, String distance) {
 		appendSpaceIfNecessary(message);
-		message.append(String.format(MESSAGE_DISTANCE_FORMAT, googleMapsDurationGetter.getJourneyEstimate(currentLatitude, currentLongitude, destination, mode).distance));
+		message.append(String.format(MESSAGE_DISTANCE_FORMAT, distance));
 	}
 
 	private void appendCurrentLocationLink(String currentLatitude, String currentLongitude, StringBuffer message) {

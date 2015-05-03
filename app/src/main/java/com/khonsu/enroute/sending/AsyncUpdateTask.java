@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.khonsu.enroute.Estimate;
 import com.khonsu.enroute.GoogleMapsDurationGetter;
 import com.khonsu.enroute.ModeOfTransport;
 import com.khonsu.enroute.sending.scheduling.UpdateScheduler;
@@ -45,11 +46,20 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Void> {
 			return null;
 		}
 		GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
-		MessageGenerator messageGenerator = new MessageGenerator(updaterSettings, googleMapsDurationGetter);
 		try {
+
+			Estimate estimate = googleMapsDurationGetter.getJourneyEstimate(
+				String.valueOf(lastLocation.getLatitude()),
+				String.valueOf(lastLocation.getLongitude()),
+				updaterSettings.getDestination(),
+				updaterSettings.getTransportMode());
+
+			MessageGenerator messageGenerator = new MessageGenerator(updaterSettings, googleMapsDurationGetter);
 			String message = messageGenerator.generateMessage(
 					String.valueOf(lastLocation.getLatitude()),
-					String.valueOf(lastLocation.getLongitude()));
+					String.valueOf(lastLocation.getLongitude()),
+					estimate);
+
 			SMSSender.sendSMS(updaterSettings.getRecipient().getNumber(), message);
 
 			notifier.notifyUpdateSent();
