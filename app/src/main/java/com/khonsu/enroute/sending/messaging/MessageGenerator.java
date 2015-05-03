@@ -23,7 +23,7 @@ public class MessageGenerator {
 	public String generateMessage(String currentLatitude, String currentLongitude) throws UnableToGetEstimatedJourneyTimeException {
 		StringBuffer message = new StringBuffer();
 		appendDurationEstimate(currentLatitude, currentLongitude, updaterSettings.getDestination(), updaterSettings.getTransportMode(), message);
-		if (updaterSettings.isIncludeDistance()) {
+		if (updaterSettings.isIncludeDistanceInMessage()) {
 			appendDistanceEstimate(currentLatitude, currentLongitude, updaterSettings.getDestination(), updaterSettings.getTransportMode(), message);
 		}
 		if (updaterSettings.isIncludeMapsLink()) {

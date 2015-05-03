@@ -1,7 +1,6 @@
 package com.khonsu.enroute.google.datamodel.maps;
 
-public class Duration {
-
+public final class Distance {
 	@SuppressWarnings("unused")
 	private String text;
 

@@ -99,7 +99,14 @@ public class UpdaterSettings {
 		return sharedPreferences.getBoolean(INCLUDE_MAPS_LINK, false);
 	}
 
-	public boolean isIncludeDistance() {
+	public void setIncludeDistance(boolean includeDistance) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(INCLUDE_DISTANCE, includeDistance);
+		editor.apply();
+	}
+
+	public boolean isIncludeDistanceInMessage() {
 		return sharedPreferences.getBoolean(INCLUDE_DISTANCE, false);
 	}
+
 }

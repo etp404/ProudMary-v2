@@ -15,6 +15,14 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Include distance in message."
+        android:id="@+id/includeDistanceInMessage"
+        android:layout_gravity="center_horizontal|left"
+        android:checked="false"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Include maps link in message."
         android:id="@+id/includeMapsLinkCheckBox"
         android:layout_gravity="center_horizontal|left"

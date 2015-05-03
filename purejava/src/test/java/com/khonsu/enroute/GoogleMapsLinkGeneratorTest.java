@@ -31,7 +31,7 @@ public class GoogleMapsLinkGeneratorTest {
 		String currentLongitude = "10";
 		String destination="Leeds";
 
-		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&mode=%s", currentLatitude, currentLongitude, destination, mode));
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&mode=%s&units=imperial", currentLatitude, currentLongitude, destination, mode));
 		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, destination, mode));
 	}
 
@@ -40,7 +40,7 @@ public class GoogleMapsLinkGeneratorTest {
 		String currentLatitude = "5";
 		String currentLongitude = "10";
 
-		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=AB6%%207RQ&mode=%s", currentLatitude, currentLongitude, mode));
+		URL url = new URL(String.format("https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=AB6%%207RQ&mode=%s&units=imperial", currentLatitude, currentLongitude, mode));
 		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForDirections(currentLatitude, currentLongitude, "AB6 7RQ", mode));
 	}
 
@@ -54,7 +54,7 @@ public class GoogleMapsLinkGeneratorTest {
 
 	@Test
 	public void testThatAutocompleteLinkIsGeneratedCorrectlyForAddressWithSpaces() throws MalformedURLException {
-		URL url = new URL(String.format("http://54.171.194.38/google_places_proxy.php?location_input=Adlington%%20Road"));
+		URL url = new URL("http://54.171.194.38/google_places_proxy.php?location_input=Adlington%%20Road");
 
 		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForAutocomplete("Adlington Road"));
 	}

@@ -1,7 +1,7 @@
 package com.khonsu.enroute;
 
 import com.google.gson.Gson;
-import com.khonsu.enroute.google.datamodel.maps.NoDurationInResponseException;
+import com.khonsu.enroute.google.datamodel.maps.EstimateUnavailableException;
 import com.khonsu.enroute.google.datamodel.maps.ResponseBody;
 
 import java.io.IOException;
@@ -22,20 +22,6 @@ public class GoogleMapsDurationGetter {
 		this.urlAccessor = urlAccessor;
 	}
 
-	public String getEstimatedJourneyTime(String currentLat, String currentLong, String destination, ModeOfTransport mode) throws UnableToGetEstimatedJourneyTimeException {
-		try {
-			String modeAsGoogleString = MODE_OF_TRANSPORT_ID_TO_GOOGLE_STRING.get(mode);
-			URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLat, currentLong, destination, modeAsGoogleString);
-			Gson gson = new Gson();
-			String responseBodyAsJsonString = urlAccessor.getResponse(url);
-			ResponseBody responseBody = gson.fromJson(responseBodyAsJsonString, ResponseBody.class);
-			return responseBody.getDurationText();
-		} catch (NoDurationInResponseException | IOException e) {
-			e.printStackTrace();
-		}
-		throw new UnableToGetEstimatedJourneyTimeException();
-	}
-
 	public Estimate getJourneyEstimate(String currentLat, String currentLong, String destination, ModeOfTransport mode) throws UnableToGetEstimatedJourneyTimeException {
 		try {
 			String modeAsGoogleString = MODE_OF_TRANSPORT_ID_TO_GOOGLE_STRING.get(mode);
@@ -43,8 +29,8 @@ public class GoogleMapsDurationGetter {
 			Gson gson = new Gson();
 			String responseBodyAsJsonString = urlAccessor.getResponse(url);
 			ResponseBody responseBody = gson.fromJson(responseBodyAsJsonString, ResponseBody.class);
-			return new Estimate(responseBody.getDurationText(), null);
-		} catch (NoDurationInResponseException | IOException e) {
+			return new Estimate(responseBody.getDurationText(), responseBody.getDistanceTest());
+		} catch (EstimateUnavailableException | IOException e) {
 			e.printStackTrace();
 		}
 		throw new UnableToGetEstimatedJourneyTimeException();

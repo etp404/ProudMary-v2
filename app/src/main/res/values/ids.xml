@@ -2,4 +2,5 @@
 <resources>
     <item name="contacts_result" type="id">1001</item>
     <item name="settings" type="id">settings</item>
+    <item name="includeDistanceInMessage" type="id">includeDistanceInMessage</item>
 </resources>

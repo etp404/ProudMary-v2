@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public final class MessageGeneratorTests {
 
 	private String duration = "2.5 hours";
-	private String distance = "50 miles";;
+	private String distance = "50 miles";
 	private String originLat = "16";
 	private String originLong = "2";
 	private UpdaterSettings mockUpdaterSettings = mock(UpdaterSettings.class);
@@ -50,7 +50,7 @@ public final class MessageGeneratorTests {
 	@Test
 	public void testThatMessageIsAsExpectedWhenDistanceIsRequired() throws UnableToGetEstimatedJourneyTimeException {
 		when(mockUpdaterSettings.isIncludeMapsLink()).thenReturn(true);
-		when(mockUpdaterSettings.isIncludeDistance()).thenReturn(true);
+		when(mockUpdaterSettings.isIncludeDistanceInMessage()).thenReturn(true);
 		when(mockGoogleMapsDurationGetter.getJourneyEstimate(anyString(), anyString(), anyString(), any(ModeOfTransport.class))).thenReturn(new Estimate(duration, distance));
 		MessageGenerator messageGenerator = new MessageGenerator(mockUpdaterSettings, mockGoogleMapsDurationGetter);
 
