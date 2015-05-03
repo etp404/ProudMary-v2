@@ -11,8 +11,7 @@
     <string name="update_sent_notification">An update has been sent.</string>
     <string name="update_frequency">Update frequency in minutes</string>
 
-    <string name="unable_to_get_location">Unable to determine location. Will retry in 5 minutes.</string>
-    <string name="unable_to_get_estimated_journey_time">Unable to access network. Will retry in 5 minutes.</string>
+    <string name="last_update_failed">Last update failed.</string>
 
     <string name="users_are_subject_to">Users are subject to the following terms. </string>
     <string name="google_terms_of_service"><a href="http://www.google.com/intl/en/policies/terms">Google\'s Terms of Service</a></string>
