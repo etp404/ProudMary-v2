@@ -11,7 +11,7 @@ public class FrequencyPicker {
 
 	public FrequencyPicker(NumberPicker numberPicker) {
 		incrementValues = new ArrayList<>();
-		for (int i = 1; i <= 60; i+=5)  {
+		for (int i = 5; i <= 60; i+=5)  {
 			incrementValues.add(String.valueOf(i));
 		}
 		this.numberPicker = numberPicker;
