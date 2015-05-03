@@ -35,4 +35,18 @@ public class GoogleMapsDurationGetter {
 		}
 		throw new UnableToGetEstimatedJourneyTimeException();
 	}
+
+	public Estimate getJourneyEstimate(String currentLat, String currentLong, String destination, ModeOfTransport mode) throws UnableToGetEstimatedJourneyTimeException {
+		try {
+			String modeAsGoogleString = MODE_OF_TRANSPORT_ID_TO_GOOGLE_STRING.get(mode);
+			URL url = GoogleMapsLinkGenerator.generateLinkForDirections(currentLat, currentLong, destination, modeAsGoogleString);
+			Gson gson = new Gson();
+			String responseBodyAsJsonString = urlAccessor.getResponse(url);
+			ResponseBody responseBody = gson.fromJson(responseBodyAsJsonString, ResponseBody.class);
+			return new Estimate(responseBody.getDurationText(), null);
+		} catch (NoDurationInResponseException | IOException e) {
+			e.printStackTrace();
+		}
+		throw new UnableToGetEstimatedJourneyTimeException();
+	}
 }

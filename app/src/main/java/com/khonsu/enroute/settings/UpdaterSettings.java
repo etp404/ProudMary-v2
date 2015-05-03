@@ -17,6 +17,7 @@ public class UpdaterSettings {
 	private static final String UPDATE_RECIPIENT = "update_recipient";
     private static final String UPDATE_MODE_OF_TRANSPORT = "update_mode_of_transport";
 	private static final String INCLUDE_MAPS_LINK = "include_maps_link";
+	private static final String INCLUDE_DISTANCE = "include_distance";
 
 	private final SharedPreferences sharedPreferences;
 
@@ -96,5 +97,9 @@ public class UpdaterSettings {
 
 	public boolean isIncludeMapsLink() {
 		return sharedPreferences.getBoolean(INCLUDE_MAPS_LINK, false);
+	}
+
+	public boolean isIncludeDistance() {
+		return sharedPreferences.getBoolean(INCLUDE_DISTANCE, false);
 	}
 }
