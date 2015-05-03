@@ -94,6 +94,9 @@ public class MainActivity extends Activity {
 		if (id == R.id.terms_and_conditions) {
 			startActivity(new Intent(this, TermsAndConditionsActivity.class));
 		}
+		else if (id == R.id.settings) {
+			startActivity(new Intent(this, SettingsActivity.class));
+		}
 
 		return super.onOptionsItemSelected(item);
 	}

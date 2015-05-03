@@ -22,19 +22,26 @@ public class MessageGenerator {
 	public String generateMessage(String currentLatitude, String currentLongitude) throws UnableToGetEstimatedJourneyTimeException {
 		StringBuffer message = new StringBuffer();
 		appendEstimate(currentLatitude, currentLongitude, updaterSettings.getDestination(), updaterSettings.getTransportMode(), message);
-		appendCurrentLocationLink(currentLatitude, currentLongitude, message);
+		if (updaterSettings.isIncludeMapsLink()) {
+			appendCurrentLocationLink(currentLatitude, currentLongitude, message);
+		}
         message.append(PLUG);
 		return message.toString();
 	}
 
 	private void appendCurrentLocationLink(String currentLatitude, String currentLongitude, StringBuffer message) {
-		if (message.length()>0) {
-			message.append(" ");
-		}
+		appendSpaceIfNecessary(message);
 		message.append(String.format(CURRENT_LOCATION_ESTIMATE_FORMAT, GoogleMapsLinkGenerator.generateLinkForLatLong(currentLatitude, currentLongitude)));
 	}
 
 	private void appendEstimate(String currentLatitude, String currentLongitude, String destination, ModeOfTransport mode, StringBuffer message) throws UnableToGetEstimatedJourneyTimeException {
 			message.append(String.format(MESSAGE_ESTIMATE_FORMAT, googleMapsDurationGetter.getEstimatedJourneyTime(currentLatitude, currentLongitude, destination, mode)));
 	}
+
+	private void appendSpaceIfNecessary(StringBuffer message) {
+		if (message.length()>0) {
+			message.append(" ");
+		}
+	}
+
 }

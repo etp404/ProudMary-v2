@@ -16,8 +16,9 @@ public class UpdaterSettings {
 	private static final String UPDATE_DESTINATION = "update_destination";
 	private static final String UPDATE_RECIPIENT = "update_recipient";
     private static final String UPDATE_MODE_OF_TRANSPORT = "update_mode_of_transport";
+	private static final String INCLUDE_MAPS_LINK = "include_maps_link";
 
-    private final SharedPreferences sharedPreferences;
+	private final SharedPreferences sharedPreferences;
 
 	public UpdaterSettings(SharedPreferences sharedPreferences) {
 		this.sharedPreferences = sharedPreferences;
@@ -85,5 +86,15 @@ public class UpdaterSettings {
 
 	public boolean isUpdatesActive() {
 		return sharedPreferences.getBoolean(UPDATES_ACTIVE_SETTING, false);
+	}
+
+	public void setIncludeMapsLink(boolean includeMapsLink) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(INCLUDE_MAPS_LINK, includeMapsLink);
+		editor.apply();
+	}
+
+	public boolean isIncludeMapsLink() {
+		return sharedPreferences.getBoolean(INCLUDE_MAPS_LINK, false);
 	}
 }

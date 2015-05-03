@@ -30,6 +30,10 @@
                   android:parentActivityName=".settingup.activities.MainActivity"
                   android:label="@string/terms_and_conditions"
         />
+        
+        <activity android:name=".settingup.activities.SettingsActivity"
+                  android:parentActivityName=".settingup.activities.MainActivity"
+                  android:label="@string/settings"/>
 
         <service android:name=".sending.UpdaterService"/>
 
