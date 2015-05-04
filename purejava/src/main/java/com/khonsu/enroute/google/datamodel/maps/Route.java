@@ -6,10 +6,17 @@ public class Route {
 	@SuppressWarnings("unused")
 	private List<Leg> legs;
 
-	public String getDurationText() throws NoDurationInResponseException {
+	public String getDurationText() throws EstimateUnavailableException {
 		if (legs == null || legs.isEmpty()) {
-			throw new NoDurationInResponseException();
+			throw new EstimateUnavailableException();
 		}
 		return legs.get(0).getDurationText();
+	}
+
+	public String getDistanceValue() throws EstimateUnavailableException {
+		if (legs == null || legs.isEmpty()) {
+			throw new EstimateUnavailableException();
+		}
+		return legs.get(0).getDistanceValue();
 	}
 }

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.khonsu.enroute">
 
+    <uses-sdk android:minSdkVersion="16"/>
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -15,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.khonsu.enroute.activities.MainActivity"
+            android:name=".settingup.activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,17 +26,20 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="com.khonsu.enroute.activities.TermsAndConditionsActivity"
-                  android:parentActivityName="com.khonsu.enroute.activities.MainActivity"
+        <activity android:name=".settingup.activities.TermsAndConditionsActivity"
+                  android:parentActivityName=".settingup.activities.MainActivity"
                   android:label="@string/terms_and_conditions"
         />
+        
+        <activity android:name=".settingup.activities.SettingsActivity"
+                  android:parentActivityName=".settingup.activities.MainActivity"
+                  android:label="@string/settings"/>
 
-        <service android:name="com.khonsu.enroute.UpdaterService"/>
+        <service android:name=".sending.UpdaterService"/>
 
-        <receiver android:name="com.khonsu.enroute.SendUpdateBroadcastReceiver">
-        </receiver>
+        <receiver android:name=".sending.SendUpdateBroadcastReceiver"/>
 
-        <receiver android:name="com.khonsu.enroute.ResetAlarmOnRebootReceiver"
+        <receiver android:name=".sending.scheduling.ResetAlarmOnRebootReceiver"
                   android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
                   android:enabled="true"
                   android:exported="true" >

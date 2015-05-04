@@ -2,8 +2,8 @@ package com.khonsu.enroute.settings;
 
 import android.content.SharedPreferences;
 
-import com.khonsu.enroute.R;
-import com.khonsu.enroute.contactsautocomplete.Contact;
+import com.khonsu.enroute.ModeOfTransport;
+import com.khonsu.enroute.settingup.contacts.Contact;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,8 +16,11 @@ public class UpdaterSettings {
 	private static final String UPDATE_DESTINATION = "update_destination";
 	private static final String UPDATE_RECIPIENT = "update_recipient";
     private static final String UPDATE_MODE_OF_TRANSPORT = "update_mode_of_transport";
+	private static final String INCLUDE_MAPS_LINK = "include_maps_link";
+	private static final String INCLUDE_DISTANCE = "include_distance";
+	private static final String INCLUDE_DESINATION = "include_destination";
 
-    private final SharedPreferences sharedPreferences;
+	private final SharedPreferences sharedPreferences;
 
 	public UpdaterSettings(SharedPreferences sharedPreferences) {
 		this.sharedPreferences = sharedPreferences;
@@ -63,14 +66,14 @@ public class UpdaterSettings {
 		return Contact.fromString(sharedPreferences.getString(UPDATE_RECIPIENT, ""));
 	}
 
-    public void setTransportMode(int transportMode) {
+    public void setTransportMode(ModeOfTransport transportMode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(UPDATE_MODE_OF_TRANSPORT, transportMode);
+        editor.putString(UPDATE_MODE_OF_TRANSPORT, transportMode.toString());
         editor.apply();
     }
 
-    public int getTransportMode() {
-        return sharedPreferences.getInt(UPDATE_MODE_OF_TRANSPORT,  R.id.mode_of_travel_car);
+    public ModeOfTransport getTransportMode() {
+        return ModeOfTransport.getEnum(sharedPreferences.getString(UPDATE_MODE_OF_TRANSPORT, ""));
     }
 
 	public Long getUpdatePeriodInMillis() {
@@ -86,4 +89,35 @@ public class UpdaterSettings {
 	public boolean isUpdatesActive() {
 		return sharedPreferences.getBoolean(UPDATES_ACTIVE_SETTING, false);
 	}
+
+	public void setIncludeMapsLink(boolean includeMapsLink) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(INCLUDE_MAPS_LINK, includeMapsLink);
+		editor.apply();
+	}
+
+	public boolean isIncludeMapsLink() {
+		return sharedPreferences.getBoolean(INCLUDE_MAPS_LINK, false);
+	}
+
+	public void setIncludeDistance(boolean includeDistance) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(INCLUDE_DISTANCE, includeDistance);
+		editor.apply();
+	}
+
+	public boolean isIncludeDistanceInMessage() {
+		return sharedPreferences.getBoolean(INCLUDE_DISTANCE, false);
+	}
+
+	public void setIncludeDestinationInMessage(boolean includeDestination) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(INCLUDE_DESINATION, includeDestination);
+		editor.apply();
+	}
+
+	public boolean isIncludeDestinationInMessage() {
+		return sharedPreferences.getBoolean(INCLUDE_DESINATION, false);
+	}
+
 }

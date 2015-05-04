@@ -3,6 +3,7 @@
 
     <string name="app_name">En Route!</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="settings">Settings</string>
 
     <string name="frequency_text_view">Frequency (minutes)</string>
     <string name="destination_label">Destination</string>
@@ -10,11 +11,16 @@
     <string name="updates_not_being_sent">Off</string>
     <string name="update_sent_notification">An update has been sent.</string>
     <string name="update_frequency">Update frequency in minutes</string>
-    <string name="update_could_not_be_sent">Error: will retry in 5 minutes.</string>
+
+    <string name="last_update_failed">Last update failed.</string>
 
     <string name="users_are_subject_to">Users are subject to the following terms. </string>
     <string name="google_terms_of_service"><a href="http://www.google.com/intl/en/policies/terms">Google\'s Terms of Service</a></string>
     <string name="google_privacy_policy"><a href="http://www.google.com/policies/privacy">Google\'s Privacy Policy</a></string>
     <string name="mode_of_travel">Mode of Travel</string>
+    <string name="message_content">Message content</string>
+    <string name="include_distance">Include distance in message.</string>
+    <string name="include_destination">Include destination in message.</string>
+    <string name="include_maps_link">Include maps link in message.</string>
 
 </resources>

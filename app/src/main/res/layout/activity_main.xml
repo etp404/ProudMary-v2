@@ -25,7 +25,7 @@
             <AutoCompleteTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recipient"
+                android:id="@+id/recipientNumber"
                 android:layout_weight="1"
                 android:maxLines="1"/>
 

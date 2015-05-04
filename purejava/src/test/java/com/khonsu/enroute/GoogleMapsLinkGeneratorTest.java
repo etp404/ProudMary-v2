@@ -54,7 +54,7 @@ public class GoogleMapsLinkGeneratorTest {
 
 	@Test
 	public void testThatAutocompleteLinkIsGeneratedCorrectlyForAddressWithSpaces() throws MalformedURLException {
-		URL url = new URL(String.format("http://54.171.194.38/google_places_proxy.php?location_input=Adlington%%20Road"));
+		URL url = new URL("http://54.171.194.38/google_places_proxy.php?location_input=Adlington%%20Road");
 
 		assertEquals(url, GoogleMapsLinkGenerator.generateLinkForAutocomplete("Adlington Road"));
 	}
