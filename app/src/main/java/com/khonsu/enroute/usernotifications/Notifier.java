@@ -12,11 +12,12 @@ import com.khonsu.enroute.settingup.activities.MainActivity;
 
 public class Notifier {
 	private static final int NOTIFICATION_ID = 0;
+	private static final String INITIAL_STATUS = "Running";
 	private static Notifier instance;
 
 	private final NotificationManager notificationManager;
 	private Context context;
-	private String statusInfo = "Running";
+	private String statusInfo = INITIAL_STATUS;
 	private String nextUpdateInfo;
 
 	private Notifier(Context context) {
@@ -69,6 +70,11 @@ public class Notifier {
 	}
 
 	public void clearNotification() {
+		statusInfo = INITIAL_STATUS;
 		notificationManager.cancel(NOTIFICATION_ID);
+	}
+
+	public void notifyStarted() {
+		provideNotification();
 	}
 }

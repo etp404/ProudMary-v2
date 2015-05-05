@@ -1,6 +1,7 @@
 package com.khonsu.enroute.settingup;
 
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -18,7 +19,7 @@ public class MainView {
 	private static int IMAGE_ALPHA_INACTIVE = 100;
 	private static int IMAGE_ALPHA_ACTIVE = 255;
 
-	private EditText recipientTextView;
+	private AutoCompleteTextView recipientTextView;
 	private ProgressBar contactsLoadingSpinner;
 	private ImageButton contactPickerButton;
 	private EditText destinationView;
@@ -26,7 +27,7 @@ public class MainView {
 	private FrequencyPicker frequencyPicker;
 	private ToggleButton onOffButton;
 
-	public MainView(EditText recipientTextView,
+	public MainView(AutoCompleteTextView recipientTextView,
 					ProgressBar contactsLoadingSpinner,
 					ImageButton contactPickerButton,
 					EditText destinationView,
