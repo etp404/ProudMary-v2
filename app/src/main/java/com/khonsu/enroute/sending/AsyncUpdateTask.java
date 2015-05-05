@@ -60,27 +60,33 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Void> {
 					String.valueOf(lastLocation.getLongitude()),
 					estimate);
 
-			SMSSender.sendSMS(updaterSettings.getRecipient().getNumber(), message);
 
-			notifier.notifyUpdateSent();
+			if (updaterSettings.isUpdatesActive()) {
+				SMSSender.sendSMS(updaterSettings.getRecipient().getNumber(), message);
 
-			long triggerAtMillis = new Date().getTime() + updaterSettings.getUpdatePeriodInMillis();
-			updateScheduler.scheduleNextUpdate(triggerAtMillis);
-			updaterSettings.setTimeForNextUpdateInMillis(triggerAtMillis);
-			notifier.notifyNextUpdate(triggerAtMillis);
+				notifier.notifyUpdateSent();
+
+				long triggerAtMillis = new Date().getTime() + updaterSettings.getUpdatePeriodInMillis();
+				scheduleNextUpdate(triggerAtMillis);
+			}
 
 		} catch (UnableToGetEstimatedJourneyTimeException e) {
 			e.printStackTrace();
-			retrySendingLater();
+			if (updaterSettings.isUpdatesActive()) {
+				retrySendingLater();
+			}
 		}
 		return null;
 	}
 
+	private void scheduleNextUpdate(long triggerAtMillis) {
+		updateScheduler.scheduleNextUpdate(triggerAtMillis);
+		updaterSettings.setTimeForNextUpdateInMillis(triggerAtMillis);
+		notifier.notifyNextUpdate(triggerAtMillis);
+	}
+
 	private void retrySendingLater() {
 		long triggerAtMillis = new Date().getTime() + RETRY_IF_FAIL_DELAY;
-		notifier.notifyLocationUnavailable();
-		updaterSettings.setTimeForNextUpdateInMillis(triggerAtMillis);
-		updateScheduler.scheduleNextUpdate(triggerAtMillis);
-		notifier.notifyNextUpdate(triggerAtMillis);
+		scheduleNextUpdate(triggerAtMillis);
 	}
 }

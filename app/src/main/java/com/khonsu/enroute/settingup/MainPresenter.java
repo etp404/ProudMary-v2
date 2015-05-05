@@ -20,7 +20,6 @@ public class MainPresenter {
 	private UpdaterSettings updaterSettings;
 	private MainView mainView;
 	private FormValidator formValidator;
-	private UpdateScheduler updateScheduler;
 	private Navigator navigator;
 
 	public MainPresenter(NetworkStatus networkStatus,
@@ -38,7 +37,6 @@ public class MainPresenter {
 		this.navigator = navigator;
 		this.mainView = mainView;
 		this.formValidator = formValidator;
-		this.updateScheduler = updateScheduler;
 	}
 
 	public void populateView() {
@@ -60,6 +58,7 @@ public class MainPresenter {
 			formValidator.setListener(new FormValidator.FormValidatorListener() {
 				@Override
 				public void success() {
+					notifier.notifyStarted();
 					startSendingUpdates();
 				}
 
