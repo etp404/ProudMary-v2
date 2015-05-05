@@ -71,6 +71,7 @@ public class Notifier {
 
 	public void clearNotification() {
 		statusInfo = INITIAL_STATUS;
+		nextUpdateInfo = null;
 		notificationManager.cancel(NOTIFICATION_ID);
 	}
 
