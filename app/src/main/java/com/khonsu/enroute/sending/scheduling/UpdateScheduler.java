@@ -5,31 +5,33 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.khonsu.enroute.events.EventBus;
 import com.khonsu.enroute.sending.SendUpdateBroadcastReceiver;
-import com.khonsu.enroute.settings.UpdaterSettings;
-import com.khonsu.enroute.usernotifications.Notifier;
 
 public class UpdateScheduler {
+	public static final String NEXT_UPDATE_SCHEDULED = "NEXT_UPDATE_SCHEDULED";
 	private Context context;
 
 	public UpdateScheduler(Context context) {
 		this.context = context;
 	}
 	public void scheduleNextUpdate(long triggerAtMillis) {
-		PendingIntent pendingIntent = createPendingIntent(context);
+		EventBus.getInstance().announce(NEXT_UPDATE_SCHEDULED, triggerAtMillis);
+
+		PendingIntent pendingIntent = createPendingIntent();
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);
 
 		alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
 	}
 
-	void cancelUpdate(Context context) {
-		PendingIntent pendingIntent = createPendingIntent(context);
+	public void cancelUpdate() {
+		PendingIntent pendingIntent = createPendingIntent();
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);
 	}
 
-	private PendingIntent createPendingIntent(Context context) {
+	private PendingIntent createPendingIntent() {
 		Intent intent = new Intent(context, SendUpdateBroadcastReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, 0);
 	}

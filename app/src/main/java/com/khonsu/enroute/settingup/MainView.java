@@ -1,13 +1,14 @@
 package com.khonsu.enroute.settingup;
 
+import android.app.MediaRouteButton;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ToggleButton;
 
 import com.khonsu.enroute.ModeOfTransport;
 import com.khonsu.enroute.settingup.uifields.FrequencyPicker;
@@ -25,7 +26,8 @@ public class MainView {
 	private EditText destinationView;
 	private RadioGroup modeOfTravel;
 	private FrequencyPicker frequencyPicker;
-	private ToggleButton onOffButton;
+	private Button startButton;
+	private Button stopButton;
 
 	public MainView(AutoCompleteTextView recipientTextView,
 					ProgressBar contactsLoadingSpinner,
@@ -33,14 +35,16 @@ public class MainView {
 					EditText destinationView,
 					RadioGroup modeOfTravel,
 					FrequencyPicker frequencyPicker,
-					ToggleButton onOffButton) {
+					Button startButton,
+					Button stopButton) {
 		this.recipientTextView = recipientTextView;
 		this.contactsLoadingSpinner = contactsLoadingSpinner;
 		this.contactPickerButton = contactPickerButton;
 		this.destinationView = destinationView;
 		this.modeOfTravel = modeOfTravel;
 		this.frequencyPicker = frequencyPicker;
-		this.onOffButton = onOffButton;
+		this.startButton = startButton;
+		this.stopButton = stopButton;
 	}
 
 	public void showLoadingSpinner() {
@@ -51,12 +55,22 @@ public class MainView {
 		contactsLoadingSpinner.setVisibility(View.GONE);
 	}
 
-	public void makeFormActive(boolean active) {
-		recipientTextView.setEnabled(active);
-		makeContactPickerButtonActive(active);
-		destinationView.setEnabled(active);
-		makeModeOfTransportActive(active);
-		frequencyPicker.setEnabled(active);
+	public void makeFormActive() {
+		recipientTextView.setEnabled(true);
+		makeContactPickerButtonActive(true);
+		destinationView.setEnabled(true);
+		makeModeOfTransportActive(true);
+		frequencyPicker.setEnabled(true);
+		showStartButton();
+	}
+
+	public void makeFormInactive() {
+		recipientTextView.setEnabled(false);
+		makeContactPickerButtonActive(false);
+		destinationView.setEnabled(false);
+		makeModeOfTransportActive(false);
+		frequencyPicker.setEnabled(false);
+		hideStartButton();
 	}
 
 	private void makeModeOfTransportActive(boolean active) {
@@ -109,12 +123,8 @@ public class MainView {
 		return checkedTransportButton.getText().toString();
 	}
 
-	public void setUpdatesActive(boolean updatesActive) {
-		onOffButton.setChecked(updatesActive);
-	}
-
 	public boolean isUpdatesActive() {
-		return onOffButton.isActivated();
+		return startButton.isActivated();
 	}
 
 	public void showErrorOnRecipient() {
@@ -123,5 +133,21 @@ public class MainView {
 
 	public void showErrorOnDestination() {
 		destinationView.setError(DESTINATION_ERROR_MESSAGE);
+	}
+
+	public void showStartButton() {
+		startButton.setVisibility(Button.VISIBLE);
+	}
+
+	public void hideStartButton() {
+		startButton.setVisibility(Button.GONE);
+	}
+
+	public void showStopButton() {
+		stopButton.setVisibility(Button.VISIBLE);
+	}
+
+	public void hideStopButton() {
+		stopButton.setVisibility(Button.GONE);
 	}
 }

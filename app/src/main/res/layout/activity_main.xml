@@ -116,15 +116,19 @@
             android:layout_gravity="center_horizontal"
             android:layout_alignStart="@+id/numberPicker"
             android:layout_alignLeft="@+id/numberPicker"/>
-        <ToggleButton
-            android:id="@+id/start_toggle"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOn="@string/updates_being_sent"
-            android:textOff="@string/updates_not_being_sent"
-            android:enabled="true"
-            android:checked="false"
-            android:layout_gravity="center_horizontal" />
+            android:text="Start"
+            android:id="@+id/start_button"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:id="@+id/stop_button"
+            android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="wrap_content"

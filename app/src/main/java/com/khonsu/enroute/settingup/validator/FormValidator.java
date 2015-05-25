@@ -7,7 +7,7 @@ import com.khonsu.enroute.settingup.MainView;
 import com.khonsu.enroute.util.UiThreadExecutor;
 
 public class FormValidator {
-    private FormValidatorListener listener;
+    private FormValidatorCallback callback;
     private UiThreadExecutor uiThreadExecutor;
     private AddressValidator addressValidator;
 
@@ -17,8 +17,8 @@ public class FormValidator {
         this.addressValidator = addressValidator;
 	}
 
-	public void setListener(FormValidatorListener listener) {
-		this.listener = listener;
+	public void setCallback(FormValidatorCallback callback) {
+		this.callback = callback;
 	}
 
     public void validateForm(MainView mainView) {
@@ -42,10 +42,7 @@ public class FormValidator {
             @Override
             protected void onPostExecute(Boolean isValid) {
                 if (isValid) {
-                    listener.success();
-                }
-                else {
-                    listener.failure();
+                    callback.success();
                 }
             }
             private void showErrorOnRecipient(final MainView mainView) {
@@ -69,9 +66,8 @@ public class FormValidator {
         asyncTask.execute(mainView);
     }
 
-    public interface FormValidatorListener {
+    public interface FormValidatorCallback {
         void success();
-        void failure();
     }
 
 

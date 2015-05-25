@@ -1,9 +1,6 @@
 package com.khonsu.enroute.settingup;
 
 import com.khonsu.enroute.ModeOfTransport;
-import com.khonsu.enroute.sending.scheduling.UpdateScheduler;
-import com.khonsu.enroute.usernotifications.Notifier;
-import com.khonsu.enroute.util.Navigator;
 import com.khonsu.enroute.util.NetworkStatus;
 import com.khonsu.enroute.usernotifications.Toaster;
 import com.khonsu.enroute.settings.UpdaterSettings;
@@ -13,28 +10,25 @@ import com.khonsu.enroute.settingup.validator.FormValidator;
 public class MainPresenter {
 	private static final String NO_INTERNET_CONNECTION = "Please ensure network is enabled.";
 
+	private BroadcastSender broadcastSender;
 	private final NetworkStatus networkStatus;
-	private Notifier notifier;
 	private final Toaster toaster;
 
 	private UpdaterSettings updaterSettings;
 	private MainView mainView;
 	private FormValidator formValidator;
-	private Navigator navigator;
 
-	public MainPresenter(NetworkStatus networkStatus,
-						 Notifier notifier,
+	public MainPresenter(
+						BroadcastSender broadcastSender,
+						NetworkStatus networkStatus,
 						 Toaster toaster,
 						 UpdaterSettings updaterSettings,
-						 Navigator navigator,
 						 final MainView mainView,
-						 FormValidator formValidator,
-						 UpdateScheduler updateScheduler) {
+						 FormValidator formValidator) {
+		this.broadcastSender = broadcastSender;
 		this.networkStatus = networkStatus;
-		this.notifier = notifier;
 		this.toaster = toaster;
 		this.updaterSettings = updaterSettings;
-		this.navigator = navigator;
 		this.mainView = mainView;
 		this.formValidator = formValidator;
 	}
@@ -44,48 +38,51 @@ public class MainPresenter {
 		mainView.setDestination(updaterSettings.getDestination());
 		mainView.setTransportMode(updaterSettings.getTransportMode());
 		mainView.setUpdatePeriodInMinutes(updaterSettings.getUpdatePeriodInMinutes());
-		mainView.setUpdatesActive(updaterSettings.isUpdatesActive());
+		if (updaterSettings.isUpdatesActive()) {
+			setViewForActiveUpdates();
+		}
+		else {
+			setViewForInactiveUpdates();
+		}
+	}
 
-		mainView.makeFormActive(!updaterSettings.isUpdatesActive());
+	private void setViewForInactiveUpdates() {
+		mainView.makeFormActive();
+		mainView.hideStopButton();
+		mainView.showStartButton();
+	}
+
+	private void setViewForActiveUpdates() {
+		mainView.makeFormInactive();
+		mainView.hideStartButton();
+		mainView.showStopButton();
 	}
 
 	public void startPressed() {
 		if (!networkStatus.isAvailable()) {
 			toaster.toast(NO_INTERNET_CONNECTION);
-			rejectForm();
 		}
 		else {
-			formValidator.setListener(new FormValidator.FormValidatorListener() {
+			formValidator.setCallback(new FormValidator.FormValidatorCallback() {
 				@Override
 				public void success() {
-					notifier.notifyStarted();
 					startSendingUpdates();
 				}
 
-				@Override
-				public void failure() {
-					rejectForm();
-				}
 			});
 			formValidator.validateForm(mainView);
 		}
 	}
 
-	private void rejectForm() {
-		mainView.setUpdatesActive(false);
-	}
-
 	private void startSendingUpdates() {
 		storeForm();
-		mainView.makeFormActive(false);
 		updaterSettings.setUpdatesActive(true);
-		navigator.startUpdateService();
+		setViewForActiveUpdates();
+		broadcastSender.sendUpdate();
 	}
 
-	public void stopPressed() {
-		mainView.makeFormActive(true);
-		notifier.clearNotification();
-		updaterSettings.setUpdatesActive(false);
+	public void sendingStopped() {
+		setViewForInactiveUpdates();
 	}
 
 	private void storeForm() {
@@ -93,5 +90,9 @@ public class MainPresenter {
 		updaterSettings.setDestination(mainView.getDestination());
 		updaterSettings.setTransportMode(ModeOfTransport.getEnum(mainView.getModeOfTravel()));
 		updaterSettings.setUpdatePeriodInMinutes(mainView.getUpdatePeriodInMinutes());
+	}
+
+	public void stopPressed() {
+		broadcastSender.stopUpdates();
 	}
 }

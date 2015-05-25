@@ -1,16 +1,12 @@
 package com.khonsu.enroute.sending;
 
 import android.location.Location;
-import android.os.AsyncTask;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.khonsu.enroute.Estimate;
 import com.khonsu.enroute.GoogleMapsDurationGetter;
-import com.khonsu.enroute.ModeOfTransport;
+import com.khonsu.enroute.events.EventBus;
 import com.khonsu.enroute.sending.scheduling.UpdateScheduler;
 import com.khonsu.enroute.settings.UpdaterSettings;
-import com.khonsu.enroute.usernotifications.Notifier;
 import com.khonsu.enroute.UnableToGetEstimatedJourneyTimeException;
 import com.khonsu.enroute.UrlAccessor;
 import com.khonsu.enroute.sending.messaging.MessageGenerator;
@@ -19,31 +15,22 @@ import com.khonsu.enroute.sending.messaging.SMSSender;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class AsyncUpdateTask extends AsyncTask<Void, Void, Void> {
+public class Updater {
 	private static long RETRY_IF_FAIL_DELAY = TimeUnit.MINUTES.toMillis(5);
+	public static final String UPDATE_SENT = "UPDATE_SENT";
 
 	private final UpdaterSettings updaterSettings;
-	private final Notifier notifier;
-	private final GoogleApiClient googleApiClient;
 	private final UpdateScheduler updateScheduler;
 
-	public AsyncUpdateTask(UpdaterSettings updaterSettings,
-						   Notifier notifier,
-						   GoogleApiClient googleApiClient,
-						   UpdateScheduler updateScheduler) {
+	public Updater(UpdaterSettings updaterSettings,
+				   UpdateScheduler updateScheduler) {
 		this.updaterSettings = updaterSettings;
-		this.notifier = notifier;
-		this.googleApiClient = googleApiClient;
 		this.updateScheduler = updateScheduler;
 	}
 
-	@Override
-	protected Void doInBackground(Void... params) {
-		Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-
+	protected void sendUpdate(Location lastLocation) {
 		if (lastLocation == null) {
 			retrySendingLater();
-			return null;
 		}
 		GoogleMapsDurationGetter googleMapsDurationGetter = new GoogleMapsDurationGetter(new UrlAccessor());
 		try {
@@ -64,7 +51,7 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Void> {
 			if (updaterSettings.isUpdatesActive()) {
 				SMSSender.sendSMS(updaterSettings.getRecipient().getNumber(), message);
 
-				notifier.notifyUpdateSent();
+				EventBus.getInstance().announce(UPDATE_SENT);
 
 				long triggerAtMillis = new Date().getTime() + updaterSettings.getUpdatePeriodInMillis();
 				scheduleNextUpdate(triggerAtMillis);
@@ -76,13 +63,11 @@ public class AsyncUpdateTask extends AsyncTask<Void, Void, Void> {
 				retrySendingLater();
 			}
 		}
-		return null;
 	}
 
 	private void scheduleNextUpdate(long triggerAtMillis) {
 		updateScheduler.scheduleNextUpdate(triggerAtMillis);
 		updaterSettings.setTimeForNextUpdateInMillis(triggerAtMillis);
-		notifier.notifyNextUpdate(triggerAtMillis);
 	}
 
 	private void retrySendingLater() {

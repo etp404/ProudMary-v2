@@ -8,19 +8,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.ToggleButton;
 
 import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
-import com.khonsu.enroute.sending.scheduling.UpdateScheduler;
+import com.khonsu.enroute.events.EventBus;
+import com.khonsu.enroute.settingup.BroadcastSender;
 import com.khonsu.enroute.settingup.MainPresenter;
 import com.khonsu.enroute.settingup.MainView;
-import com.khonsu.enroute.usernotifications.Notifier;
-import com.khonsu.enroute.util.Navigator;
+import com.khonsu.enroute.settingup.TurnOffUpdatesReceiver;
 import com.khonsu.enroute.util.NetworkStatus;
 import com.khonsu.enroute.R;
 import com.khonsu.enroute.usernotifications.Toaster;
@@ -35,9 +35,11 @@ import com.khonsu.enroute.settingup.validator.FormValidator;
 
 public class MainActivity extends Activity {
 
+	private final UpdatesOffConsumer updatesOffConsumer = new UpdatesOffConsumer();
 	private MainView mainView;
 	private ContactsAccessor contactsAccessor;
 	private GooglePlacesAutocompleter googlePlacesAutocompleter;
+	private MainPresenter mainPresenter;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,28 +55,38 @@ public class MainActivity extends Activity {
 		AutoCompleteTextView recipientTextView = initaliseRecipientField();
 		AutoCompleteTextView destinationTextView = initaliseDestinationField();
 
-		ToggleButton startToggleButton = (ToggleButton) findViewById(R.id.start_toggle);
+		Button startButton = (Button) findViewById(R.id.start_button);
+		Button stopButton = (Button) findViewById(R.id.stop_button);
 		mainView = new MainView(recipientTextView,
 								(ProgressBar) findViewById(R.id.recipientsLoadingSpinner),
 								contactPickerButton,
 								destinationTextView,
 								(RadioGroup)findViewById(R.id.mode_of_travel_radio_group),
 								new FrequencyPicker((NumberPicker) findViewById(R.id.numberPicker)),
-								startToggleButton);
+								startButton,
+								stopButton);
 
-		MainPresenter mainPresenter = new MainPresenter(
+		mainPresenter = new MainPresenter(
+				new BroadcastSender(getApplicationContext()),
 				new NetworkStatus(getApplicationContext()),
-				Notifier.getInstance(getApplicationContext()),
 				new Toaster(getApplicationContext()),
 				new UpdaterSettings(getApplicationContext().getSharedPreferences(UpdaterSettings.UPDATER_SETTINGS, 0)),
-				new Navigator(getApplicationContext()), mainView,
-				new FormValidator(new UiThreadExecutor(), new AddressValidator(googlePlacesAutocompleter)),
-				new UpdateScheduler(getApplicationContext()));
+				mainView,
+				new FormValidator(new UiThreadExecutor(), new AddressValidator(googlePlacesAutocompleter)));
 
 		mainPresenter.populateView();
 
-		startToggleButton.setOnCheckedChangeListener(new StartSwitchListener(mainPresenter));
+		startButton.setOnClickListener(new StartButtonListener(mainPresenter));
+		stopButton.setOnClickListener(new StopButtonListener(mainPresenter));
 		contactsAccessor.setListener(new ContactsAccessorListener(mainView));
+
+		EventBus.getInstance().register(TurnOffUpdatesReceiver.UPDATES_TURNED_OFF, updatesOffConsumer);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		EventBus.getInstance().unregister(TurnOffUpdatesReceiver.UPDATES_TURNED_OFF, updatesOffConsumer);
 	}
 
 	@Override
@@ -127,6 +139,13 @@ public class MainActivity extends Activity {
 									Intent data) {
 		if (requestCode == R.id.contacts_result && resultCode == RESULT_OK) {
 			mainView.setRecipient(contactsAccessor.getContact(data.getData()).toString());
+		}
+	}
+
+	private class UpdatesOffConsumer implements EventBus.Consumer {
+		@Override
+		public void invoke(Object payload) {
+			mainPresenter.sendingStopped();
 		}
 	}
 

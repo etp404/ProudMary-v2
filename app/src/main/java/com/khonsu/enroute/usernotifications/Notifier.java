@@ -8,74 +8,68 @@ import android.content.Intent;
 
 import com.khonsu.enroute.NextUpdateFormatter;
 import com.khonsu.enroute.R;
+import com.khonsu.enroute.settingup.TurnOffUpdatesReceiver;
 import com.khonsu.enroute.settingup.activities.MainActivity;
 
-public class Notifier {
+public final class Notifier {
+
 	private static final int NOTIFICATION_ID = 0;
-	private static final String INITIAL_STATUS = "Running";
-	private static Notifier instance;
+	private static final String SENDING_UPDATE_NOTIFICATION = "Sending update";
+	private static final String UPDATE_SENT = "Update sent";
 
+	private final Context context;
 	private final NotificationManager notificationManager;
-	private Context context;
-	private String statusInfo = INITIAL_STATUS;
-	private String nextUpdateInfo;
 
-	private Notifier(Context context) {
-        this.context = context;
+	public Notifier(Context context) {
+		this.context = context;
 		this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
-	public static Notifier getInstance(Context context) {
-		if (instance == null) {
-			instance = new Notifier(context);
-		}
-		return instance;
+
+	public void updateSendingStarted() {
+		sendNotification(SENDING_UPDATE_NOTIFICATION);
 	}
 
-    private void provideNotification() {
-		Notification.Builder notificationBuilder = new Notification.Builder(context)
-				.setContentTitle(statusInfo)
-				.setContentText(nextUpdateInfo)
+	public void updateSent() {
+		sendNotification(UPDATE_SENT);
+	}
+
+	public void nextUpdateScheduled(Long timeInMillis) {
+		sendCancellableNotification(NextUpdateFormatter.format(timeInMillis));
+	}
+
+	private void sendCancellableNotification(String message) {
+		Notification.Builder builder = new Notification.Builder(context)
+				.setContentTitle(message)
+				.setDefaults(Notification.DEFAULT_LIGHTS)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0))
+				.addAction(R.drawable.ic_action_cancel, "Stop", PendingIntent.getBroadcast(context, 0, new Intent(context, TurnOffUpdatesReceiver.class), 0));
+
+		Notification notification = builder.build();
+		notification.flags =
+				Notification.DEFAULT_LIGHTS |
+						Notification.FLAG_NO_CLEAR |
+						Notification.FLAG_ONGOING_EVENT;
+		notificationManager.notify(NOTIFICATION_ID, notification);
+	}
+
+	private void sendNotification(String message) {
+		Notification.Builder builder = new Notification.Builder(context)
+				.setContentTitle(message)
 				.setDefaults(Notification.DEFAULT_LIGHTS)
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
 
-        Notification notification = notificationBuilder.build();
-
+		Notification notification = builder.build();
 		notification.flags =
 				Notification.DEFAULT_LIGHTS |
-				Notification.FLAG_NO_CLEAR |
-				Notification.FLAG_ONGOING_EVENT;
+						Notification.FLAG_NO_CLEAR |
+						Notification.FLAG_ONGOING_EVENT;
 		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 
-	public void notifyUpdateSent() {
-		statusInfo = context.getResources().getString(R.string.update_sent_notification);
-		provideNotification();
-	}
-
-	public void notifyLocationUnavailable() {
-		statusInfo = context.getResources().getString(R.string.last_update_failed);
-		provideNotification();
-	}
-
-	public void notifyUnableToGetEta() {
-		statusInfo = context.getResources().getString(R.string.last_update_failed);
-		provideNotification();
-	}
-
-	public void notifyNextUpdate(long triggerAtMillis) {
-		nextUpdateInfo = NextUpdateFormatter.format(triggerAtMillis);
-		provideNotification();
-	}
-
-	public void clearNotification() {
-		statusInfo = INITIAL_STATUS;
-		nextUpdateInfo = null;
+	public void clear() {
 		notificationManager.cancel(NOTIFICATION_ID);
-	}
-
-	public void notifyStarted() {
-		provideNotification();
 	}
 }
