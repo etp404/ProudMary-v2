@@ -18,7 +18,7 @@ public class ContactsAccessorListener implements ContactsAccessor.Listener {
 		mainHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				mainView.showLoadingSpinner();
+				mainView.showContactsLoadingSpinner();
 			}
 		});
 	}

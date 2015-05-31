@@ -1,6 +1,5 @@
 package com.khonsu.enroute.settingup;
 
-import android.app.MediaRouteButton;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -26,8 +25,9 @@ public class MainView {
 	private EditText destinationView;
 	private RadioGroup modeOfTravel;
 	private FrequencyPicker frequencyPicker;
-	private Button startButton;
-	private Button stopButton;
+	private final Button startButton;
+	private final Button stopButton;
+	private final ProgressBar sendingSpinner;
 
 	public MainView(AutoCompleteTextView recipientTextView,
 					ProgressBar contactsLoadingSpinner,
@@ -36,7 +36,8 @@ public class MainView {
 					RadioGroup modeOfTravel,
 					FrequencyPicker frequencyPicker,
 					Button startButton,
-					Button stopButton) {
+					Button stopButton,
+					ProgressBar sendingSpinner) {
 		this.recipientTextView = recipientTextView;
 		this.contactsLoadingSpinner = contactsLoadingSpinner;
 		this.contactPickerButton = contactPickerButton;
@@ -45,9 +46,10 @@ public class MainView {
 		this.frequencyPicker = frequencyPicker;
 		this.startButton = startButton;
 		this.stopButton = stopButton;
+		this.sendingSpinner = sendingSpinner;
 	}
 
-	public void showLoadingSpinner() {
+	public void showContactsLoadingSpinner() {
 		contactsLoadingSpinner.setVisibility(View.VISIBLE);
 	}
 
@@ -149,5 +151,13 @@ public class MainView {
 
 	public void hideStopButton() {
 		stopButton.setVisibility(Button.GONE);
+	}
+
+	public void showSendingSpinner() {
+		sendingSpinner.setVisibility(Button.VISIBLE);
+	}
+
+	public void hideSendingSpinner() {
+		sendingSpinner.setVisibility(Button.GONE);
 	}
 }

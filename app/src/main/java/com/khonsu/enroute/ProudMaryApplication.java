@@ -41,6 +41,7 @@ public final class ProudMaryApplication extends Application {
 				notifier.clear();
 			}
 		});
+
 	}
 
 	@Override

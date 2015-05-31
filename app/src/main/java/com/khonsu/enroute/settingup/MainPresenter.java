@@ -52,10 +52,11 @@ public class MainPresenter {
 		mainView.showStartButton();
 	}
 
-	private void setViewForActiveUpdates() {
+	public void setViewForActiveUpdates() {
 		mainView.makeFormInactive();
 		mainView.hideStartButton();
 		mainView.showStopButton();
+		mainView.hideSendingSpinner();
 	}
 
 	public void startPressed() {
@@ -63,6 +64,7 @@ public class MainPresenter {
 			toaster.toast(NO_INTERNET_CONNECTION);
 		}
 		else {
+			setViewForSendInProgress();
 			formValidator.setCallback(new FormValidator.FormValidatorCallback() {
 				@Override
 				public void success() {
@@ -74,10 +76,15 @@ public class MainPresenter {
 		}
 	}
 
+	private void setViewForSendInProgress() {
+		mainView.showSendingSpinner();
+		mainView.hideStartButton();
+		mainView.hideStopButton();
+	}
+
 	private void startSendingUpdates() {
 		storeForm();
 		updaterSettings.setUpdatesActive(true);
-		setViewForActiveUpdates();
 		broadcastSender.sendUpdate();
 	}
 
@@ -95,4 +102,5 @@ public class MainPresenter {
 	public void stopPressed() {
 		broadcastSender.stopUpdates();
 	}
+
 }

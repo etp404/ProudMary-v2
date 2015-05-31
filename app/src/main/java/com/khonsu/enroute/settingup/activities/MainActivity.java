@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.events.EventBus;
+import com.khonsu.enroute.sending.Updater;
 import com.khonsu.enroute.settingup.BroadcastSender;
 import com.khonsu.enroute.settingup.MainPresenter;
 import com.khonsu.enroute.settingup.MainView;
@@ -36,6 +37,8 @@ import com.khonsu.enroute.settingup.validator.FormValidator;
 public class MainActivity extends Activity {
 
 	private final UpdatesOffConsumer updatesOffConsumer = new UpdatesOffConsumer();
+	private final SendingCompleteConsumer sendingCompleteConsumer = new SendingCompleteConsumer();
+
 	private MainView mainView;
 	private ContactsAccessor contactsAccessor;
 	private GooglePlacesAutocompleter googlePlacesAutocompleter;
@@ -64,7 +67,8 @@ public class MainActivity extends Activity {
 								(RadioGroup)findViewById(R.id.mode_of_travel_radio_group),
 								new FrequencyPicker((NumberPicker) findViewById(R.id.numberPicker)),
 								startButton,
-								stopButton);
+								stopButton,
+								(ProgressBar)findViewById(R.id.sendingSpinner));
 
 		mainPresenter = new MainPresenter(
 				new BroadcastSender(getApplicationContext()),
@@ -81,12 +85,14 @@ public class MainActivity extends Activity {
 		contactsAccessor.setListener(new ContactsAccessorListener(mainView));
 
 		EventBus.getInstance().register(TurnOffUpdatesReceiver.UPDATES_TURNED_OFF, updatesOffConsumer);
+		EventBus.getInstance().register(Updater.SENDING_COMPLETE, sendingCompleteConsumer);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		EventBus.getInstance().unregister(TurnOffUpdatesReceiver.UPDATES_TURNED_OFF, updatesOffConsumer);
+		EventBus.getInstance().unregister(Updater.SENDING_COMPLETE, sendingCompleteConsumer);
 	}
 
 	@Override
@@ -146,6 +152,19 @@ public class MainActivity extends Activity {
 		@Override
 		public void invoke(Object payload) {
 			mainPresenter.sendingStopped();
+		}
+	}
+
+	private class SendingCompleteConsumer implements EventBus.Consumer {
+
+		@Override
+		public void invoke(Object payload) {
+			MainActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					mainPresenter.setViewForActiveUpdates();
+				}
+			});
 		}
 	}
 
