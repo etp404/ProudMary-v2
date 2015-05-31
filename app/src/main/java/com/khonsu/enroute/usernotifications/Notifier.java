@@ -13,9 +13,12 @@ import com.khonsu.enroute.settingup.activities.MainActivity;
 
 public final class Notifier {
 
-	private static final int NOTIFICATION_ID = 0;
+	private static final int DEFAULT_NOTIFICATION_ID = 0;
+	private static final int ERROR_NOTIFICATION_ID = 1;
+
 	private static final String SENDING_UPDATE_NOTIFICATION = "Sending update";
 	private static final String UPDATE_SENT = "Update sent";
+	private static final String ERROR_WITH_PREVIOUS_UPDATE = "Error with previous update.";
 
 	private final Context context;
 	private final NotificationManager notificationManager;
@@ -38,6 +41,11 @@ public final class Notifier {
 		sendCancellableNotification(NextUpdateFormatter.format(timeInMillis));
 	}
 
+	public void errorWithPreviousUpdate() {
+		sendErrorNotification(ERROR_WITH_PREVIOUS_UPDATE);
+	}
+
+
 	private void sendCancellableNotification(String message) {
 		Notification.Builder builder = new Notification.Builder(context)
 				.setContentTitle(message)
@@ -51,7 +59,7 @@ public final class Notifier {
 				Notification.DEFAULT_LIGHTS |
 						Notification.FLAG_NO_CLEAR |
 						Notification.FLAG_ONGOING_EVENT;
-		notificationManager.notify(NOTIFICATION_ID, notification);
+		notificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
 	}
 
 	private void sendNotification(String message) {
@@ -66,10 +74,22 @@ public final class Notifier {
 				Notification.DEFAULT_LIGHTS |
 						Notification.FLAG_NO_CLEAR |
 						Notification.FLAG_ONGOING_EVENT;
-		notificationManager.notify(NOTIFICATION_ID, notification);
+		notificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);	}
+
+	private void sendErrorNotification(String message) {
+		Notification.Builder builder = new Notification.Builder(context)
+				.setContentTitle(message)
+				.setDefaults(Notification.DEFAULT_LIGHTS)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
+
+		Notification notification = builder.build();
+		notification.flags = Notification.DEFAULT_LIGHTS;
+		notificationManager.notify(ERROR_NOTIFICATION_ID, notification);
 	}
 
 	public void clear() {
-		notificationManager.cancel(NOTIFICATION_ID);
+		notificationManager.cancel(DEFAULT_NOTIFICATION_ID);
+		notificationManager.cancel(ERROR_NOTIFICATION_ID);
 	}
 }

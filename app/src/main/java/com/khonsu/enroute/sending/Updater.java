@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class Updater {
 	private static long RETRY_IF_FAIL_DELAY = TimeUnit.MINUTES.toMillis(5);
 	public static final String UPDATE_SENT = "UPDATE_SENT";
+	public static final String UPDATE_ERROR = "ERROR_SENDING_UPDATE";
 	public static final String SENDING_COMPLETE = "SENDING_COMPLETE";
 
 	private final UpdaterSettings updaterSettings;
@@ -62,6 +63,7 @@ public class Updater {
 			e.printStackTrace();
 			if (updaterSettings.isUpdatesActive()) {
 				retrySendingLater();
+				EventBus.getInstance().announce(UPDATE_ERROR);
 			}
 		}
 		EventBus.getInstance().announce(SENDING_COMPLETE);

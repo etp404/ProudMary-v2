@@ -42,6 +42,13 @@ public final class ProudMaryApplication extends Application {
 			}
 		});
 
+		EventBus.getInstance().register(Updater.UPDATE_ERROR, new EventBus.Consumer() {
+			@Override
+			public void invoke(Object payload) {
+				notifier.errorWithPreviousUpdate();
+			}
+		});
+
 	}
 
 	@Override
