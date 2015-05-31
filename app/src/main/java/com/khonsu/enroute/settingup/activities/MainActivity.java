@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import com.khonsu.enroute.AddressValidator;
 import com.khonsu.enroute.GooglePlacesAutocompleter;
 import com.khonsu.enroute.events.EventBus;
+import com.khonsu.enroute.sending.SendUpdateBroadcastReceiver;
 import com.khonsu.enroute.sending.Updater;
 import com.khonsu.enroute.settingup.BroadcastSender;
 import com.khonsu.enroute.settingup.MainPresenter;
@@ -38,6 +39,7 @@ public class MainActivity extends Activity {
 
 	private final UpdatesOffConsumer updatesOffConsumer = new UpdatesOffConsumer();
 	private final SendingCompleteConsumer sendingCompleteConsumer = new SendingCompleteConsumer();
+	private final SendingStartedConsumer sendingStartedConsumer = new SendingStartedConsumer();
 
 	private MainView mainView;
 	private ContactsAccessor contactsAccessor;
@@ -86,6 +88,7 @@ public class MainActivity extends Activity {
 
 		EventBus.getInstance().register(TurnOffUpdatesReceiver.UPDATES_TURNED_OFF, updatesOffConsumer);
 		EventBus.getInstance().register(Updater.SENDING_COMPLETE, sendingCompleteConsumer);
+		EventBus.getInstance().register(SendUpdateBroadcastReceiver.UPDATE_SENDING_STARTED, sendingStartedConsumer);
 	}
 
 	@Override
@@ -93,6 +96,7 @@ public class MainActivity extends Activity {
 		super.onDestroy();
 		EventBus.getInstance().unregister(TurnOffUpdatesReceiver.UPDATES_TURNED_OFF, updatesOffConsumer);
 		EventBus.getInstance().unregister(Updater.SENDING_COMPLETE, sendingCompleteConsumer);
+		EventBus.getInstance().unregister(SendUpdateBroadcastReceiver.UPDATE_SENDING_STARTED, sendingStartedConsumer);
 	}
 
 	@Override
@@ -156,13 +160,24 @@ public class MainActivity extends Activity {
 	}
 
 	private class SendingCompleteConsumer implements EventBus.Consumer {
-
 		@Override
 		public void invoke(Object payload) {
 			MainActivity.this.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					mainPresenter.setViewForActiveUpdates();
+				}
+			});
+		}
+	}
+
+	private class SendingStartedConsumer implements EventBus.Consumer {
+		@Override
+		public void invoke(Object payload) {
+			MainActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					mainPresenter.setViewForSendInProgress();
 				}
 			});
 		}

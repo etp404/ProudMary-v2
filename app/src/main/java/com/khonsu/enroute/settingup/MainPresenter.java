@@ -76,7 +76,7 @@ public class MainPresenter {
 		}
 	}
 
-	private void setViewForSendInProgress() {
+	public void setViewForSendInProgress() {
 		mainView.showSendingSpinner();
 		mainView.hideStartButton();
 		mainView.hideStopButton();
