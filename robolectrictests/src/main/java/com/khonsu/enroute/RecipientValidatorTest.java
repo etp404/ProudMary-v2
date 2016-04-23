@@ -1,5 +1,7 @@
 package com.khonsu.enroute;
 
+import com.khonsu.enroute.settingup.validator.RecipientValidator;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;

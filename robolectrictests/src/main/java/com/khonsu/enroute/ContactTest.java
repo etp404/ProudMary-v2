@@ -1,6 +1,6 @@
 package com.khonsu.enroute;
 
-import com.khonsu.enroute.contactsautocomplete.Contact;
+import com.khonsu.enroute.settingup.contacts.Contact;
 
 import org.junit.Test;
 
