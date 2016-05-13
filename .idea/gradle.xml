@@ -14,6 +14,14 @@
             <option value="$PROJECT_DIR$/robolectrictests" />
           </set>
         </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/purejava" />
+            <option value="$PROJECT_DIR$/robolectrictests" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
